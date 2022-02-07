@@ -8,4 +8,6 @@ sealed class Foul {
 
     data class BallPotted(val ball: Ball) : Foul()
 
+    data class BallPushed(val ball: Ball) : Foul()
+
 }

@@ -11,6 +11,7 @@ class GetPenaltyValueUseCase {
         is Foul.BallOffTable -> handleBall(foul.ball)
         is Foul.HitNothing -> MIN_PENALTY
         is Foul.BallPotted -> handleBall(foul.ball)
+        is Foul.BallPushed -> handlePushedBall(foul.ball)
     }
 
     private fun handleBall(ball: Ball): Int = when (ball) {
@@ -20,6 +21,11 @@ class GetPenaltyValueUseCase {
         Ball.GREEN,
         Ball.BROWN -> MIN_PENALTY
         else -> ball.value
+    }
+
+    private fun handlePushedBall(ball: Ball): Int = when (ball) {
+        Ball.CUE_BALL -> throw IllegalArgumentException("Push shots must involve an object ball")
+        else -> handleBall(ball)
     }
 
 }

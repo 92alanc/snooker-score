@@ -180,4 +180,82 @@ class GetPenaltyValueUseCaseTest {
         assertThat(penalty).isEqualTo(ball.value)
     }
 
+    @Test(expected = IllegalArgumentException::class)
+    fun `when cue ball is pushed invoke should throw exception`() {
+        val ball = Ball.CUE_BALL
+        val foul = Foul.BallPushed(ball)
+
+        useCase.invoke(foul)
+    }
+
+    @Test
+    fun `when red ball is pushed invoke should return minimum penalty`() {
+        val ball = Ball.RED
+        val foul = Foul.BallPushed(ball)
+
+        val penalty = useCase.invoke(foul)
+
+        assertThat(penalty).isEqualTo(MIN_PENALTY)
+    }
+
+    @Test
+    fun `when yellow ball is pushed invoke should return minimum penalty`() {
+        val ball = Ball.YELLOW
+        val foul = Foul.BallPushed(ball)
+
+        val penalty = useCase.invoke(foul)
+
+        assertThat(penalty).isEqualTo(MIN_PENALTY)
+    }
+
+    @Test
+    fun `when green ball is pushed invoke should return minimum penalty`() {
+        val ball = Ball.GREEN
+        val foul = Foul.BallPushed(ball)
+
+        val penalty = useCase.invoke(foul)
+
+        assertThat(penalty).isEqualTo(MIN_PENALTY)
+    }
+
+    @Test
+    fun `when brown ball is pushed invoke should return minimum penalty`() {
+        val ball = Ball.BROWN
+        val foul = Foul.BallPushed(ball)
+
+        val penalty = useCase.invoke(foul)
+
+        assertThat(penalty).isEqualTo(MIN_PENALTY)
+    }
+
+    @Test
+    fun `when blue ball is pushed invoke should return ball value`() {
+        val ball = Ball.BLUE
+        val foul = Foul.BallPushed(ball)
+
+        val penalty = useCase.invoke(foul)
+
+        assertThat(penalty).isEqualTo(ball.value)
+    }
+
+    @Test
+    fun `when pink ball is pushed invoke should return ball value`() {
+        val ball = Ball.PINK
+        val foul = Foul.BallPushed(ball)
+
+        val penalty = useCase.invoke(foul)
+
+        assertThat(penalty).isEqualTo(ball.value)
+    }
+
+    @Test
+    fun `when black ball is pushed invoke should return ball value`() {
+        val ball = Ball.BLACK
+        val foul = Foul.BallPushed(ball)
+
+        val penalty = useCase.invoke(foul)
+
+        assertThat(penalty).isEqualTo(ball.value)
+    }
+
 }
