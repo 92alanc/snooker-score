@@ -6,6 +6,7 @@ plugins {
 
 ext {
     coroutines_version = '1.5.2'
+    koin_version = '3.1.0'
 }
 
 task clean(type: Delete) {
