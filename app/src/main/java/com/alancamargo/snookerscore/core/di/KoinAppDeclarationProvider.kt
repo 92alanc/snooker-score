@@ -2,13 +2,17 @@ package com.alancamargo.snookerscore.core.di
 
 import android.app.Application
 import org.koin.android.ext.koin.androidContext
+import org.koin.core.context.loadKoinModules
+import org.koin.core.module.Module
 import org.koin.dsl.KoinAppDeclaration
 
 object KoinAppDeclarationProvider {
 
     fun provideAppDeclaration(app: Application): KoinAppDeclaration = {
         androidContext(app)
-
+        loadKoinModules(getModules())
     }
+
+    private fun getModules(): List<Module> = emptyList()
 
 }
