@@ -1,6 +1,8 @@
 package com.alancamargo.snookerscore.core.di
 
 import android.app.Application
+import com.alancamargo.snookerscore.data.di.dataModule
+import com.alancamargo.snookerscore.domain.domainModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.loadKoinModules
 import org.koin.core.module.Module
@@ -13,6 +15,9 @@ object KoinAppDeclarationProvider {
         loadKoinModules(getModules())
     }
 
-    private fun getModules(): List<Module> = emptyList()
+    private fun getModules(): List<Module> = listOf(
+        domainModule,
+        dataModule
+    )
 
 }
