@@ -12,15 +12,15 @@ import org.junit.Test
 import kotlin.time.ExperimentalTime
 
 @ExperimentalTime
-class UpdatePlayerUseCaseTest {
+class AddOrUpdatePlayerUseCaseTest {
 
     private val mockRepository = mockk<PlayerRepository>()
-    private val useCase = UpdatePlayerUseCase(mockRepository)
+    private val useCase = AddOrUpdatePlayerUseCase(mockRepository)
 
     @Test
-    fun `invoke should update player`() = runBlocking {
-        val player = Player(id = "1", name = "Steve Davis")
-        every { mockRepository.updatePlayer(player) } returns flow { emit(Unit) }
+    fun `invoke should add new player`() = runBlocking {
+        val player = Player(id = "1", name = "Mark Selby")
+        every { mockRepository.addOrUpdatePlayer(player) } returns flow { emit(Unit) }
 
         val result = useCase.invoke(player)
 
@@ -32,9 +32,9 @@ class UpdatePlayerUseCaseTest {
 
     @Test
     fun `when repository throws exception invoke should return error`() = runBlocking {
-        val player = Player(id = "2", name = "Kyren Wilson")
+        val player = Player(id = "2", name = "Judd Trump")
         val errorMessage = "Something wrong happened"
-        every { mockRepository.updatePlayer(player) } returns flow { throw Throwable(errorMessage) }
+        every { mockRepository.addOrUpdatePlayer(player) } returns flow { throw Throwable(errorMessage) }
 
         val result = useCase.invoke(player)
 

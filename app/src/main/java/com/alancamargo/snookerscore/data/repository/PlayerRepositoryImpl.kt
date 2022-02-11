@@ -9,9 +9,9 @@ class PlayerRepositoryImpl(private val localDataSource: PlayerLocalDataSource) :
 
     override fun getPlayers(): Flow<List<Player>> = localDataSource.getPlayers()
 
-    override fun addPlayer(player: Player): Flow<Unit> = localDataSource.addPlayer(player)
-
-    override fun updatePlayer(player: Player): Flow<Unit> = localDataSource.updatePlayer(player)
+    override fun addOrUpdatePlayer(
+        player: Player
+    ): Flow<Unit> = localDataSource.addOrUpdatePlayer(player)
 
     override fun deletePlayer(player: Player): Flow<Unit> = localDataSource.deletePlayer(player)
 
