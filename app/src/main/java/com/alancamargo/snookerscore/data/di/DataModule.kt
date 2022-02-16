@@ -4,7 +4,10 @@ import androidx.room.Room
 import com.alancamargo.snookerscore.data.db.provider.DatabaseProvider
 import com.alancamargo.snookerscore.data.local.PlayerLocalDataSource
 import com.alancamargo.snookerscore.data.local.PlayerLocalDataSourceImpl
+import com.alancamargo.snookerscore.data.local.PlayerStatsLocalDataSource
+import com.alancamargo.snookerscore.data.local.PlayerStatsLocalDataSourceImpl
 import org.koin.android.ext.koin.androidContext
+import org.koin.core.scope.Scope
 import org.koin.dsl.module
 
 val dataModule = module {
@@ -18,8 +21,16 @@ val dataModule = module {
 
     factory<PlayerLocalDataSource> {
         PlayerLocalDataSourceImpl(
-            playerDao = get<DatabaseProvider>().providePlayerDao(),
-            playerStatsDao = get<DatabaseProvider>().providePlayerStatsDao()
+            playerDao = getDatabaseProvider().providePlayerDao(),
+            playerStatsDao = getDatabaseProvider().providePlayerStatsDao()
+        )
+    }
+
+    factory<PlayerStatsLocalDataSource> {
+        PlayerStatsLocalDataSourceImpl(
+            playerStatsDao = getDatabaseProvider().providePlayerStatsDao()
         )
     }
 }
+
+private fun Scope.getDatabaseProvider() = get<DatabaseProvider>()
