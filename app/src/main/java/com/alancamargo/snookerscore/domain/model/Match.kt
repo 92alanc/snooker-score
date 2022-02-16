@@ -1,3 +1,8 @@
 package com.alancamargo.snookerscore.domain.model
 
-data class Match(val id: String, val frames: List<Frame>)
+import java.util.UUID
+
+data class Match(
+    val id: String = UUID.randomUUID().toString(),
+    val frames: List<Frame>
+)
