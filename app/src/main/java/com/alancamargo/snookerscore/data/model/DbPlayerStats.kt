@@ -10,13 +10,13 @@ import androidx.room.PrimaryKey
         ForeignKey(
             entity = DbPlayer::class,
             parentColumns = [PLAYER_COLUMN_ID],
-            childColumns = ["player"]
+            childColumns = ["playerJson"]
         )
     ]
 )
 data class DbPlayerStats(
     @PrimaryKey val id: String,
-    val player: DbPlayer,
+    val playerJson: String,
     val matchesWon: Int,
     val highestScore: Int,
     val highestBreak: Int

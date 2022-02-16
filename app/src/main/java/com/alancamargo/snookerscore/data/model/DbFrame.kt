@@ -3,6 +3,7 @@ package com.alancamargo.snookerscore.data.model
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
+import kotlinx.serialization.Serializable
 
 @Entity(
     tableName = "Frames",
@@ -10,12 +11,13 @@ import androidx.room.PrimaryKey
         ForeignKey(
             entity = DbScore::class,
             parentColumns = [ SCORE_COLUMN_ID ],
-            childColumns = ["player1Score", "player2Score"]
+            childColumns = ["player1ScoreJson", "player2ScoreJson"]
         )
     ]
 )
+@Serializable
 data class DbFrame(
     @PrimaryKey val id: String,
-    val player1Score: DbScore,
-    val player2Score: DbScore
+    val player1ScoreJson: String,
+    val player2ScoreJson: String
 )

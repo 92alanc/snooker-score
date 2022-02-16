@@ -10,16 +10,18 @@ import com.alancamargo.snookerscore.domain.model.Match
 import com.alancamargo.snookerscore.domain.model.Player
 import com.alancamargo.snookerscore.domain.model.PlayerStats
 import com.alancamargo.snookerscore.domain.model.Score
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.json.Json
 
 fun DbFrame.toDomain() = Frame(
     id = id,
-    player1Score = player1Score.toDomain(),
-    player2Score = player2Score.toDomain()
+    player1Score = Json.decodeFromString(player1ScoreJson),
+    player2Score = Json.decodeFromString(player2ScoreJson)
 )
 
 fun DbScore.toDomain() = Score(
     id = id,
-    player = player.toDomain(),
+    player = Json.decodeFromString(playerJson),
     score = score,
     highestBreak = highestBreak
 )
@@ -28,7 +30,7 @@ fun DbPlayer.toDomain() = Player(id = id, name = name)
 
 fun DbPlayerStats.toDomain() = PlayerStats(
     id = id,
-    player = player.toDomain(),
+    player = Json.decodeFromString(playerJson),
     matchesWon = matchesWon,
     highestScore = highestScore,
     highestBreak = highestBreak
@@ -36,5 +38,5 @@ fun DbPlayerStats.toDomain() = PlayerStats(
 
 fun DbMatch.toDomain() = Match(
     id = id,
-    frames = emptyList() // TODO: convert from JSON to Frame
+    frames = Json.decodeFromString(framesJson)
 )
