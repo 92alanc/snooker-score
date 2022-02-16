@@ -46,8 +46,12 @@ class PlayerLocalDataSourceImplTest {
 
         val result = localDataSource.addOrUpdatePlayer(player)
 
+        result.test {
+            awaitItem()
+            awaitComplete()
+        }
+
         coVerify { mockPlayerDao.addOrUpdatePlayer(player.toData()) }
-        result.test { awaitComplete() }
     }
 
     @Test
@@ -56,9 +60,13 @@ class PlayerLocalDataSourceImplTest {
 
         val result = localDataSource.deletePlayer(player)
 
+        result.test {
+            awaitItem()
+            awaitComplete()
+        }
+
         coVerify { mockPlayerDao.deletePlayer(player.id) }
         coVerify { mockPlayerStatsDao.deletePlayerStats(player.id) }
-        result.test { awaitComplete() }
     }
 
     private fun getDbPlayerList() = listOf(
