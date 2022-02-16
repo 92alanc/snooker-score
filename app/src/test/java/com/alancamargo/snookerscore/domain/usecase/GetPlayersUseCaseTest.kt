@@ -18,7 +18,7 @@ class GetPlayersUseCaseTest {
     private val useCase = GetPlayersUseCase(mockRepository)
 
     @Test
-    fun `invoke should return all players`() = runBlocking {
+    fun `invoke should return players`() = runBlocking {
         val expected = getPlayers()
         every { mockRepository.getPlayers() } returns flow { emit(expected) }
 
@@ -28,19 +28,6 @@ class GetPlayersUseCaseTest {
             val players = awaitItem()
             assertThat(players).isEqualTo(expected)
             awaitComplete()
-        }
-    }
-
-    @Test
-    fun `when repository throws exception invoke should return error`() = runBlocking {
-        val errorMessage = "Something wrong happened"
-        every { mockRepository.getPlayers() } returns flow { throw Throwable(errorMessage) }
-
-        val result = useCase.invoke()
-
-        result.test {
-            val error = awaitError()
-            assertThat(error).hasMessageThat().isEqualTo(errorMessage)
         }
     }
 
