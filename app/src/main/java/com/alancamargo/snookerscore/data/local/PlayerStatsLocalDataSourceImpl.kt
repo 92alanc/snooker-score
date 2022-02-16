@@ -3,7 +3,6 @@ package com.alancamargo.snookerscore.data.local
 import com.alancamargo.snookerscore.data.db.PlayerStatsDao
 import com.alancamargo.snookerscore.data.mapping.toData
 import com.alancamargo.snookerscore.data.mapping.toDomain
-import com.alancamargo.snookerscore.data.mapping.toJson
 import com.alancamargo.snookerscore.domain.model.Player
 import com.alancamargo.snookerscore.domain.model.PlayerStats
 import kotlinx.coroutines.flow.flow
@@ -13,7 +12,7 @@ class PlayerStatsLocalDataSourceImpl(
 ) : PlayerStatsLocalDataSource {
 
     override fun getPlayerStats(player: Player) = flow {
-        val playerStats = playerStatsDao.getPlayerStats(player.id).toDomain()
+        val playerStats = playerStatsDao.getPlayerStats(player.id).toDomain(player)
         emit(playerStats)
     }
 
@@ -23,7 +22,7 @@ class PlayerStatsLocalDataSourceImpl(
     }
 
     override fun deletePlayerStats(player: Player) = flow {
-        val task = playerStatsDao.deletePlayerStats(player.toJson())
+        val task = playerStatsDao.deletePlayerStats(player.id)
         emit(task)
     }
 

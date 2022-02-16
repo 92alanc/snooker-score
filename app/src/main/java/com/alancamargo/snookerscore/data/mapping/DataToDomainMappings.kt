@@ -1,8 +1,5 @@
 package com.alancamargo.snookerscore.data.mapping
 
-import com.alancamargo.snookerscore.data.mapping.json.FrameListSerialiser
-import com.alancamargo.snookerscore.data.mapping.json.PlayerSerialiser
-import com.alancamargo.snookerscore.data.mapping.json.ScoreSerialiser
 import com.alancamargo.snookerscore.data.model.DbFrame
 import com.alancamargo.snookerscore.data.model.DbMatch
 import com.alancamargo.snookerscore.data.model.DbPlayer
@@ -13,32 +10,28 @@ import com.alancamargo.snookerscore.domain.model.Match
 import com.alancamargo.snookerscore.domain.model.Player
 import com.alancamargo.snookerscore.domain.model.PlayerStats
 import com.alancamargo.snookerscore.domain.model.Score
-import kotlinx.serialization.json.Json
 
-fun DbFrame.toDomain() = Frame(
+fun DbFrame.toDomain(player1Score: Score, player2Score: Score) = Frame(
     id = id,
-    player1Score = Json.decodeFromString(ScoreSerialiser, player1ScoreJson),
-    player2Score = Json.decodeFromString(ScoreSerialiser, player2ScoreJson)
+    player1Score = player1Score,
+    player2Score = player2Score
 )
 
-fun DbScore.toDomain() = Score(
+fun DbScore.toDomain(player: Player) = Score(
     id = id,
-    player = Json.decodeFromString(PlayerSerialiser, playerJson),
+    player = player,
     score = score,
     highestBreak = highestBreak
 )
 
 fun DbPlayer.toDomain() = Player(id = id, name = name)
 
-fun DbPlayerStats.toDomain() = PlayerStats(
+fun DbPlayerStats.toDomain(player: Player) = PlayerStats(
     id = id,
-    player = Json.decodeFromString(PlayerSerialiser, playerJson),
+    player = player,
     matchesWon = matchesWon,
     highestScore = highestScore,
     highestBreak = highestBreak
 )
 
-fun DbMatch.toDomain() = Match(
-    id = id,
-    frames = Json.decodeFromString(FrameListSerialiser(), framesJson)
-)
+fun DbMatch.toDomain(frames: List<Frame>) = Match(id = id, frames = frames)

@@ -6,5 +6,5 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "Matches")
 data class DbMatch(
     @PrimaryKey val id: String,
-    val framesJson: String
+    val frameIds: String
 )
