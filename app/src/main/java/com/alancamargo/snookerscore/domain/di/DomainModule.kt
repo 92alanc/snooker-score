@@ -6,12 +6,12 @@ import com.alancamargo.snookerscore.data.repository.PlayerStatsRepositoryImpl
 import com.alancamargo.snookerscore.domain.repository.FrameRepository
 import com.alancamargo.snookerscore.domain.repository.PlayerRepository
 import com.alancamargo.snookerscore.domain.repository.PlayerStatsRepository
-import com.alancamargo.snookerscore.domain.usecase.AddOrUpdatePlayerStatsUseCase
-import com.alancamargo.snookerscore.domain.usecase.AddOrUpdatePlayerUseCase
-import com.alancamargo.snookerscore.domain.usecase.DeletePlayerUseCase
+import com.alancamargo.snookerscore.domain.usecase.playerstats.AddOrUpdatePlayerStatsUseCase
+import com.alancamargo.snookerscore.domain.usecase.player.AddOrUpdatePlayerUseCase
+import com.alancamargo.snookerscore.domain.usecase.player.DeletePlayerUseCase
 import com.alancamargo.snookerscore.domain.usecase.GetPenaltyValueUseCase
-import com.alancamargo.snookerscore.domain.usecase.GetPlayerStatsUseCase
-import com.alancamargo.snookerscore.domain.usecase.GetPlayersUseCase
+import com.alancamargo.snookerscore.domain.usecase.playerstats.GetPlayerStatsUseCase
+import com.alancamargo.snookerscore.domain.usecase.player.GetPlayersUseCase
 import org.koin.dsl.module
 
 val domainModule = module {

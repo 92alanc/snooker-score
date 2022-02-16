@@ -1,4 +1,4 @@
-package com.alancamargo.snookerscore.domain.usecase
+package com.alancamargo.snookerscore.domain.usecase.playerstats
 
 import app.cash.turbine.test
 import com.alancamargo.snookerscore.domain.model.Player

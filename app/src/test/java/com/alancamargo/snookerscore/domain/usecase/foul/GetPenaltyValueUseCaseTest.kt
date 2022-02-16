@@ -1,4 +1,4 @@
-package com.alancamargo.snookerscore.domain.usecase
+package com.alancamargo.snookerscore.domain.usecase.foul
 
 import com.alancamargo.snookerscore.domain.model.Ball
 import com.alancamargo.snookerscore.domain.model.Foul
