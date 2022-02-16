@@ -10,4 +10,6 @@ interface PlayerStatsLocalDataSource {
 
     fun addOrUpdatePlayerStats(playerStats: PlayerStats): Flow<Unit>
 
+    fun deletePlayerStats(player: Player): Flow<Unit>
+
 }

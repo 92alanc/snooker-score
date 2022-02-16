@@ -22,7 +22,7 @@ val dataModule = module {
     factory<PlayerLocalDataSource> {
         PlayerLocalDataSourceImpl(
             playerDao = getDatabaseProvider().providePlayerDao(),
-            playerStatsDao = getDatabaseProvider().providePlayerStatsDao()
+            playerStatsLocalDataSource = get()
         )
     }
 

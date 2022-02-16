@@ -1,15 +1,16 @@
 package com.alancamargo.snookerscore.data.local
 
 import com.alancamargo.snookerscore.data.db.PlayerDao
-import com.alancamargo.snookerscore.data.db.PlayerStatsDao
 import com.alancamargo.snookerscore.data.mapping.toData
 import com.alancamargo.snookerscore.data.mapping.toDomain
 import com.alancamargo.snookerscore.domain.model.Player
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.zip
 
 class PlayerLocalDataSourceImpl(
     private val playerDao: PlayerDao,
-    private val playerStatsDao: PlayerStatsDao
+    private val playerStatsLocalDataSource: PlayerStatsLocalDataSource
 ) : PlayerLocalDataSource {
 
     override fun getPlayers() = flow {
@@ -22,15 +23,13 @@ class PlayerLocalDataSourceImpl(
         emit(task)
     }
 
-    override fun deletePlayer(player: Player) = flow {
-        val playerId = player.id
-
-        val task = run {
-            playerDao.deletePlayer(playerId)
-            playerStatsDao.deletePlayerStats(playerId)
+    override fun deletePlayer(player: Player): Flow<Unit> {
+        val flow = flow {
+            val task = playerDao.deletePlayer(player.id)
+            emit(task)
         }
 
-        emit(task)
+        return playerStatsLocalDataSource.deletePlayerStats(player).zip(flow) { _, _ -> }
     }
 
 }
