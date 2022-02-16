@@ -8,7 +8,7 @@ import com.alancamargo.snookerscore.data.model.DbPlayer
 import com.alancamargo.snookerscore.data.model.DbPlayerStats
 
 @Database(
-    entities = [DbPlayer::class, DbPlayerStats::class],
+    entities = [ DbPlayer::class, DbPlayerStats::class ],
     version = 1,
     exportSchema = false
 )
