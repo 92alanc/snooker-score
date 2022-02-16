@@ -15,5 +15,11 @@ val dataModule = module {
             "database"
         ).fallbackToDestructiveMigration().build()
     }
-    factory<PlayerLocalDataSource> { PlayerLocalDataSourceImpl(databaseProvider = get()) }
+
+    factory<PlayerLocalDataSource> {
+        PlayerLocalDataSourceImpl(
+            playerDao = get<DatabaseProvider>().providePlayerDao(),
+            playerStatsDao = get<DatabaseProvider>().providePlayerStatsDao()
+        )
+    }
 }

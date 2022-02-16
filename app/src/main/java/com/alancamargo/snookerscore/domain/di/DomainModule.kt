@@ -1,4 +1,4 @@
-package com.alancamargo.snookerscore.domain
+package com.alancamargo.snookerscore.domain.di
 
 import com.alancamargo.snookerscore.data.repository.PlayerRepositoryImpl
 import com.alancamargo.snookerscore.domain.repository.PlayerRepository
@@ -13,6 +13,5 @@ val domainModule = module {
     factory { GetPlayersUseCase(repository = get()) }
     factory { AddOrUpdatePlayerUseCase(repository = get()) }
     factory { DeletePlayerUseCase(repository = get()) }
-    factory { UpdatePlayerUseCase(repository = get()) }
     factory { GetPenaltyValueUseCase() }
 }
