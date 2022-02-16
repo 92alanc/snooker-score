@@ -1,7 +1,9 @@
 package com.alancamargo.snookerscore.data.mapping
 
+import com.alancamargo.snookerscore.data.model.DbFrame
 import com.alancamargo.snookerscore.data.model.DbPlayer
 import com.alancamargo.snookerscore.data.model.DbPlayerStats
+import com.alancamargo.snookerscore.domain.model.Frame
 import com.alancamargo.snookerscore.domain.model.Player
 import com.alancamargo.snookerscore.domain.model.PlayerStats
 
@@ -13,4 +15,10 @@ fun PlayerStats.toData() = DbPlayerStats(
     matchesWon = matchesWon,
     highestScore = highestScore,
     highestBreak = highestBreak
+)
+
+fun Frame.toData() = DbFrame(
+    id = id,
+    player1ScoreId = player1Score.id,
+    player2ScoreId = player2Score.id
 )
