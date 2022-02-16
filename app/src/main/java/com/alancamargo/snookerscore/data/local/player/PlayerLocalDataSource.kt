@@ -1,4 +1,4 @@
-package com.alancamargo.snookerscore.data.local
+package com.alancamargo.snookerscore.data.local.player
 
 import com.alancamargo.snookerscore.domain.model.Player
 import kotlinx.coroutines.flow.Flow

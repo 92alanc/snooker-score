@@ -9,8 +9,15 @@ import androidx.room.PrimaryKey
     foreignKeys = [
         ForeignKey(
             entity = DbScore::class,
-            parentColumns = [ SCORE_COLUMN_ID, SCORE_COLUMN_ID ],
-            childColumns = [ "player1ScoreId", "player2ScoreId" ]
+            parentColumns = [SCORE_COLUMN_ID],
+            childColumns = ["player1ScoreId"],
+            onDelete = ForeignKey.CASCADE
+        ),
+        ForeignKey(
+            entity = DbScore::class,
+            parentColumns = [SCORE_COLUMN_ID],
+            childColumns = ["player2ScoreId"],
+            onDelete = ForeignKey.CASCADE
         )
     ]
 )

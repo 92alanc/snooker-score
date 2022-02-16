@@ -1,6 +1,6 @@
 package com.alancamargo.snookerscore.data.repository
 
-import com.alancamargo.snookerscore.data.local.PlayerStatsLocalDataSource
+import com.alancamargo.snookerscore.data.local.playerstats.PlayerStatsLocalDataSource
 import com.alancamargo.snookerscore.domain.model.Player
 import com.alancamargo.snookerscore.domain.model.PlayerStats
 import com.alancamargo.snookerscore.domain.repository.PlayerStatsRepository

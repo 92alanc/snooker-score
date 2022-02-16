@@ -10,7 +10,8 @@ import androidx.room.PrimaryKey
         ForeignKey(
             entity = DbPlayer::class,
             parentColumns = [ PLAYER_COLUMN_ID ],
-            childColumns = [ "playerId" ]
+            childColumns = [ "playerId" ],
+            onDelete = ForeignKey.CASCADE
         )
     ]
 )

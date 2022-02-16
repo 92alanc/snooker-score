@@ -2,10 +2,10 @@ package com.alancamargo.snookerscore.data.di
 
 import androidx.room.Room
 import com.alancamargo.snookerscore.data.db.provider.DatabaseProvider
-import com.alancamargo.snookerscore.data.local.PlayerLocalDataSource
-import com.alancamargo.snookerscore.data.local.PlayerLocalDataSourceImpl
-import com.alancamargo.snookerscore.data.local.PlayerStatsLocalDataSource
-import com.alancamargo.snookerscore.data.local.PlayerStatsLocalDataSourceImpl
+import com.alancamargo.snookerscore.data.local.player.PlayerLocalDataSource
+import com.alancamargo.snookerscore.data.local.player.PlayerLocalDataSourceImpl
+import com.alancamargo.snookerscore.data.local.playerstats.PlayerStatsLocalDataSource
+import com.alancamargo.snookerscore.data.local.playerstats.PlayerStatsLocalDataSourceImpl
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.scope.Scope
 import org.koin.dsl.module
@@ -20,10 +20,7 @@ val dataModule = module {
     }
 
     factory<PlayerLocalDataSource> {
-        PlayerLocalDataSourceImpl(
-            playerDao = getDatabaseProvider().providePlayerDao(),
-            playerStatsLocalDataSource = get()
-        )
+        PlayerLocalDataSourceImpl(playerDao = getDatabaseProvider().providePlayerDao())
     }
 
     factory<PlayerStatsLocalDataSource> {

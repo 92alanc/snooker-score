@@ -1,4 +1,4 @@
-package com.alancamargo.snookerscore.data.local
+package com.alancamargo.snookerscore.data.local.playerstats
 
 import app.cash.turbine.test
 import com.alancamargo.snookerscore.data.db.PlayerStatsDao
@@ -78,33 +78,6 @@ class PlayerStatsLocalDataSourceImplTest {
         coEvery { mockDatabase.addOrUpdatePlayerStats(dbPlayerStats) } throws IOException(message)
 
         val result = localDataSource.addOrUpdatePlayerStats(playerStats)
-
-        result.test {
-            val error = awaitError()
-            assertThat(error).isInstanceOf(IOException::class.java)
-            assertThat(error).hasMessageThat().isEqualTo(message)
-        }
-    }
-
-    @Test
-    fun `deletePlayerStats should remove player stats from database`() = runBlocking {
-        val player = Player(id = PLAYER_ID, name = "Neil Robertson")
-
-        val result = localDataSource.deletePlayerStats(player)
-
-        result.test {
-            awaitItem()
-            awaitComplete()
-        }
-    }
-
-    @Test
-    fun `when database throws exception deletePlayerStats should return error`() = runBlocking {
-        val player = Player(id = PLAYER_ID, name = "Steve Davis")
-        val message = "A very informative error message"
-        coEvery { mockDatabase.deletePlayerStats(player.id) } throws IOException(message)
-
-        val result = localDataSource.deletePlayerStats(player)
 
         result.test {
             val error = awaitError()

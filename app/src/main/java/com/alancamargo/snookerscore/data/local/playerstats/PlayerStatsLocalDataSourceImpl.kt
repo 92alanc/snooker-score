@@ -1,4 +1,4 @@
-package com.alancamargo.snookerscore.data.local
+package com.alancamargo.snookerscore.data.local.playerstats
 
 import com.alancamargo.snookerscore.data.db.PlayerStatsDao
 import com.alancamargo.snookerscore.data.mapping.toData
@@ -18,11 +18,6 @@ class PlayerStatsLocalDataSourceImpl(
 
     override fun addOrUpdatePlayerStats(playerStats: PlayerStats) = flow {
         val task = playerStatsDao.addOrUpdatePlayerStats(playerStats.toData())
-        emit(task)
-    }
-
-    override fun deletePlayerStats(player: Player) = flow {
-        val task = playerStatsDao.deletePlayerStats(player.id)
         emit(task)
     }
 

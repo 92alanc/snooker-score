@@ -1,4 +1,4 @@
-package com.alancamargo.snookerscore.data.local
+package com.alancamargo.snookerscore.data.local.playerstats
 
 import com.alancamargo.snookerscore.domain.model.Player
 import com.alancamargo.snookerscore.domain.model.PlayerStats
@@ -9,7 +9,5 @@ interface PlayerStatsLocalDataSource {
     fun getPlayerStats(player: Player): Flow<PlayerStats>
 
     fun addOrUpdatePlayerStats(playerStats: PlayerStats): Flow<Unit>
-
-    fun deletePlayerStats(player: Player): Flow<Unit>
 
 }
