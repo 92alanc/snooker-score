@@ -17,9 +17,8 @@ fun DbFrame.toDomain(player1Score: Score, player2Score: Score) = Frame(
     player2Score = player2Score
 )
 
-fun DbScore.toDomain(player: Player) = Score(
+fun DbScore.toDomain() = Score(
     id = id,
-    player = player,
     score = score,
     highestBreak = highestBreak
 )
@@ -34,4 +33,9 @@ fun DbPlayerStats.toDomain(player: Player) = PlayerStats(
     highestBreak = highestBreak
 )
 
-fun DbMatch.toDomain(frames: List<Frame>) = Match(id = id, frames = frames)
+fun DbMatch.toDomain(player1: Player, player2: Player, frames: List<Frame>) = Match(
+    id = id,
+    player1 = player1,
+    player2 = player2,
+    frames = frames
+)

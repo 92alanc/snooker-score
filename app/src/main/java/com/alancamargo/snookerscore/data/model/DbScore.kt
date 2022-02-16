@@ -18,7 +18,6 @@ const val SCORE_COLUMN_ID = "id"
 )
 data class DbScore(
     @PrimaryKey val id: String,
-    val playerId: String,
     val score: Int,
     val highestBreak: Int
 )
