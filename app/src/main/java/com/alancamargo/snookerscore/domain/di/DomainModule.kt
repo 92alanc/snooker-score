@@ -6,12 +6,14 @@ import com.alancamargo.snookerscore.data.repository.PlayerStatsRepositoryImpl
 import com.alancamargo.snookerscore.domain.repository.FrameRepository
 import com.alancamargo.snookerscore.domain.repository.PlayerRepository
 import com.alancamargo.snookerscore.domain.repository.PlayerStatsRepository
-import com.alancamargo.snookerscore.domain.usecase.playerstats.AddOrUpdatePlayerStatsUseCase
+import com.alancamargo.snookerscore.domain.usecase.foul.GetPenaltyValueUseCase
+import com.alancamargo.snookerscore.domain.usecase.frame.AddFrameUseCase
+import com.alancamargo.snookerscore.domain.usecase.frame.DeleteFrameUseCase
 import com.alancamargo.snookerscore.domain.usecase.player.AddOrUpdatePlayerUseCase
 import com.alancamargo.snookerscore.domain.usecase.player.DeletePlayerUseCase
-import com.alancamargo.snookerscore.domain.usecase.GetPenaltyValueUseCase
-import com.alancamargo.snookerscore.domain.usecase.playerstats.GetPlayerStatsUseCase
 import com.alancamargo.snookerscore.domain.usecase.player.GetPlayersUseCase
+import com.alancamargo.snookerscore.domain.usecase.playerstats.AddOrUpdatePlayerStatsUseCase
+import com.alancamargo.snookerscore.domain.usecase.playerstats.GetPlayerStatsUseCase
 import org.koin.dsl.module
 
 val domainModule = module {
@@ -24,4 +26,6 @@ val domainModule = module {
     factory { GetPlayerStatsUseCase(repository = get()) }
     factory { AddOrUpdatePlayerStatsUseCase(repository = get()) }
     factory<FrameRepository> { FrameRepositoryImpl(localDataSource = get()) }
+    factory { AddFrameUseCase(repository = get()) }
+    factory { DeleteFrameUseCase(repository = get()) }
 }
