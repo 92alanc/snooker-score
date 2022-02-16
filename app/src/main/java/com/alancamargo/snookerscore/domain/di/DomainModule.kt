@@ -4,6 +4,7 @@ import com.alancamargo.snookerscore.data.repository.PlayerRepositoryImpl
 import com.alancamargo.snookerscore.data.repository.PlayerStatsRepositoryImpl
 import com.alancamargo.snookerscore.domain.repository.PlayerRepository
 import com.alancamargo.snookerscore.domain.repository.PlayerStatsRepository
+import com.alancamargo.snookerscore.domain.usecase.AddOrUpdatePlayerStatsUseCase
 import com.alancamargo.snookerscore.domain.usecase.AddOrUpdatePlayerUseCase
 import com.alancamargo.snookerscore.domain.usecase.DeletePlayerUseCase
 import com.alancamargo.snookerscore.domain.usecase.GetPenaltyValueUseCase
@@ -19,4 +20,5 @@ val domainModule = module {
     factory { GetPenaltyValueUseCase() }
     factory<PlayerStatsRepository> { PlayerStatsRepositoryImpl(localDataSource = get()) }
     factory { GetPlayerStatsUseCase(repository = get()) }
+    factory { AddOrUpdatePlayerStatsUseCase(repository = get()) }
 }
