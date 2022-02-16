@@ -20,7 +20,7 @@ class PlayerStatsRepositoryImplTest {
 
     @Test
     fun `getPlayerStats should return player stats`() = runBlocking {
-        val player = Player(id = "123", name = "Willy E. Coyote")
+        val player = Player(name = "Willy E. Coyote")
         val expected = getPlayerStats(player)
         every { mockLocalDataSource.getPlayerStats(player) } returns flow { emit(expected) }
 
@@ -35,7 +35,7 @@ class PlayerStatsRepositoryImplTest {
 
     @Test
     fun `addOrUpdatePlayerStats should add or update player stats`() = runBlocking {
-        val player = Player(id = "456", name = "Road Runner")
+        val player = Player(name = "Road Runner")
         val playerStats = getPlayerStats(player)
         every {
             mockLocalDataSource.addOrUpdatePlayerStats(playerStats)

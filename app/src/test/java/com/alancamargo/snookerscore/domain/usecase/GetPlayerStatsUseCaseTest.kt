@@ -20,7 +20,7 @@ class GetPlayerStatsUseCaseTest {
 
     @Test
     fun `invoke should get player stats`() = runBlocking {
-        val player = Player(id = "123", name = "Woody Woodpecker")
+        val player = Player(name = "Woody Woodpecker")
         val expected = PlayerStats(
             player = player,
             matchesWon = 72,

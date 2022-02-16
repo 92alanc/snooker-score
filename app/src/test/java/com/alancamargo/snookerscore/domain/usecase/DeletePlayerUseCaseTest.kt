@@ -18,7 +18,7 @@ class DeletePlayerUseCaseTest {
 
     @Test
     fun `invoke should delete player`() = runBlocking {
-        val player = Player(id = "1", name = "Neil Robertson")
+        val player = Player(name = "Neil Robertson")
         every { mockRepository.deletePlayer(player) } returns flow { emit(Unit) }
 
         val result = useCase.invoke(player)

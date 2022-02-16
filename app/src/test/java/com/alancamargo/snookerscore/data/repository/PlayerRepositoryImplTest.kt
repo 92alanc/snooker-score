@@ -58,8 +58,8 @@ class PlayerRepositoryImplTest {
     }
 
     private fun getPlayers() = listOf(
-        Player(id = "123", name = "Noel"),
-        Player(id = "456", name = "Cleitinho")
+        Player(name = "Noel"),
+        Player(name = "Cleitinho")
     )
 
 }

@@ -59,7 +59,7 @@ class PlayerLocalDataSourceImplTest {
 
     @Test
     fun `addOrUpdatePlayer should add or update player on database`() = runBlocking {
-        val player = Player(id = "0000", name = "Baianinho de Mauá")
+        val player = Player(name = "Baianinho de Mauá")
 
         val result = localDataSource.addOrUpdatePlayer(player)
 
@@ -88,7 +88,7 @@ class PlayerLocalDataSourceImplTest {
 
     @Test
     fun `deletePlayer should remove player from player and player stats databases`() = runBlocking {
-        val player = Player(id = "1111", name = "Brinquinho")
+        val player = Player(name = "Brinquinho")
         every {
             mockPlayerStatsLocalDataSource.deletePlayerStats(player)
         } returns flow { emit(Unit) }
@@ -107,7 +107,7 @@ class PlayerLocalDataSourceImplTest {
     @Test
     fun `when player database throws exception deletePlayer should return error`() = runBlocking {
         val message = "Could not delete player for some reason"
-        val player = Player(id = "1111", name = "Brinquinho")
+        val player = Player(name = "Brinquinho")
         every {
             mockPlayerStatsLocalDataSource.deletePlayerStats(player)
         } returns flow { emit(Unit) }
@@ -125,7 +125,7 @@ class PlayerLocalDataSourceImplTest {
     @Test
     fun `when player stats database throws exception deletePlayer should return error`() = runBlocking {
         val message = "Could not delete player for some reason"
-        val player = Player(id = "1111", name = "Brinquinho")
+        val player = Player(name = "Brinquinho")
         every {
             mockPlayerStatsLocalDataSource.deletePlayerStats(player)
         } returns flow { throw IOException(message) }

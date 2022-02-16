@@ -18,7 +18,7 @@ class AddOrUpdatePlayerUseCaseTest {
 
     @Test
     fun `invoke should add or update player`() = runBlocking {
-        val player = Player(id = "1", name = "Mark Selby")
+        val player = Player(name = "Mark Selby")
         every { mockRepository.addOrUpdatePlayer(player) } returns flow { emit(Unit) }
 
         val result = useCase.invoke(player)

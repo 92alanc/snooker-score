@@ -1,3 +1,8 @@
 package com.alancamargo.snookerscore.domain.model
 
-data class Player(val id: String, val name: String)
+import java.util.UUID
+
+data class Player(
+    val id: String = UUID.randomUUID().toString(),
+    val name: String
+)

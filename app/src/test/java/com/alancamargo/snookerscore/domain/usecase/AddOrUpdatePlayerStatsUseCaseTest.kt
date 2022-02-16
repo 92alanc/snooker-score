@@ -20,7 +20,7 @@ class AddOrUpdatePlayerStatsUseCaseTest {
     @Test
     fun `invoke should add or update player stats`() = runBlocking {
         val playerStats = PlayerStats(
-            player = Player(id = "999", name = "Buzz Buzzard"),
+            player = Player(name = "Buzz Buzzard"),
             matchesWon = 256,
             highestScore = 100,
             highestBreak = 100

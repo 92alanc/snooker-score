@@ -32,9 +32,9 @@ class GetPlayersUseCaseTest {
     }
 
     private fun getPlayers() = listOf(
-        Player(id = "1", name = "Mark Selby"),
-        Player(id = "2", name = "Judd Trump"),
-        Player(id = "3", name = "Ronnie o\' Sullivan")
+        Player(name = "Mark Selby"),
+        Player(name = "Judd Trump"),
+        Player(name = "Ronnie o\' Sullivan")
     )
 
 }
