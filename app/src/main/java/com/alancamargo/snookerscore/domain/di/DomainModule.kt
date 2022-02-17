@@ -15,6 +15,7 @@ import com.alancamargo.snookerscore.domain.usecase.frame.AddFrameUseCase
 import com.alancamargo.snookerscore.domain.usecase.frame.DeleteFrameUseCase
 import com.alancamargo.snookerscore.domain.usecase.match.AddOrUpdateMatchUseCase
 import com.alancamargo.snookerscore.domain.usecase.match.DeleteMatchUseCase
+import com.alancamargo.snookerscore.domain.usecase.match.GetMatchesUseCase
 import com.alancamargo.snookerscore.domain.usecase.player.AddOrUpdatePlayerUseCase
 import com.alancamargo.snookerscore.domain.usecase.player.DeletePlayerUseCase
 import com.alancamargo.snookerscore.domain.usecase.player.GetPlayersUseCase
@@ -42,4 +43,5 @@ val domainModule = module {
     factory<ScoreRepository> { ScoreRepositoryImpl(localDataSource = get()) }
     factory { AddOrUpdateScoreUseCase(repository = get()) }
     factory { GetScoreUseCase(repository = get()) }
+    factory { GetMatchesUseCase(repository = get()) }
 }
