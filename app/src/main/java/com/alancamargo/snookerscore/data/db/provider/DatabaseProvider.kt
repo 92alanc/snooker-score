@@ -6,6 +6,7 @@ import com.alancamargo.snookerscore.data.db.FrameDao
 import com.alancamargo.snookerscore.data.db.MatchDao
 import com.alancamargo.snookerscore.data.db.PlayerDao
 import com.alancamargo.snookerscore.data.db.PlayerStatsDao
+import com.alancamargo.snookerscore.data.db.ScoreDao
 import com.alancamargo.snookerscore.data.model.DbFrame
 import com.alancamargo.snookerscore.data.model.DbMatch
 import com.alancamargo.snookerscore.data.model.DbPlayer
@@ -32,5 +33,7 @@ abstract class DatabaseProvider : RoomDatabase() {
     abstract fun provideFrameDao(): FrameDao
 
     abstract fun provideMatchDao(): MatchDao
+
+    abstract fun provideScoreDao(): ScoreDao
 
 }

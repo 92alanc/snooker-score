@@ -5,6 +5,7 @@ import com.alancamargo.snookerscore.domain.model.Frame
 import com.alancamargo.snookerscore.domain.model.Match
 import com.alancamargo.snookerscore.domain.model.Player
 import com.alancamargo.snookerscore.domain.model.PlayerStats
+import com.alancamargo.snookerscore.domain.model.Score
 
 const val ERROR_MESSAGE = "Something wrong happened. Figure it out"
 
@@ -30,4 +31,12 @@ fun getPlayerStats() = PlayerStats(
     matchesWon = 130,
     highestScore = 147,
     highestBreak = 147
+)
+
+fun getScore() = Score(
+    frame = getFrame(),
+    player1Score = 80,
+    player2Score = 48,
+    player1HighestBreak = 17,
+    player2HighestBreak = 20
 )

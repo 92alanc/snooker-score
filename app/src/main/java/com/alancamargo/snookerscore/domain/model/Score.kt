@@ -4,8 +4,9 @@ import java.util.UUID
 
 data class Score(
     val id: String = UUID.randomUUID().toString(),
-    val match: Match,
     val frame: Frame,
-    var score: Int = 0,
-    var highestBreak: Int = 0
+    var player1Score: Int = 0,
+    var player2Score: Int = 0,
+    var player1HighestBreak: Int = 0,
+    var player2HighestBreak: Int = 0
 )
