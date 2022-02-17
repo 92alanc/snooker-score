@@ -14,4 +14,7 @@ interface FrameDao {
     @Query("DELETE FROM Frames WHERE id = :frameId")
     suspend fun deleteFrame(frameId: String)
 
+    @Query("SELECT * FROM Frames WHERE matchDateTime = :matchDateTime")
+    suspend fun getFrames(matchDateTime: Long): List<DbFrame>
+
 }

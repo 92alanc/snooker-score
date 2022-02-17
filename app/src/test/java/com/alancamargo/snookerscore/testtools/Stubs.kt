@@ -10,7 +10,10 @@ import java.util.UUID
 
 const val ERROR_MESSAGE = "Something wrong happened. Figure it out"
 
-fun getFrame() = Frame(match = getMatch())
+fun getFrame(
+    player1Id: String = UUID.randomUUID().toString(),
+    player2Id: String = UUID.randomUUID().toString()
+) = Frame(match = getMatch(player1Id, player2Id))
 
 fun getPlayer(id: String = UUID.randomUUID().toString()) = Player(id = id, name = "Mark Selby")
 
@@ -56,4 +59,13 @@ fun getScore() = Score(
     player2Score = 48,
     player1HighestBreak = 17,
     player2HighestBreak = 20
+)
+
+fun getFrameList(
+    player1Id: String = UUID.randomUUID().toString(),
+    player2Id: String = UUID.randomUUID().toString()
+) = listOf(
+    getFrame(player1Id, player2Id),
+    getFrame(player1Id, player2Id),
+    getFrame(player1Id, player2Id)
 )
