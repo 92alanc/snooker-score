@@ -50,6 +50,7 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version"
     kapt "androidx.room:room-compiler:$room_version"
 
+    testImplementation 'androidx.arch.core:core-testing:2.1.0'
     testImplementation 'app.cash.turbine:turbine:0.6.1'
     testImplementation 'com.google.truth:truth:1.1.2'
     testImplementation 'io.mockk:mockk:1.10.6'
