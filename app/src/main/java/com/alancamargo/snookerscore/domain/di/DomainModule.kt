@@ -10,6 +10,8 @@ import com.alancamargo.snookerscore.domain.repository.MatchRepository
 import com.alancamargo.snookerscore.domain.repository.PlayerRepository
 import com.alancamargo.snookerscore.domain.repository.PlayerStatsRepository
 import com.alancamargo.snookerscore.domain.repository.ScoreRepository
+import com.alancamargo.snookerscore.domain.tools.BreakCalculator
+import com.alancamargo.snookerscore.domain.tools.BreakCalculatorImpl
 import com.alancamargo.snookerscore.domain.usecase.foul.GetPenaltyValueUseCase
 import com.alancamargo.snookerscore.domain.usecase.frame.AddFrameUseCase
 import com.alancamargo.snookerscore.domain.usecase.frame.DeleteFrameUseCase
@@ -48,4 +50,5 @@ val domainModule = module {
     factory { GetMatchesUseCase(repository = get()) }
     factory { GetFramesUseCase(repository = get()) }
     factory { HasPlayersUseCase(repository = get()) }
+    factory<BreakCalculator> { BreakCalculatorImpl() }
 }
