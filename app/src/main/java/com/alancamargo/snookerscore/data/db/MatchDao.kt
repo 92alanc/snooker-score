@@ -15,4 +15,7 @@ interface MatchDao {
     @Query("DELETE FROM Matches WHERE dateTime = :matchDateTime")
     suspend fun deleteMatch(matchDateTime: Long)
 
+    @Query("SELECT * FROM Matches")
+    suspend fun getMatches(): List<DbMatch>
+
 }

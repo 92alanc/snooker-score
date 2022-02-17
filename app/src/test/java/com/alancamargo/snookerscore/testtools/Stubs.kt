@@ -6,14 +6,31 @@ import com.alancamargo.snookerscore.domain.model.Match
 import com.alancamargo.snookerscore.domain.model.Player
 import com.alancamargo.snookerscore.domain.model.PlayerStats
 import com.alancamargo.snookerscore.domain.model.Score
+import java.util.UUID
 
 const val ERROR_MESSAGE = "Something wrong happened. Figure it out"
 
 fun getFrame() = Frame(match = getMatch())
 
-fun getPlayer() = Player(name = "Mark Selby")
+fun getPlayer(id: String = UUID.randomUUID().toString()) = Player(id = id, name = "Mark Selby")
 
-fun getMatch() = Match(player1 = getPlayer(), player2 = getPlayer(), numberOfFrames = 3)
+fun getMatch(
+    player1Id: String = UUID.randomUUID().toString(),
+    player2Id: String = UUID.randomUUID().toString()
+) = Match(
+    player1 = getPlayer(player1Id),
+    player2 = getPlayer(player2Id),
+    numberOfFrames = 3
+)
+
+fun getMatchList(
+    player1Id: String = UUID.randomUUID().toString(),
+    player2Id: String = UUID.randomUUID().toString()
+) = listOf(
+    getMatch(player1Id, player2Id),
+    getMatch(player1Id, player2Id),
+    getMatch(player1Id, player2Id)
+)
 
 fun getPlayerList() = listOf(
     Player(name = "Kyren Wilson"),

@@ -9,4 +9,6 @@ interface MatchLocalDataSource {
 
     fun deleteMatch(match: Match): Flow<Unit>
 
+    fun getMatches(): Flow<List<Match>>
+
 }

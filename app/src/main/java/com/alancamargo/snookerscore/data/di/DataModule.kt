@@ -40,7 +40,10 @@ val dataModule = module {
     }
 
     factory<MatchLocalDataSource> {
-        MatchLocalDataSourceImpl(matchDao = getDatabaseProvider().provideMatchDao())
+        MatchLocalDataSourceImpl(
+            matchDao = getDatabaseProvider().provideMatchDao(),
+            playerDao = getDatabaseProvider().providePlayerDao()
+        )
     }
 
     factory<ScoreLocalDataSource> {

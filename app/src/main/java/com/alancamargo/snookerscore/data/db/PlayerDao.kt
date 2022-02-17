@@ -12,6 +12,9 @@ interface PlayerDao {
     @Query("SELECT * FROM Players")
     suspend fun getPlayers(): List<DbPlayer>
 
+    @Query("SELECT * FROM Players WHERE id = :playerId LIMIT 1")
+    suspend fun getPlayer(playerId: String): DbPlayer
+
     @Insert(entity = DbPlayer::class, onConflict = OnConflictStrategy.REPLACE)
     suspend fun addOrUpdatePlayer(player: DbPlayer)
 
