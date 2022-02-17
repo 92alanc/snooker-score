@@ -1,8 +1,8 @@
 package com.alancamargo.snookerscore.domain.usecase.player
 
 import app.cash.turbine.test
-import com.alancamargo.snookerscore.domain.model.Player
 import com.alancamargo.snookerscore.domain.repository.PlayerRepository
+import com.alancamargo.snookerscore.testtools.getPlayer
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.flow.flow
@@ -18,7 +18,7 @@ class DeletePlayerUseCaseTest {
 
     @Test
     fun `invoke should delete player`() = runBlocking {
-        val player = Player(name = "Neil Robertson")
+        val player = getPlayer()
         every { mockRepository.deletePlayer(player) } returns flow { emit(Unit) }
 
         val result = useCase.invoke(player)

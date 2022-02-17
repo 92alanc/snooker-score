@@ -4,8 +4,8 @@ import app.cash.turbine.test
 import com.alancamargo.snookerscore.data.db.PlayerDao
 import com.alancamargo.snookerscore.data.mapping.toData
 import com.alancamargo.snookerscore.data.mapping.toDomain
-import com.alancamargo.snookerscore.data.model.DbPlayer
-import com.alancamargo.snookerscore.domain.model.Player
+import com.alancamargo.snookerscore.testtools.getDbPlayerList
+import com.alancamargo.snookerscore.testtools.getPlayer
 import com.google.common.truth.Truth.assertThat
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -51,7 +51,7 @@ class PlayerLocalDataSourceImplTest {
 
     @Test
     fun `addOrUpdatePlayer should add or update player on database`() = runBlocking {
-        val player = Player(name = "Baianinho de Mauá")
+        val player = getPlayer()
 
         val result = localDataSource.addOrUpdatePlayer(player)
 
@@ -65,11 +65,12 @@ class PlayerLocalDataSourceImplTest {
 
     @Test
     fun `when database throws exception addOrUpdatePlayer should return error`() = runBlocking {
-        val message = "Could not add or update player for some reason"
-        val player = DbPlayer(id = "0000", name = "Baianinho de Mauá")
-        coEvery { mockDatabase.addOrUpdatePlayer(player) } throws IOException(message)
+        val player = getPlayer()
 
-        val result = localDataSource.addOrUpdatePlayer(player.toDomain())
+        val message = "Could not add or update player for some reason"
+        coEvery { mockDatabase.addOrUpdatePlayer(player.toData()) } throws IOException(message)
+
+        val result = localDataSource.addOrUpdatePlayer(player)
 
         result.test {
             val error = awaitError()
@@ -80,7 +81,7 @@ class PlayerLocalDataSourceImplTest {
 
     @Test
     fun `deletePlayer should remove player from database`() = runBlocking {
-        val player = Player(name = "Brinquinho")
+        val player = getPlayer()
         val result = localDataSource.deletePlayer(player)
 
         result.test {
@@ -93,8 +94,9 @@ class PlayerLocalDataSourceImplTest {
 
     @Test
     fun `when player database throws exception deletePlayer should return error`() = runBlocking {
+        val player = getPlayer()
+
         val message = "Could not delete player for some reason"
-        val player = Player(name = "Brinquinho")
         coEvery { mockDatabase.deletePlayer(player.id) } throws IOException(message)
 
         val result = localDataSource.deletePlayer(player)
@@ -105,10 +107,5 @@ class PlayerLocalDataSourceImplTest {
             assertThat(error).hasMessageThat().isEqualTo(message)
         }
     }
-
-    private fun getDbPlayerList() = listOf(
-        DbPlayer(id = "12345", name = "Steve Davis"),
-        DbPlayer(id = "54321", name = "Mark Selby")
-    )
 
 }

@@ -3,9 +3,7 @@ package com.alancamargo.snookerscore.data.local.frame
 import app.cash.turbine.test
 import com.alancamargo.snookerscore.data.db.FrameDao
 import com.alancamargo.snookerscore.data.mapping.toData
-import com.alancamargo.snookerscore.domain.model.Frame
-import com.alancamargo.snookerscore.domain.model.Match
-import com.alancamargo.snookerscore.domain.model.Player
+import com.alancamargo.snookerscore.testtools.getFrame
 import com.google.common.truth.Truth.assertThat
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -75,12 +73,6 @@ class FrameLocalDataSourceImplTest {
             assertThat(error).isInstanceOf(IOException::class.java)
             assertThat(error).hasMessageThat().isEqualTo(message)
         }
-    }
-
-    private fun getFrame(): Frame {
-        val player = Player(name = "Hair Bear Bunch")
-        val match = Match(player1 = player, player2 = player)
-        return Frame(match = match)
     }
 
 }

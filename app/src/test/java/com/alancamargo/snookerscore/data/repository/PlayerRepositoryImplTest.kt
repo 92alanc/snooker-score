@@ -2,7 +2,7 @@ package com.alancamargo.snookerscore.data.repository
 
 import app.cash.turbine.test
 import com.alancamargo.snookerscore.data.local.player.PlayerLocalDataSource
-import com.alancamargo.snookerscore.domain.model.Player
+import com.alancamargo.snookerscore.testtools.getPlayerList
 import com.google.common.truth.Truth.assertThat
 import io.mockk.every
 import io.mockk.mockk
@@ -19,7 +19,7 @@ class PlayerRepositoryImplTest {
 
     @Test
     fun `getPlayers should return players`() = runBlocking {
-        val expected = getPlayers()
+        val expected = getPlayerList()
         every { mockLocalDataSource.getPlayers() } returns flow { emit(expected) }
 
         val result = repository.getPlayers()
@@ -33,7 +33,7 @@ class PlayerRepositoryImplTest {
 
     @Test
     fun `addOrUpdatePlayer should add or update player on local data source`() = runBlocking {
-        val player = getPlayers().first()
+        val player = getPlayerList().first()
         every { mockLocalDataSource.addOrUpdatePlayer(player) } returns flow { emit(Unit) }
 
         val result = repository.addOrUpdatePlayer(player)
@@ -46,7 +46,7 @@ class PlayerRepositoryImplTest {
 
     @Test
     fun `deletePlayer should delete player on local data source`() = runBlocking {
-        val player = getPlayers().last()
+        val player = getPlayerList().last()
         every { mockLocalDataSource.deletePlayer(player) } returns flow { emit(Unit) }
 
         val result = repository.deletePlayer(player)
@@ -56,10 +56,5 @@ class PlayerRepositoryImplTest {
             awaitComplete()
         }
     }
-
-    private fun getPlayers() = listOf(
-        Player(name = "Noel"),
-        Player(name = "Cleitinho")
-    )
 
 }

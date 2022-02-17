@@ -1,9 +1,8 @@
 package com.alancamargo.snookerscore.domain.usecase.player
 
 import app.cash.turbine.test
-import com.alancamargo.snookerscore.domain.model.Player
 import com.alancamargo.snookerscore.domain.repository.PlayerRepository
-import com.alancamargo.snookerscore.domain.usecase.player.GetPlayersUseCase
+import com.alancamargo.snookerscore.testtools.getPlayerList
 import com.google.common.truth.Truth.assertThat
 import io.mockk.every
 import io.mockk.mockk
@@ -20,7 +19,7 @@ class GetPlayersUseCaseTest {
 
     @Test
     fun `invoke should return players`() = runBlocking {
-        val expected = getPlayers()
+        val expected = getPlayerList()
         every { mockRepository.getPlayers() } returns flow { emit(expected) }
 
         val result = useCase.invoke()
@@ -31,11 +30,5 @@ class GetPlayersUseCaseTest {
             awaitComplete()
         }
     }
-
-    private fun getPlayers() = listOf(
-        Player(name = "Mark Selby"),
-        Player(name = "Judd Trump"),
-        Player(name = "Ronnie o\' Sullivan")
-    )
 
 }

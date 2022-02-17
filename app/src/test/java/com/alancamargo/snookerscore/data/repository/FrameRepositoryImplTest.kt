@@ -2,9 +2,7 @@ package com.alancamargo.snookerscore.data.repository
 
 import app.cash.turbine.test
 import com.alancamargo.snookerscore.data.local.frame.FrameLocalDataSource
-import com.alancamargo.snookerscore.domain.model.Frame
-import com.alancamargo.snookerscore.domain.model.Match
-import com.alancamargo.snookerscore.domain.model.Player
+import com.alancamargo.snookerscore.testtools.getFrame
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.flow.flow
@@ -42,12 +40,6 @@ class FrameRepositoryImplTest {
             awaitItem()
             awaitComplete()
         }
-    }
-
-    private fun getFrame(): Frame {
-        val player = Player(name = "Rui Chapéu")
-        val match = Match(player1 = player, player2 = player)
-        return Frame(match = match)
     }
 
 }

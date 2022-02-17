@@ -1,9 +1,8 @@
 package com.alancamargo.snookerscore.domain.usecase.player
 
 import app.cash.turbine.test
-import com.alancamargo.snookerscore.domain.model.Player
 import com.alancamargo.snookerscore.domain.repository.PlayerRepository
-import com.alancamargo.snookerscore.domain.usecase.player.AddOrUpdatePlayerUseCase
+import com.alancamargo.snookerscore.testtools.getPlayer
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.flow.flow
@@ -19,7 +18,7 @@ class AddOrUpdatePlayerUseCaseTest {
 
     @Test
     fun `invoke should add or update player`() = runBlocking {
-        val player = Player(name = "Mark Selby")
+        val player = getPlayer()
         every { mockRepository.addOrUpdatePlayer(player) } returns flow { emit(Unit) }
 
         val result = useCase.invoke(player)
