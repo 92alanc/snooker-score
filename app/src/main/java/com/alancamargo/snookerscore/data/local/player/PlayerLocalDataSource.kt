@@ -11,4 +11,6 @@ interface PlayerLocalDataSource {
 
     fun deletePlayer(player: Player): Flow<Unit>
 
+    fun hasPlayers(): Flow<Boolean>
+
 }

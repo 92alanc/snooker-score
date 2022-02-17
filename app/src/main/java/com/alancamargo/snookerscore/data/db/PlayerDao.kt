@@ -21,4 +21,7 @@ interface PlayerDao {
     @Query("DELETE FROM Players WHERE id = :playerId")
     suspend fun deletePlayer(playerId: String)
 
+    @Query("SELECT COUNT() FROM Players")
+    suspend fun getPlayerCount(): Int
+
 }

@@ -106,4 +106,45 @@ class PlayerLocalDataSourceImplTest {
         }
     }
 
+    @Test
+    fun `when database has players hasPlayers should return true`() = runBlocking {
+        coEvery { mockDatabase.getPlayerCount() } returns 6
+
+        val result = localDataSource.hasPlayers()
+
+        result.test {
+            val item = awaitItem()
+            assertThat(item).isTrue()
+            awaitComplete()
+        }
+
+        coVerify { mockDatabase.getPlayerCount() }
+    }
+
+    @Test
+    fun `when database has no players hasPlayers should return false`() = runBlocking {
+        coEvery { mockDatabase.getPlayerCount() } returns 0
+
+        val result = localDataSource.hasPlayers()
+
+        result.test {
+            val item = awaitItem()
+            assertThat(item).isFalse()
+            awaitComplete()
+        }
+    }
+
+    @Test
+    fun `when database throws exception hasPlayers should return error`() = runBlocking {
+        coEvery { mockDatabase.getPlayerCount() } throws IOException(ERROR_MESSAGE)
+
+        val result = localDataSource.hasPlayers()
+
+        result.test {
+            val error = awaitError()
+            assertThat(error).isInstanceOf(IOException::class.java)
+            assertThat(error).hasMessageThat().isEqualTo(ERROR_MESSAGE)
+        }
+    }
+
 }
