@@ -20,6 +20,8 @@ import com.alancamargo.snookerscore.domain.usecase.player.DeletePlayerUseCase
 import com.alancamargo.snookerscore.domain.usecase.player.GetPlayersUseCase
 import com.alancamargo.snookerscore.domain.usecase.playerstats.AddOrUpdatePlayerStatsUseCase
 import com.alancamargo.snookerscore.domain.usecase.playerstats.GetPlayerStatsUseCase
+import com.alancamargo.snookerscore.domain.usecase.score.AddOrUpdateScoreUseCase
+import com.alancamargo.snookerscore.domain.usecase.score.GetScoreUseCase
 import org.koin.dsl.module
 
 val domainModule = module {
@@ -38,4 +40,6 @@ val domainModule = module {
     factory { AddOrUpdateMatchUseCase(repository = get()) }
     factory { DeleteMatchUseCase(repository = get()) }
     factory<ScoreRepository> { ScoreRepositoryImpl(localDataSource = get()) }
+    factory { AddOrUpdateScoreUseCase(repository = get()) }
+    factory { GetScoreUseCase(repository = get()) }
 }
