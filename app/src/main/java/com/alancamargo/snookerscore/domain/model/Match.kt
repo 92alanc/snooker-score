@@ -1,10 +1,9 @@
 package com.alancamargo.snookerscore.domain.model
 
-import java.util.UUID
-
 data class Match(
-    val id: String = UUID.randomUUID().toString(),
+    val dateTime: Long = System.currentTimeMillis(),
     val player1: Player,
+    val player1FinalScore: Score = Score(),
     val player2: Player,
-    val frames: List<Frame>
+    val player2FinalScore: Score = Score()
 )

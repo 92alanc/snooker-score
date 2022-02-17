@@ -4,6 +4,8 @@ import app.cash.turbine.test
 import com.alancamargo.snookerscore.data.db.FrameDao
 import com.alancamargo.snookerscore.data.mapping.toData
 import com.alancamargo.snookerscore.domain.model.Frame
+import com.alancamargo.snookerscore.domain.model.Match
+import com.alancamargo.snookerscore.domain.model.Player
 import com.google.common.truth.Truth.assertThat
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -21,7 +23,7 @@ class FrameLocalDataSourceImplTest {
 
     @Test
     fun `addFrame should add frame to database`() = runBlocking {
-        val frame = Frame()
+        val frame = getFrame()
         val result = localDataSource.addFrame(frame)
 
         result.test {
@@ -34,7 +36,7 @@ class FrameLocalDataSourceImplTest {
 
     @Test
     fun `when database throws exception addFrame should return error`() = runBlocking {
-        val frame = Frame()
+        val frame = getFrame()
         val message = "Can\'t add this"
         coEvery { mockDatabase.addFrame(frame.toData()) } throws IOException(message)
 
@@ -49,7 +51,7 @@ class FrameLocalDataSourceImplTest {
 
     @Test
     fun `deleteFrame should delete frame from database`() = runBlocking {
-        val frame = Frame()
+        val frame = getFrame()
         val result = localDataSource.deleteFrame(frame)
 
         result.test {
@@ -62,7 +64,7 @@ class FrameLocalDataSourceImplTest {
 
     @Test
     fun `when database throws exception deleteFrame should return error`() = runBlocking {
-        val frame = Frame()
+        val frame = getFrame()
         val message = "Can\'t add this"
         coEvery { mockDatabase.deleteFrame(frame.id) } throws IOException(message)
 
@@ -73,6 +75,12 @@ class FrameLocalDataSourceImplTest {
             assertThat(error).isInstanceOf(IOException::class.java)
             assertThat(error).hasMessageThat().isEqualTo(message)
         }
+    }
+
+    private fun getFrame(): Frame {
+        val player = Player(name = "Hair Bear Bunch")
+        val match = Match(player1 = player, player2 = player)
+        return Frame(match = match)
     }
 
 }

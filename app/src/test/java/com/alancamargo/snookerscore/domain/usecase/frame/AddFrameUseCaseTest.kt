@@ -2,6 +2,8 @@ package com.alancamargo.snookerscore.domain.usecase.frame
 
 import app.cash.turbine.test
 import com.alancamargo.snookerscore.domain.model.Frame
+import com.alancamargo.snookerscore.domain.model.Match
+import com.alancamargo.snookerscore.domain.model.Player
 import com.alancamargo.snookerscore.domain.repository.FrameRepository
 import io.mockk.every
 import io.mockk.mockk
@@ -18,7 +20,9 @@ class AddFrameUseCaseTest {
 
     @Test
     fun `invoke should add frame`() = runBlocking {
-        val frame = Frame()
+        val player = Player(name = "Bugs Bunny")
+        val match = Match(player1 = player, player2 = player)
+        val frame = Frame(match = match)
         every { mockRepository.addFrame(frame) } returns flow { emit(Unit) }
 
         val result = useCase.invoke(frame)

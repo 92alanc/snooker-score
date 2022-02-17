@@ -4,6 +4,8 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 
+const val MATCH_COLUMN_DATE_TIME = "dateTime"
+
 @Entity(
     tableName = "Matches",
     foreignKeys = [
@@ -22,8 +24,9 @@ import androidx.room.PrimaryKey
     ]
 )
 data class DbMatch(
-    @PrimaryKey val id: String,
+    @PrimaryKey val dateTime: Long,
     val player1Id: String,
+    val player1FinalScoreId: String,
     val player2Id: String,
-    val frameIds: String
+    val player2FinalScoreId: String
 )
