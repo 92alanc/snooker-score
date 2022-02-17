@@ -7,4 +7,6 @@ interface MatchLocalDataSource {
 
     fun addOrUpdateMatch(match: Match): Flow<Unit>
 
+    fun deleteMatch(match: Match): Flow<Unit>
+
 }

@@ -4,6 +4,8 @@ import androidx.room.Room
 import com.alancamargo.snookerscore.data.db.provider.DatabaseProvider
 import com.alancamargo.snookerscore.data.local.frame.FrameLocalDataSource
 import com.alancamargo.snookerscore.data.local.frame.FrameLocalDataSourceImpl
+import com.alancamargo.snookerscore.data.local.match.MatchLocalDataSource
+import com.alancamargo.snookerscore.data.local.match.MatchLocalDataSourceImpl
 import com.alancamargo.snookerscore.data.local.player.PlayerLocalDataSource
 import com.alancamargo.snookerscore.data.local.player.PlayerLocalDataSourceImpl
 import com.alancamargo.snookerscore.data.local.playerstats.PlayerStatsLocalDataSource
@@ -33,6 +35,10 @@ val dataModule = module {
 
     factory<FrameLocalDataSource> {
         FrameLocalDataSourceImpl(frameDao = getDatabaseProvider().provideFrameDao())
+    }
+
+    factory<MatchLocalDataSource> {
+        MatchLocalDataSourceImpl(matchDao = getDatabaseProvider().provideMatchDao())
     }
 }
 
