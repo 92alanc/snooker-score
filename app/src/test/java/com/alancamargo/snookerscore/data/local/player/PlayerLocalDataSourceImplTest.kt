@@ -4,6 +4,7 @@ import app.cash.turbine.test
 import com.alancamargo.snookerscore.data.db.PlayerDao
 import com.alancamargo.snookerscore.data.mapping.toData
 import com.alancamargo.snookerscore.data.mapping.toDomain
+import com.alancamargo.snookerscore.testtools.ERROR_MESSAGE
 import com.alancamargo.snookerscore.testtools.getDbPlayerList
 import com.alancamargo.snookerscore.testtools.getPlayer
 import com.google.common.truth.Truth.assertThat
@@ -37,15 +38,14 @@ class PlayerLocalDataSourceImplTest {
 
     @Test
     fun `when database throws exception getPlayers should return error`() = runBlocking {
-        val message = "Database error. Go figure it out"
-        coEvery { mockDatabase.getPlayers() } throws IOException(message)
+        coEvery { mockDatabase.getPlayers() } throws IOException(ERROR_MESSAGE)
 
         val result = localDataSource.getPlayers()
 
         result.test {
             val error = awaitError()
             assertThat(error).isInstanceOf(IOException::class.java)
-            assertThat(error).hasMessageThat().isEqualTo(message)
+            assertThat(error).hasMessageThat().isEqualTo(ERROR_MESSAGE)
         }
     }
 
@@ -66,16 +66,16 @@ class PlayerLocalDataSourceImplTest {
     @Test
     fun `when database throws exception addOrUpdatePlayer should return error`() = runBlocking {
         val player = getPlayer()
-
-        val message = "Could not add or update player for some reason"
-        coEvery { mockDatabase.addOrUpdatePlayer(player.toData()) } throws IOException(message)
+        coEvery {
+            mockDatabase.addOrUpdatePlayer(player.toData())
+        } throws IOException(ERROR_MESSAGE)
 
         val result = localDataSource.addOrUpdatePlayer(player)
 
         result.test {
             val error = awaitError()
             assertThat(error).isInstanceOf(IOException::class.java)
-            assertThat(error).hasMessageThat().isEqualTo(message)
+            assertThat(error).hasMessageThat().isEqualTo(ERROR_MESSAGE)
         }
     }
 
@@ -95,16 +95,14 @@ class PlayerLocalDataSourceImplTest {
     @Test
     fun `when player database throws exception deletePlayer should return error`() = runBlocking {
         val player = getPlayer()
-
-        val message = "Could not delete player for some reason"
-        coEvery { mockDatabase.deletePlayer(player.id) } throws IOException(message)
+        coEvery { mockDatabase.deletePlayer(player.id) } throws IOException(ERROR_MESSAGE)
 
         val result = localDataSource.deletePlayer(player)
 
         result.test {
             val error = awaitError()
             assertThat(error).isInstanceOf(IOException::class.java)
-            assertThat(error).hasMessageThat().isEqualTo(message)
+            assertThat(error).hasMessageThat().isEqualTo(ERROR_MESSAGE)
         }
     }
 

@@ -3,6 +3,7 @@ package com.alancamargo.snookerscore.data.local.frame
 import app.cash.turbine.test
 import com.alancamargo.snookerscore.data.db.FrameDao
 import com.alancamargo.snookerscore.data.mapping.toData
+import com.alancamargo.snookerscore.testtools.ERROR_MESSAGE
 import com.alancamargo.snookerscore.testtools.getFrame
 import com.google.common.truth.Truth.assertThat
 import io.mockk.coEvery
@@ -35,15 +36,14 @@ class FrameLocalDataSourceImplTest {
     @Test
     fun `when database throws exception addFrame should return error`() = runBlocking {
         val frame = getFrame()
-        val message = "Can\'t add this"
-        coEvery { mockDatabase.addFrame(frame.toData()) } throws IOException(message)
+        coEvery { mockDatabase.addFrame(frame.toData()) } throws IOException(ERROR_MESSAGE)
 
         val result = localDataSource.addFrame(frame)
 
         result.test {
             val error = awaitError()
             assertThat(error).isInstanceOf(IOException::class.java)
-            assertThat(error).hasMessageThat().isEqualTo(message)
+            assertThat(error).hasMessageThat().isEqualTo(ERROR_MESSAGE)
         }
     }
 
@@ -63,15 +63,14 @@ class FrameLocalDataSourceImplTest {
     @Test
     fun `when database throws exception deleteFrame should return error`() = runBlocking {
         val frame = getFrame()
-        val message = "Can\'t add this"
-        coEvery { mockDatabase.deleteFrame(frame.id) } throws IOException(message)
+        coEvery { mockDatabase.deleteFrame(frame.id) } throws IOException(ERROR_MESSAGE)
 
         val result = localDataSource.deleteFrame(frame)
 
         result.test {
             val error = awaitError()
             assertThat(error).isInstanceOf(IOException::class.java)
-            assertThat(error).hasMessageThat().isEqualTo(message)
+            assertThat(error).hasMessageThat().isEqualTo(ERROR_MESSAGE)
         }
     }
 

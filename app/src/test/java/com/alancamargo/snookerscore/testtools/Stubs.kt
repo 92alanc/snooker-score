@@ -6,6 +6,8 @@ import com.alancamargo.snookerscore.domain.model.Match
 import com.alancamargo.snookerscore.domain.model.Player
 import com.alancamargo.snookerscore.domain.model.PlayerStats
 
+const val ERROR_MESSAGE = "Something wrong happened. Figure it out"
+
 fun getFrame() = Frame(match = getMatch())
 
 fun getPlayer() = Player(name = "Mark Selby")
