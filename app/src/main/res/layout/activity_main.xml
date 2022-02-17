@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/spacing_02"
+    tools:context=".ui.activities.MainActivity">
+
+    <ImageView
+        android:id="@+id/imgLogo"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:importantForAccessibility="no"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/btMatches"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btMatches"
+        style="@style/SnookerScore.Button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_02"
+        android:text="@string/matches"
+        app:layout_constraintTop_toBottomOf="@id/imgLogo"
+        app:layout_constraintBottom_toTopOf="@+id/btPlayers"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btPlayers"
+        style="@style/SnookerScore.Button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/players"
+        app:layout_constraintTop_toBottomOf="@id/btMatches"
+        app:layout_constraintBottom_toTopOf="@+id/btRules"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btRules"
+        style="@style/SnookerScore.Button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/rules"
+        app:layout_constraintTop_toBottomOf="@id/btPlayers"
+        app:layout_constraintBottom_toTopOf="@+id/btAbout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btAbout"
+        style="@style/SnookerScore.Button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/about"
+        app:layout_constraintTop_toBottomOf="@id/btRules"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
