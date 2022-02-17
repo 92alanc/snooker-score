@@ -13,4 +13,6 @@ class MatchRepositoryImpl(private val localDataSource: MatchLocalDataSource) : M
 
     override fun deleteMatch(match: Match): Flow<Unit> = localDataSource.deleteMatch(match)
 
+    override fun getMatches(): Flow<List<Match>> = localDataSource.getMatches()
+
 }
