@@ -12,7 +12,7 @@ fun getFrame() = Frame(match = getMatch())
 
 fun getPlayer() = Player(name = "Mark Selby")
 
-fun getMatch() = Match(player1 = getPlayer(), player2 = getPlayer())
+fun getMatch() = Match(player1 = getPlayer(), player2 = getPlayer(), numberOfFrames = 3)
 
 fun getPlayerList() = listOf(
     Player(name = "Kyren Wilson"),

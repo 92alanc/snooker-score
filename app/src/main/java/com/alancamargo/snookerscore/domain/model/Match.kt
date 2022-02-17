@@ -5,5 +5,6 @@ data class Match(
     val player1: Player,
     val player1FinalScore: Score = Score(),
     val player2: Player,
-    val player2FinalScore: Score = Score()
+    val player2FinalScore: Score = Score(),
+    val numberOfFrames: Int
 )

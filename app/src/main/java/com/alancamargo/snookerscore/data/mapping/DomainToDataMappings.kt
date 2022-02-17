@@ -31,5 +31,6 @@ fun Match.toData() = DbMatch(
     player1Id = player1.id,
     player1FinalScoreId = player1FinalScore.id,
     player2Id = player2.id,
-    player2FinalScoreId = player2FinalScore.id
+    player2FinalScoreId = player2FinalScore.id,
+    numberOfFrames = numberOfFrames
 )

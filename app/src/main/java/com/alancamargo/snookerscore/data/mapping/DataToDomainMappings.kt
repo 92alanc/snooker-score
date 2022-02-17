@@ -44,5 +44,6 @@ fun DbMatch.toDomain(
     player1 = player1,
     player1FinalScore = player1FinalScore,
     player2 = player2,
-    player2FinalScore = player2FinalScore
+    player2FinalScore = player2FinalScore,
+    numberOfFrames = numberOfFrames
 )

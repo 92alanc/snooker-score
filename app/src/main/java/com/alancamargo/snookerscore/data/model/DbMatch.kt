@@ -28,5 +28,6 @@ data class DbMatch(
     val player1Id: String,
     val player1FinalScoreId: String,
     val player2Id: String,
-    val player2FinalScoreId: String
+    val player2FinalScoreId: String,
+    val numberOfFrames: Int
 )
