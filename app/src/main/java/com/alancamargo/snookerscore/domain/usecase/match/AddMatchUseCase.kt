@@ -4,8 +4,8 @@ import com.alancamargo.snookerscore.domain.model.Match
 import com.alancamargo.snookerscore.domain.repository.MatchRepository
 import kotlinx.coroutines.flow.Flow
 
-class AddOrUpdateMatchUseCase(private val repository: MatchRepository) {
+class AddMatchUseCase(private val repository: MatchRepository) {
 
-    operator fun invoke(match: Match): Flow<Unit> = repository.addOrUpdateMatch(match)
+    operator fun invoke(match: Match): Flow<Unit> = repository.addMatch(match)
 
 }

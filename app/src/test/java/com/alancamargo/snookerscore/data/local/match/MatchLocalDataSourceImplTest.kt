@@ -25,26 +25,24 @@ class MatchLocalDataSourceImplTest {
     private val localDataSource = MatchLocalDataSourceImpl(mockMatchDao, mockPlayerDao)
 
     @Test
-    fun `addOrUpdateMatch should add or update match to database`() = runBlocking {
+    fun `addMatch should add match to database`() = runBlocking {
         val match = getMatch()
-        val result = localDataSource.addOrUpdateMatch(match)
+        val result = localDataSource.addMatch(match)
 
         result.test {
             awaitItem()
             awaitComplete()
         }
 
-        coVerify { mockMatchDao.addOrUpdateMatch(match.toData()) }
+        coVerify { mockMatchDao.addMatch(match.toData()) }
     }
 
     @Test
-    fun `when database throws exception addOrUpdateMatch should return error`() = runBlocking {
+    fun `when database throws exception addMatch should return error`() = runBlocking {
         val match = getMatch()
-        coEvery {
-            mockMatchDao.addOrUpdateMatch(match.toData())
-        } throws IOException(ERROR_MESSAGE)
+        coEvery { mockMatchDao.addMatch(match.toData()) } throws IOException(ERROR_MESSAGE)
 
-        val result = localDataSource.addOrUpdateMatch(match)
+        val result = localDataSource.addMatch(match)
 
         result.test {
             val error = awaitError()

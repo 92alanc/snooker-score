@@ -11,15 +11,15 @@ import org.junit.Test
 import kotlin.time.ExperimentalTime
 
 @ExperimentalTime
-class AddOrUpdateMatchUseCaseTest {
+class AddMatchUseCaseTest {
 
     private val mockRepository = mockk<MatchRepository>()
-    private val useCase = AddOrUpdateMatchUseCase(mockRepository)
+    private val useCase = AddMatchUseCase(mockRepository)
 
     @Test
-    fun `invoke should add or update match`() = runBlocking {
+    fun `invoke should add match`() = runBlocking {
         val match = getMatch()
-        every { mockRepository.addOrUpdateMatch(match) } returns flow { emit(Unit) }
+        every { mockRepository.addMatch(match) } returns flow { emit(Unit) }
 
         val result = useCase.invoke(match)
 

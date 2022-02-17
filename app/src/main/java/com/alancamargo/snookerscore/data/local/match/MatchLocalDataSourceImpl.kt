@@ -12,8 +12,8 @@ class MatchLocalDataSourceImpl(
     private val playerDao: PlayerDao
 ) : MatchLocalDataSource {
 
-    override fun addOrUpdateMatch(match: Match) = flow {
-        val task = matchDao.addOrUpdateMatch(match.toData())
+    override fun addMatch(match: Match) = flow {
+        val task = matchDao.addMatch(match.toData())
         emit(task)
     }
 

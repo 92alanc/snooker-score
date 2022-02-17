@@ -5,7 +5,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface MatchLocalDataSource {
 
-    fun addOrUpdateMatch(match: Match): Flow<Unit>
+    fun addMatch(match: Match): Flow<Unit>
 
     fun deleteMatch(match: Match): Flow<Unit>
 

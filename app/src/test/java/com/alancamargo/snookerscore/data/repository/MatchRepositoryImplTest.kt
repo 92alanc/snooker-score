@@ -19,11 +19,11 @@ class MatchRepositoryImplTest {
     private val repository = MatchRepositoryImpl(mockLocalDataSource)
 
     @Test
-    fun `addOrUpdateMatch should add or update match`() = runBlocking {
+    fun `addMatch should add match`() = runBlocking {
         val match = getMatch()
-        every { mockLocalDataSource.addOrUpdateMatch(match) } returns flow { emit(Unit) }
+        every { mockLocalDataSource.addMatch(match) } returns flow { emit(Unit) }
 
-        val result = repository.addOrUpdateMatch(match)
+        val result = repository.addMatch(match)
 
         result.test {
             awaitItem()
