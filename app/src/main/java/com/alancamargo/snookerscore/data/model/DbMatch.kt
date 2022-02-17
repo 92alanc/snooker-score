@@ -26,8 +26,6 @@ const val MATCH_COLUMN_DATE_TIME = "dateTime"
 data class DbMatch(
     @PrimaryKey val dateTime: Long,
     val player1Id: String,
-    val player1FinalScoreId: String,
     val player2Id: String,
-    val player2FinalScoreId: String,
     val numberOfFrames: Int
 )

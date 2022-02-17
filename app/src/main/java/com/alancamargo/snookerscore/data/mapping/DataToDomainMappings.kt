@@ -11,15 +11,12 @@ import com.alancamargo.snookerscore.domain.model.Player
 import com.alancamargo.snookerscore.domain.model.PlayerStats
 import com.alancamargo.snookerscore.domain.model.Score
 
-fun DbFrame.toDomain(match: Match, player1Score: Score, player2Score: Score) = Frame(
+fun DbFrame.toDomain(match: Match) = Frame(id = id, match = match)
+
+fun DbScore.toDomain(match: Match, frame: Frame) = Score(
     id = id,
     match = match,
-    player1Score = player1Score,
-    player2Score = player2Score
-)
-
-fun DbScore.toDomain() = Score(
-    id = id,
+    frame = frame,
     score = score,
     highestBreak = highestBreak
 )
@@ -34,16 +31,9 @@ fun DbPlayerStats.toDomain(player: Player) = PlayerStats(
     highestBreak = highestBreak
 )
 
-fun DbMatch.toDomain(
-    player1: Player,
-    player1FinalScore: Score,
-    player2: Player,
-    player2FinalScore: Score
-) = Match(
+fun DbMatch.toDomain(player1: Player, player2: Player) = Match(
     dateTime = dateTime,
     player1 = player1,
-    player1FinalScore = player1FinalScore,
     player2 = player2,
-    player2FinalScore = player2FinalScore,
     numberOfFrames = numberOfFrames
 )

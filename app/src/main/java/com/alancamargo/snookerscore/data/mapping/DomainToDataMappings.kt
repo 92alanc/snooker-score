@@ -19,18 +19,11 @@ fun PlayerStats.toData() = DbPlayerStats(
     highestBreak = highestBreak
 )
 
-fun Frame.toData() = DbFrame(
-    id = id,
-    matchDateTime = match.dateTime,
-    player1ScoreId = player1Score.id,
-    player2ScoreId = player2Score.id
-)
+fun Frame.toData() = DbFrame(id = id, matchDateTime = match.dateTime)
 
 fun Match.toData() = DbMatch(
     dateTime = dateTime,
     player1Id = player1.id,
-    player1FinalScoreId = player1FinalScore.id,
     player2Id = player2.id,
-    player2FinalScoreId = player2FinalScore.id,
     numberOfFrames = numberOfFrames
 )

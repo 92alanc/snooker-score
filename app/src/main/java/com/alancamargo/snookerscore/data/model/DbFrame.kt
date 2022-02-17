@@ -4,6 +4,8 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 
+const val FRAME_COLUMN_ID = "id"
+
 @Entity(
     tableName = "Frames",
     foreignKeys = [
@@ -12,24 +14,10 @@ import androidx.room.PrimaryKey
             parentColumns = [MATCH_COLUMN_DATE_TIME],
             childColumns = ["matchDateTime"],
             onDelete = ForeignKey.CASCADE
-        ),
-        ForeignKey(
-            entity = DbScore::class,
-            parentColumns = [SCORE_COLUMN_ID],
-            childColumns = ["player1ScoreId"],
-            onDelete = ForeignKey.CASCADE
-        ),
-        ForeignKey(
-            entity = DbScore::class,
-            parentColumns = [SCORE_COLUMN_ID],
-            childColumns = ["player2ScoreId"],
-            onDelete = ForeignKey.CASCADE
         )
     ]
 )
 data class DbFrame(
     @PrimaryKey val id: String,
-    val matchDateTime: Long,
-    val player1ScoreId: String,
-    val player2ScoreId: String
+    val matchDateTime: Long
 )
