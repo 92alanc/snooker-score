@@ -6,9 +6,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface FrameRepository {
 
-    fun addFrame(frame: Frame): Flow<Unit>
-
-    fun deleteFrame(frame: Frame): Flow<Unit>
+    fun addOrUpdateFrame(frame: Frame): Flow<Unit>
 
     fun getFrames(match: Match): Flow<List<Frame>>
 

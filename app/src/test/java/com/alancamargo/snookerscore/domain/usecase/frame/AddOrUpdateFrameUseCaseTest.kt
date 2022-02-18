@@ -11,15 +11,15 @@ import org.junit.Test
 import kotlin.time.ExperimentalTime
 
 @ExperimentalTime
-class AddFrameUseCaseTest {
+class AddOrUpdateFrameUseCaseTest {
 
     private val mockRepository = mockk<FrameRepository>()
-    private val useCase = AddFrameUseCase(mockRepository)
+    private val useCase = AddOrUpdateFrameUseCase(mockRepository)
 
     @Test
-    fun `invoke should add frame`() = runBlocking {
+    fun `invoke should add or update frame`() = runBlocking {
         val frame = getFrame()
-        every { mockRepository.addFrame(frame) } returns flow { emit(Unit) }
+        every { mockRepository.addOrUpdateFrame(frame) } returns flow { emit(Unit) }
 
         val result = useCase.invoke(frame)
 

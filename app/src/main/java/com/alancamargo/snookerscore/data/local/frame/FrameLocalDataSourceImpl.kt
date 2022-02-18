@@ -5,22 +5,19 @@ import com.alancamargo.snookerscore.data.mapping.toData
 import com.alancamargo.snookerscore.data.mapping.toDomain
 import com.alancamargo.snookerscore.domain.model.Frame
 import com.alancamargo.snookerscore.domain.model.Match
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
 class FrameLocalDataSourceImpl(private val frameDao: FrameDao) : FrameLocalDataSource {
 
-    override fun addFrame(frame: Frame) = flow {
-        val task = frameDao.addFrame(frame.toData())
+    override fun addOrUpdateFrame(frame: Frame) = flow {
+        val task = frameDao.addOrUpdateFrame(frame.toData())
         emit(task)
     }
 
-    override fun deleteFrame(frame: Frame) = flow {
-        val task = frameDao.deleteFrame(frame.id)
-        emit(task)
-    }
-
-    override fun getFrames(match: Match) = flow {
-        val frames = frameDao.getFrames(match.dateTime).map { it.toDomain(match) }
+    override fun getFrames(match: Match): Flow<List<Frame>> = flow {
+        val dbFrames = frameDao.getFrames(match.dateTime)
+        val frames = dbFrames.map { it.toDomain(match) }
         emit(frames)
     }
 

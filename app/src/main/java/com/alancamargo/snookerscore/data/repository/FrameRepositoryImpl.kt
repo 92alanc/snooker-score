@@ -6,11 +6,13 @@ import com.alancamargo.snookerscore.domain.model.Match
 import com.alancamargo.snookerscore.domain.repository.FrameRepository
 import kotlinx.coroutines.flow.Flow
 
-class FrameRepositoryImpl(private val localDataSource: FrameLocalDataSource) : FrameRepository {
+class FrameRepositoryImpl(
+    private val localDataSource: FrameLocalDataSource
+) : FrameRepository {
 
-    override fun addFrame(frame: Frame): Flow<Unit> = localDataSource.addFrame(frame)
-
-    override fun deleteFrame(frame: Frame): Flow<Unit> = localDataSource.deleteFrame(frame)
+    override fun addOrUpdateFrame(frame: Frame): Flow<Unit> {
+        return localDataSource.addOrUpdateFrame(frame)
+    }
 
     override fun getFrames(match: Match): Flow<List<Frame>> = localDataSource.getFrames(match)
 

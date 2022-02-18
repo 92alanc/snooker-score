@@ -5,18 +5,12 @@ import com.alancamargo.snookerscore.domain.model.Frame
 import com.alancamargo.snookerscore.domain.model.Match
 import com.alancamargo.snookerscore.domain.model.Player
 import com.alancamargo.snookerscore.domain.model.PlayerStats
-import com.alancamargo.snookerscore.domain.model.Score
 import com.alancamargo.snookerscore.ui.mapping.toUi
 import java.util.UUID
 
 const val ERROR_MESSAGE = "Something wrong happened. Figure it out"
 
 private const val MATCH_DATE_TIME = 12345L
-
-fun getFrame(matchDateTime: Long = MATCH_DATE_TIME) = Frame(
-    id = UUID.randomUUID().toString(),
-    match = getMatch(matchDateTime)
-)
 
 fun getPlayer() = Player(name = "Mark Selby")
 
@@ -51,9 +45,9 @@ fun getPlayerStats() = PlayerStats(
     highestBreak = 147
 )
 
-fun getScore() = Score(
+fun getFrame(matchDateTime: Long = MATCH_DATE_TIME) = Frame(
     id = UUID.randomUUID().toString(),
-    frame = getFrame(),
+    match = getMatch(matchDateTime),
     player1Score = 80,
     player2Score = 48,
     player1HighestBreak = 17,

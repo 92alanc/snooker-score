@@ -3,6 +3,7 @@ package com.alancamargo.snookerscore.domain.usecase.frame
 import app.cash.turbine.test
 import com.alancamargo.snookerscore.domain.repository.FrameRepository
 import com.alancamargo.snookerscore.testtools.getFrameList
+import com.alancamargo.snookerscore.testtools.getMatch
 import com.google.common.truth.Truth.assertThat
 import io.mockk.every
 import io.mockk.mockk
@@ -19,8 +20,8 @@ class GetFramesUseCaseTest {
 
     @Test
     fun `invoke should return frames`() = runBlocking {
+        val match = getMatch()
         val expected = getFrameList()
-        val match = expected.first().match
         every { mockRepository.getFrames(match) } returns flow { emit(expected) }
 
         val result = useCase.invoke(match)

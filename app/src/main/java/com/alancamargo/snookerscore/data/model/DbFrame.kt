@@ -4,8 +4,6 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 
-const val FRAME_COLUMN_ID = "id"
-
 @Entity(
     tableName = "Frames",
     foreignKeys = [
@@ -19,5 +17,9 @@ const val FRAME_COLUMN_ID = "id"
 )
 data class DbFrame(
     @PrimaryKey val id: String,
-    val matchDateTime: Long
+    val matchDateTime: Long,
+    val player1Score: Int,
+    val player2Score: Int,
+    val player1HighestBreak: Int,
+    val player2HighestBreak: Int
 )

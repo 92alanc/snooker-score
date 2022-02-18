@@ -4,6 +4,7 @@ import app.cash.turbine.test
 import com.alancamargo.snookerscore.data.local.frame.FrameLocalDataSource
 import com.alancamargo.snookerscore.testtools.getFrame
 import com.alancamargo.snookerscore.testtools.getFrameList
+import com.alancamargo.snookerscore.testtools.getMatch
 import com.google.common.truth.Truth.assertThat
 import io.mockk.every
 import io.mockk.mockk
@@ -19,24 +20,11 @@ class FrameRepositoryImplTest {
     private val repository = FrameRepositoryImpl(mockLocalDataSource)
 
     @Test
-    fun `addFrame should add frame`() = runBlocking {
-        val frame = getFrame()
-        every { mockLocalDataSource.addFrame(frame) } returns flow { emit(Unit) }
+    fun `addOrUpdateFrame should add or update frame`() = runBlocking {
+        val score = getFrame()
+        every { mockLocalDataSource.addOrUpdateFrame(score) } returns flow { emit(Unit) }
 
-        val result = repository.addFrame(frame)
-
-        result.test {
-            awaitItem()
-            awaitComplete()
-        }
-    }
-
-    @Test
-    fun `deleteFrame should delete frame`() = runBlocking {
-        val frame = getFrame()
-        every { mockLocalDataSource.deleteFrame(frame) } returns flow { emit(Unit) }
-
-        val result = repository.deleteFrame(frame)
+        val result = repository.addOrUpdateFrame(score)
 
         result.test {
             awaitItem()
@@ -46,8 +34,8 @@ class FrameRepositoryImplTest {
 
     @Test
     fun `getFrames should return frames`() = runBlocking {
+        val match = getMatch()
         val expected = getFrameList()
-        val match = expected.first().match
         every { mockLocalDataSource.getFrames(match) } returns flow { emit(expected) }
 
         val result = repository.getFrames(match)

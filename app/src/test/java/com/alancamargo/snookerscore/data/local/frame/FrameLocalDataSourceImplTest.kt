@@ -23,24 +23,25 @@ class FrameLocalDataSourceImplTest {
     private val localDataSource = FrameLocalDataSourceImpl(mockDatabase)
 
     @Test
-    fun `addFrame should add frame to database`() = runBlocking {
+    fun `addOrUpdateFrame should add or update frame to database`() = runBlocking {
         val frame = getFrame()
-        val result = localDataSource.addFrame(frame)
+
+        val result = localDataSource.addOrUpdateFrame(frame)
 
         result.test {
             awaitItem()
             awaitComplete()
         }
 
-        coVerify { mockDatabase.addFrame(frame.toData()) }
+        coVerify { mockDatabase.addOrUpdateFrame(frame.toData()) }
     }
 
     @Test
-    fun `when database throws exception addFrame should return error`() = runBlocking {
-        val frame = getFrame()
-        coEvery { mockDatabase.addFrame(frame.toData()) } throws IOException(ERROR_MESSAGE)
+    fun `when database throws exception addOrUpdateScore should return error`() = runBlocking {
+        val score = getFrame()
+        coEvery { mockDatabase.addOrUpdateFrame(score.toData()) } throws IOException(ERROR_MESSAGE)
 
-        val result = localDataSource.addFrame(frame)
+        val result = localDataSource.addOrUpdateFrame(score)
 
         result.test {
             val error = awaitError()
@@ -50,36 +51,8 @@ class FrameLocalDataSourceImplTest {
     }
 
     @Test
-    fun `deleteFrame should delete frame from database`() = runBlocking {
-        val frame = getFrame()
-        val result = localDataSource.deleteFrame(frame)
-
-        result.test {
-            awaitItem()
-            awaitComplete()
-        }
-
-        coVerify { mockDatabase.deleteFrame(frame.id) }
-    }
-
-    @Test
-    fun `when database throws exception deleteFrame should return error`() = runBlocking {
-        val frame = getFrame()
-        coEvery { mockDatabase.deleteFrame(frame.id) } throws IOException(ERROR_MESSAGE)
-
-        val result = localDataSource.deleteFrame(frame)
-
-        result.test {
-            val error = awaitError()
-            assertThat(error).isInstanceOf(IOException::class.java)
-            assertThat(error).hasMessageThat().isEqualTo(ERROR_MESSAGE)
-        }
-    }
-
-    @Test
-    fun `getFrames should return frames from database`() = runBlocking {
-        val matchDateTime = 55555L
-        val expected = getFrameList(matchDateTime)
+    fun `getFrames should get frames from database`() = runBlocking {
+        val expected = getFrameList()
         val match = expected.first().match
         coEvery { mockDatabase.getFrames(match.dateTime) } returns expected.map { it.toData() }
 
@@ -90,15 +63,13 @@ class FrameLocalDataSourceImplTest {
             assertThat(item).isEqualTo(expected)
             awaitComplete()
         }
-
-        coVerify { mockDatabase.getFrames(match.dateTime) }
     }
 
     @Test
     fun `when database throws exception getFrames should return error`() = runBlocking {
-        val match = getMatch()
-        coEvery { mockDatabase.getFrames(match.dateTime) } throws IOException(ERROR_MESSAGE)
+        coEvery { mockDatabase.getFrames(matchDateTime = any()) } throws IOException(ERROR_MESSAGE)
 
+        val match = getMatch()
         val result = localDataSource.getFrames(match)
 
         result.test {
