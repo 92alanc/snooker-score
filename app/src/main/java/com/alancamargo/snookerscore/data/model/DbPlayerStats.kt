@@ -1,5 +1,6 @@
 package com.alancamargo.snookerscore.data.model
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
@@ -17,7 +18,7 @@ import androidx.room.PrimaryKey
 )
 data class DbPlayerStats(
     @PrimaryKey val id: String,
-    val playerName: String,
+    @ColumnInfo(index = true) val playerName: String,
     val matchesWon: Int,
     val highestScore: Int,
     val highestBreak: Int

@@ -1,5 +1,6 @@
 package com.alancamargo.snookerscore.data.model
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
@@ -17,7 +18,7 @@ import androidx.room.PrimaryKey
 )
 data class DbFrame(
     @PrimaryKey val id: String,
-    val matchDateTime: Long,
+    @ColumnInfo(index = true) val matchDateTime: Long,
     val player1Score: Int,
     val player2Score: Int,
     val player1HighestBreak: Int,
