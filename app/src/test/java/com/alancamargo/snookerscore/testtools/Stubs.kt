@@ -13,42 +13,34 @@ const val ERROR_MESSAGE = "Something wrong happened. Figure it out"
 
 private const val MATCH_DATE_TIME = 12345L
 
-fun getFrame(
-    matchDateTime: Long = MATCH_DATE_TIME,
-    player1Id: String = UUID.randomUUID().toString(),
-    player2Id: String = UUID.randomUUID().toString()
-) = Frame(id = UUID.randomUUID().toString(), match = getMatch(matchDateTime, player1Id, player2Id))
+fun getFrame(matchDateTime: Long = MATCH_DATE_TIME) = Frame(
+    id = UUID.randomUUID().toString(),
+    match = getMatch(matchDateTime)
+)
 
-fun getPlayer(id: String = UUID.randomUUID().toString()) = Player(id = id, name = "Mark Selby")
+fun getPlayer() = Player(name = "Mark Selby")
 
-fun getMatch(
-    dateTime: Long = MATCH_DATE_TIME,
-    player1Id: String = UUID.randomUUID().toString(),
-    player2Id: String = UUID.randomUUID().toString()
-) = Match(
+fun getMatch(dateTime: Long = MATCH_DATE_TIME) = Match(
     dateTime = dateTime,
-    player1 = getPlayer(player1Id),
-    player2 = getPlayer(player2Id),
+    player1 = getPlayer(),
+    player2 = getPlayer(),
     numberOfFrames = 3
 )
 
-fun getMatchList(
-    player1Id: String = UUID.randomUUID().toString(),
-    player2Id: String = UUID.randomUUID().toString()
-) = listOf(
-    getMatch(player1Id = player1Id, player2Id = player2Id),
-    getMatch(player1Id = player1Id, player2Id = player2Id),
-    getMatch(player1Id = player1Id, player2Id = player2Id)
+fun getMatchList() = listOf(
+    getMatch(),
+    getMatch(),
+    getMatch()
 )
 
 fun getPlayerList() = listOf(
-    Player(id = UUID.randomUUID().toString(), name = "Kyren Wilson"),
-    Player(id = UUID.randomUUID().toString(), name = "Neil Robertson")
+    Player(name = "Kyren Wilson"),
+    Player(name = "Neil Robertson")
 )
 
 fun getDbPlayerList() = listOf(
-    DbPlayer(id = "12345", name = "Judd Trump"),
-    DbPlayer(id = "54321", name = "Ronnie o\' Sullivan")
+    DbPlayer(name = "Judd Trump"),
+    DbPlayer(name = "Ronnie o\' Sullivan")
 )
 
 fun getPlayerStats() = PlayerStats(
@@ -68,14 +60,10 @@ fun getScore() = Score(
     player2HighestBreak = 20
 )
 
-fun getFrameList(
-    matchDateTime: Long = MATCH_DATE_TIME,
-    player1Id: String = UUID.randomUUID().toString(),
-    player2Id: String = UUID.randomUUID().toString()
-) = listOf(
-    getFrame(matchDateTime, player1Id, player2Id),
-    getFrame(matchDateTime, player1Id, player2Id),
-    getFrame(matchDateTime, player1Id, player2Id)
+fun getFrameList(matchDateTime: Long = MATCH_DATE_TIME) = listOf(
+    getFrame(matchDateTime),
+    getFrame(matchDateTime),
+    getFrame(matchDateTime)
 )
 
 fun getUiMatch() = getMatch().toUi()

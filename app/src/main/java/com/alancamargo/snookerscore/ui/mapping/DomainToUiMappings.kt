@@ -5,7 +5,7 @@ import com.alancamargo.snookerscore.domain.model.Player
 import com.alancamargo.snookerscore.ui.model.UiMatch
 import com.alancamargo.snookerscore.ui.model.UiPlayer
 
-fun Player.toUi() = UiPlayer(id = id, name = name)
+fun Player.toUi() = UiPlayer(name = name)
 
 fun Match.toUi() = UiMatch(
     dateTime = dateTime,

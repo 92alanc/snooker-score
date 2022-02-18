@@ -79,9 +79,7 @@ class FrameLocalDataSourceImplTest {
     @Test
     fun `getFrames should return frames from database`() = runBlocking {
         val matchDateTime = 55555L
-        val player1Id = "123"
-        val player2Id = "456"
-        val expected = getFrameList(matchDateTime, player1Id, player2Id)
+        val expected = getFrameList(matchDateTime)
         val match = expected.first().match
         coEvery { mockDatabase.getFrames(match.dateTime) } returns expected.map { it.toData() }
 

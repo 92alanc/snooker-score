@@ -9,15 +9,15 @@ import androidx.room.PrimaryKey
     foreignKeys = [
         ForeignKey(
             entity = DbPlayer::class,
-            parentColumns = [ PLAYER_COLUMN_ID ],
-            childColumns = [ "playerId" ],
+            parentColumns = [PLAYER_COLUMN_NAME],
+            childColumns = ["playerName"],
             onDelete = ForeignKey.CASCADE
         )
     ]
 )
 data class DbPlayerStats(
     @PrimaryKey val id: String,
-    val playerId: String,
+    val playerName: String,
     val matchesWon: Int,
     val highestScore: Int,
     val highestBreak: Int

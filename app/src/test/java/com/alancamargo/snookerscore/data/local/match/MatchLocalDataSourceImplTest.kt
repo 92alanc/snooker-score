@@ -80,13 +80,12 @@ class MatchLocalDataSourceImplTest {
 
     @Test
     fun `getMatches should return matches`() = runBlocking {
-        val player1Id = "123"
-        val player2Id = "456"
-        val expected = getMatchList(player1Id, player2Id)
+        val playerName = "Mark Selby"
+        val expected = getMatchList()
 
         coEvery { mockMatchDao.getMatches() } returns expected.map { it.toData() }
-        coEvery { mockPlayerDao.getPlayer(player1Id) } returns expected.first().player1.toData()
-        coEvery { mockPlayerDao.getPlayer(player2Id) } returns expected.first().player2.toData()
+        coEvery { mockPlayerDao.getPlayer(playerName) } returns expected.first().player1.toData()
+        coEvery { mockPlayerDao.getPlayer(playerName) } returns expected.first().player2.toData()
 
         val result = localDataSource.getMatches()
 

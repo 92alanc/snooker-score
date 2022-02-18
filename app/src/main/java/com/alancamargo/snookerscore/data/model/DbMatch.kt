@@ -11,21 +11,21 @@ const val MATCH_COLUMN_DATE_TIME = "dateTime"
     foreignKeys = [
         ForeignKey(
             entity = DbPlayer::class,
-            parentColumns = [PLAYER_COLUMN_ID],
-            childColumns = ["player1Id"],
+            parentColumns = [PLAYER_COLUMN_NAME],
+            childColumns = ["player1Name"],
             onDelete = ForeignKey.CASCADE
         ),
         ForeignKey(
             entity = DbPlayer::class,
-            parentColumns = [PLAYER_COLUMN_ID],
-            childColumns = ["player2Id"],
+            parentColumns = [PLAYER_COLUMN_NAME],
+            childColumns = ["player2Name"],
             onDelete = ForeignKey.CASCADE
         )
     ]
 )
 data class DbMatch(
     @PrimaryKey val dateTime: Long,
-    val player1Id: String,
-    val player2Id: String,
+    val player1Name: String,
+    val player2Name: String,
     val numberOfFrames: Int
 )

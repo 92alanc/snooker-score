@@ -22,7 +22,7 @@ fun DbScore.toDomain(frame: Frame) = Score(
     player2HighestBreak = player2HighestBreak
 )
 
-fun DbPlayer.toDomain() = Player(id = id, name = name)
+fun DbPlayer.toDomain() = Player(name)
 
 fun DbPlayerStats.toDomain(player: Player) = PlayerStats(
     id = id,
