@@ -5,7 +5,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class UiMatch(
-    val dateTime: Long = System.currentTimeMillis(),
+    val dateTime: Long,
     val player1: UiPlayer,
     val player2: UiPlayer,
     val numberOfFrames: Int
