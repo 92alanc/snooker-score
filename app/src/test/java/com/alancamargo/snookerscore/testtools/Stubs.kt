@@ -16,7 +16,7 @@ fun getFrame(
     matchDateTime: Long = MATCH_DATE_TIME,
     player1Id: String = UUID.randomUUID().toString(),
     player2Id: String = UUID.randomUUID().toString()
-) = Frame(match = getMatch(matchDateTime, player1Id, player2Id))
+) = Frame(id = UUID.randomUUID().toString(), match = getMatch(matchDateTime, player1Id, player2Id))
 
 fun getPlayer(id: String = UUID.randomUUID().toString()) = Player(id = id, name = "Mark Selby")
 
@@ -41,8 +41,8 @@ fun getMatchList(
 )
 
 fun getPlayerList() = listOf(
-    Player(name = "Kyren Wilson"),
-    Player(name = "Neil Robertson")
+    Player(id = UUID.randomUUID().toString(), name = "Kyren Wilson"),
+    Player(id = UUID.randomUUID().toString(), name = "Neil Robertson")
 )
 
 fun getDbPlayerList() = listOf(
@@ -59,6 +59,7 @@ fun getPlayerStats() = PlayerStats(
 )
 
 fun getScore() = Score(
+    id = UUID.randomUUID().toString(),
     frame = getFrame(),
     player1Score = 80,
     player2Score = 48,
