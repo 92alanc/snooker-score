@@ -4,13 +4,14 @@ import com.alancamargo.snookerscore.data.model.DbFrame
 import com.alancamargo.snookerscore.data.model.DbMatch
 import com.alancamargo.snookerscore.data.model.DbPlayer
 import com.alancamargo.snookerscore.data.model.DbPlayerStats
+import com.alancamargo.snookerscore.domain.model.Frame
 import com.alancamargo.snookerscore.domain.model.Match
 import com.alancamargo.snookerscore.domain.model.Player
 import com.alancamargo.snookerscore.domain.model.PlayerStats
-import com.alancamargo.snookerscore.domain.model.Frame
 
 fun DbFrame.toDomain(match: Match) = Frame(
     id = id,
+    positionInMatch = positionInMatch,
     match = match,
     player1Score = player1Score,
     player2Score = player2Score,

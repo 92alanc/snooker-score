@@ -47,6 +47,7 @@ fun getPlayerStats() = PlayerStats(
 
 fun getFrame(matchDateTime: Long = MATCH_DATE_TIME) = Frame(
     id = UUID.randomUUID().toString(),
+    positionInMatch = 1,
     match = getMatch(matchDateTime),
     player1Score = 80,
     player2Score = 48,

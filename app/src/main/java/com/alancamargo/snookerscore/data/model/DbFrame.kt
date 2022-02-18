@@ -18,6 +18,7 @@ import androidx.room.PrimaryKey
 )
 data class DbFrame(
     @PrimaryKey val id: String,
+    val positionInMatch: Int,
     @ColumnInfo(index = true) val matchDateTime: Long,
     val player1Score: Int,
     val player2Score: Int,

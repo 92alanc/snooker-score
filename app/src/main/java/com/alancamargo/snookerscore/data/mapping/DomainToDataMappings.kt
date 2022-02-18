@@ -28,6 +28,7 @@ fun Match.toData() = DbMatch(
 
 fun Frame.toData() = DbFrame(
     id = id,
+    positionInMatch = positionInMatch,
     matchDateTime = match.dateTime,
     player1Score = player1Score,
     player2Score = player2Score,

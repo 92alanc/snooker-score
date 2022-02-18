@@ -2,6 +2,7 @@ package com.alancamargo.snookerscore.domain.model
 
 data class Frame(
     val id: String,
+    val positionInMatch: Int,
     val match: Match,
     val player1Score: Int,
     val player2Score: Int,
