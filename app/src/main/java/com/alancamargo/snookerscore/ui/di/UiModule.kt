@@ -1,5 +1,6 @@
 package com.alancamargo.snookerscore.ui.di
 
+import com.alancamargo.snookerscore.ui.viewmodel.frame.FrameViewModel
 import com.alancamargo.snookerscore.ui.viewmodel.main.MainViewModel
 import com.alancamargo.snookerscore.ui.viewmodel.matchlist.MatchListViewModel
 import com.alancamargo.snookerscore.ui.viewmodel.newmatch.NewMatchViewModel
@@ -14,6 +15,14 @@ val uiModule = module {
             getPlayersUseCase = get(),
             arePlayersTheSameUseCase = get(),
             addMatchUseCase = get()
+        )
+    }
+    viewModel { parameters ->
+        FrameViewModel(
+            frames = parameters.get(),
+            addOrUpdateFrameUseCase = get(),
+            breakCalculator = get(),
+            getPenaltyValueUseCase = get()
         )
     }
 }

@@ -13,10 +13,17 @@ class BreakCalculatorImpl : BreakCalculator {
         points += ball.value
     }
 
-    override fun undoLastPottedBall() {
-        points -= pottedBalls.pop().value
+    override fun undoLastPottedBall(): Ball {
+        return pottedBalls.pop().also { lastPottedBall ->
+            points -= lastPottedBall.value
+        }
     }
 
     override fun getPoints(): Int = points
+
+    override fun clear() {
+        pottedBalls.clear()
+        points = 0
+    }
 
 }

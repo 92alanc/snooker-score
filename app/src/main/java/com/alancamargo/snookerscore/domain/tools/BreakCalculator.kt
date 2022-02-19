@@ -6,8 +6,10 @@ interface BreakCalculator {
 
     fun potBall(ball: Ball)
 
-    fun undoLastPottedBall()
+    fun undoLastPottedBall(): Ball
 
     fun getPoints(): Int
+
+    fun clear()
 
 }

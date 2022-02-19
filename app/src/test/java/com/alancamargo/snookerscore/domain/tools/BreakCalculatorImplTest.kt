@@ -32,4 +32,18 @@ class BreakCalculatorImplTest {
         }
     }
 
+    @Test
+    fun `clear should clear points`() {
+        BreakCalculatorImpl().run {
+            potBall(Ball.RED)
+            potBall(Ball.GREEN)
+            potBall(Ball.RED)
+            potBall(Ball.PINK)
+
+            clear()
+
+            assertThat(getPoints()).isEqualTo(0)
+        }
+    }
+
 }
