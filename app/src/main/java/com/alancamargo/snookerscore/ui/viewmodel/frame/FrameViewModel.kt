@@ -6,7 +6,9 @@ import com.alancamargo.snookerscore.domain.model.Foul
 import com.alancamargo.snookerscore.domain.tools.BreakCalculator
 import com.alancamargo.snookerscore.domain.usecase.foul.GetPenaltyValueUseCase
 import com.alancamargo.snookerscore.domain.usecase.frame.AddOrUpdateFrameUseCase
+import com.alancamargo.snookerscore.domain.usecase.player.DrawPlayerUseCase
 import com.alancamargo.snookerscore.ui.mapping.toDomain
+import com.alancamargo.snookerscore.ui.mapping.toUi
 import com.alancamargo.snookerscore.ui.model.UiBall
 import com.alancamargo.snookerscore.ui.model.UiFrame
 import com.alancamargo.snookerscore.ui.model.UiPlayer
@@ -21,6 +23,7 @@ import kotlinx.coroutines.launch
 
 class FrameViewModel(
     private val frames: List<UiFrame>,
+    private val drawPlayerUseCase: DrawPlayerUseCase,
     private val addOrUpdateFrameUseCase: AddOrUpdateFrameUseCase,
     private val breakCalculator: BreakCalculator,
     private val getPenaltyValueUseCase: GetPenaltyValueUseCase,
@@ -32,9 +35,13 @@ class FrameViewModel(
     private var currentPlayer: UiPlayer? = null
 
     init {
-        setState { state -> state.setCurrentFrame(frames.first()) }
-        currentFrame = frames.first()
-        // TODO: randomly pick starting player
+        frames.first().let { firstFrame ->
+            setState { state -> state.setCurrentFrame(firstFrame) }
+            currentFrame = firstFrame
+            val player1 = firstFrame.match.player1.toDomain()
+            val player2 = firstFrame.match.player2.toDomain()
+            currentPlayer = drawPlayerUseCase(player1, player2).toUi()
+        }
     }
 
     fun onBallPotted(ball: UiBall) {

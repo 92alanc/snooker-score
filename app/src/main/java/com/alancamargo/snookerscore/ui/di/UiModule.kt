@@ -20,9 +20,11 @@ val uiModule = module {
     viewModel { parameters ->
         FrameViewModel(
             frames = parameters.get(),
+            drawPlayerUseCase = get(),
             addOrUpdateFrameUseCase = get(),
             breakCalculator = get(),
             getPenaltyValueUseCase = get()
+
         )
     }
 }
