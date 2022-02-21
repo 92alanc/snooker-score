@@ -59,6 +59,7 @@ class FrameViewModel(
             }
 
             addOrUpdateFrame(frame)
+            setState { state -> state.onEnableLastPottedBallButton() }
         }
     }
 
@@ -110,6 +111,7 @@ class FrameViewModel(
 
             addOrUpdateFrame(frame)
             breakCalculator.clear()
+            setState { state -> state.onDisableLastPottedBallButton() }
         }
     }
 

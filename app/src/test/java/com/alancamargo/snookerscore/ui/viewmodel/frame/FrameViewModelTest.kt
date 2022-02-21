@@ -44,7 +44,7 @@ class FrameViewModelTest {
     private lateinit var viewModel: FrameViewModel
 
     @Test
-    fun `at startup should set current frame and player`() {
+    fun `at startup should set current frame and player and undo last potted ball button should be disabled`() {
         createViewModel()
 
         val firstFrame = frames.first()
@@ -52,10 +52,20 @@ class FrameViewModelTest {
             mockStateObserver.onChanged(
                 FrameUiState(
                     currentFrame = firstFrame,
-                    currentPlayer = firstFrame.match.player1
+                    currentPlayer = firstFrame.match.player1,
+                    isUndoLastPottedBallButtonEnabled = false
                 )
             )
         }
+    }
+
+    @Test
+    fun `onBallPotted should enableUndoLastPottedBall button`() {
+        createViewModel()
+
+        viewModel.onBallPotted(UiBall.BROWN)
+
+        verify { mockStateObserver.onChanged(any()) }
     }
 
     @Test
@@ -144,6 +154,16 @@ class FrameViewModelTest {
         viewModel.onFoul(foul)
 
         verify { mockAddOrUpdateFrameUseCase.invoke(any()) }
+    }
+
+    @Test
+    fun `onEndTurnClicked should disable undo last potted ball button`() {
+        createViewModel()
+        mockSuccessfulResponse()
+
+        viewModel.onEndTurnClicked()
+
+        verify { mockStateObserver.onChanged(any()) }
     }
 
     @Test
