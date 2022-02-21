@@ -6,6 +6,7 @@ import com.alancamargo.snookerscore.domain.model.Match
 import com.alancamargo.snookerscore.domain.model.Player
 import com.alancamargo.snookerscore.domain.model.PlayerStats
 import com.alancamargo.snookerscore.ui.mapping.toUi
+import com.alancamargo.snookerscore.ui.model.UiFrame
 import java.util.UUID
 
 const val ERROR_MESSAGE = "Something wrong happened. Figure it out"
@@ -62,3 +63,18 @@ fun getFrameList(matchDateTime: Long = MATCH_DATE_TIME) = listOf(
 )
 
 fun getUiMatch() = getMatch().toUi()
+
+fun getUiFrame(positionInMatch: Int) = UiFrame(
+    positionInMatch = positionInMatch,
+    match = getUiMatch(),
+    player1Score = 0,
+    player2Score = 0,
+    player1HighestBreak = 0,
+    player2HighestBreak = 0
+)
+
+fun getUiFrameList() = listOf(
+    getUiFrame(positionInMatch = 1),
+    getUiFrame(positionInMatch = 2),
+    getUiFrame(positionInMatch = 3)
+)

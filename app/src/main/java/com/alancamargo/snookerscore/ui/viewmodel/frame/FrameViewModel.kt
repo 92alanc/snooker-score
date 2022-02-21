@@ -36,11 +36,14 @@ class FrameViewModel(
 
     init {
         frames.first().let { firstFrame ->
-            setState { state -> state.setCurrentFrame(firstFrame) }
             currentFrame = firstFrame
+            setState { state -> state.setCurrentFrame(firstFrame) }
+
             val player1 = firstFrame.match.player1.toDomain()
             val player2 = firstFrame.match.player2.toDomain()
-            currentPlayer = drawPlayerUseCase(player1, player2).toUi()
+            val playerDrawn = drawPlayerUseCase(player1, player2).toUi()
+            currentPlayer = playerDrawn
+            setState { state -> state.setCurrentPlayer(playerDrawn) }
         }
     }
 
