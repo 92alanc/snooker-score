@@ -7,6 +7,7 @@ import com.alancamargo.snookerscore.domain.model.Foul
 import com.alancamargo.snookerscore.domain.tools.BreakCalculator
 import com.alancamargo.snookerscore.domain.usecase.foul.GetPenaltyValueUseCase
 import com.alancamargo.snookerscore.domain.usecase.frame.AddOrUpdateFrameUseCase
+import com.alancamargo.snookerscore.domain.usecase.match.DeleteMatchUseCase
 import com.alancamargo.snookerscore.domain.usecase.player.DrawPlayerUseCase
 import com.alancamargo.snookerscore.testtools.getUiFrameList
 import com.alancamargo.snookerscore.ui.mapping.toDomain
@@ -35,6 +36,7 @@ class FrameViewModelTest {
     private val mockAddOrUpdateFrameUseCase = mockk<AddOrUpdateFrameUseCase>()
     private val mockBreakCalculator = mockk<BreakCalculator>(relaxed = true)
     private val mockGetPenaltyValueUseCase = mockk<GetPenaltyValueUseCase>()
+    private val mockDeleteMatchUseCase = mockk<DeleteMatchUseCase>()
     private val mockStateObserver = mockk<Observer<FrameUiState>>(relaxed = true)
     private val mockActionObserver = mockk<Observer<FrameUiAction>>(relaxed = true)
 
@@ -268,6 +270,46 @@ class FrameViewModelTest {
         verify { mockActionObserver.onChanged(FrameUiAction.OpenMatchSummary(match)) }
     }
 
+    @Test
+    fun `onForfeitMatchClicked should send ShowLoading action`() {
+        createViewModel()
+        every { mockDeleteMatchUseCase.invoke(any()) } returns flow { delay(timeMillis = 50) }
+
+        viewModel.onForfeitMatchClicked()
+
+        verify { mockActionObserver.onChanged(FrameUiAction.ShowLoading) }
+    }
+
+    @Test
+    fun `with successful response onForfeitMatchClicked should send OpenMain action`() {
+        createViewModel()
+        every { mockDeleteMatchUseCase.invoke(any()) } returns flow { emit(Unit) }
+
+        viewModel.onForfeitMatchClicked()
+
+        verify { mockActionObserver.onChanged(FrameUiAction.OpenMain) }
+    }
+
+    @Test
+    fun `with error response onForfeitMatchClicked should send ShowError action`() {
+        createViewModel()
+        every { mockDeleteMatchUseCase.invoke(any()) } returns flow { throw IOException() }
+
+        viewModel.onForfeitMatchClicked()
+
+        verify { mockActionObserver.onChanged(FrameUiAction.ShowError) }
+    }
+
+    @Test
+    fun `onForfeitMatchClicked should send HideLoading action`() {
+        createViewModel()
+        every { mockDeleteMatchUseCase.invoke(any()) } returns flow { emit(Unit) }
+
+        viewModel.onForfeitMatchClicked()
+
+        verify { mockActionObserver.onChanged(FrameUiAction.HideLoading) }
+    }
+
     private fun createViewModel() {
         val testCoroutineDispatcher = TestCoroutineDispatcher()
         Dispatchers.setMain(testCoroutineDispatcher)
@@ -281,10 +323,13 @@ class FrameViewModelTest {
 
         viewModel = FrameViewModel(
             frames = frames,
-            drawPlayerUseCase = mockDrawPlayerUseCase,
-            addOrUpdateFrameUseCase = mockAddOrUpdateFrameUseCase,
+            useCases = FrameViewModel.UseCases(
+                drawPlayerUseCase = mockDrawPlayerUseCase,
+                addOrUpdateFrameUseCase = mockAddOrUpdateFrameUseCase,
+                getPenaltyValueUseCase = mockGetPenaltyValueUseCase,
+                deleteMatchUseCase = mockDeleteMatchUseCase
+            ),
             breakCalculator = mockBreakCalculator,
-            getPenaltyValueUseCase = mockGetPenaltyValueUseCase,
             dispatcher = testCoroutineDispatcher
         ).apply {
             state.observeForever(mockStateObserver)

@@ -13,4 +13,6 @@ sealed class FrameUiAction : UiAction {
 
     data class OpenMatchSummary(val match: UiMatch) : FrameUiAction()
 
+    object OpenMain : FrameUiAction()
+
 }

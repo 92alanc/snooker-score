@@ -6,6 +6,7 @@ import com.alancamargo.snookerscore.domain.model.Foul
 import com.alancamargo.snookerscore.domain.tools.BreakCalculator
 import com.alancamargo.snookerscore.domain.usecase.foul.GetPenaltyValueUseCase
 import com.alancamargo.snookerscore.domain.usecase.frame.AddOrUpdateFrameUseCase
+import com.alancamargo.snookerscore.domain.usecase.match.DeleteMatchUseCase
 import com.alancamargo.snookerscore.domain.usecase.player.DrawPlayerUseCase
 import com.alancamargo.snookerscore.ui.mapping.toDomain
 import com.alancamargo.snookerscore.ui.mapping.toUi
@@ -23,10 +24,8 @@ import kotlinx.coroutines.launch
 
 class FrameViewModel(
     private val frames: List<UiFrame>,
-    private val drawPlayerUseCase: DrawPlayerUseCase,
-    private val addOrUpdateFrameUseCase: AddOrUpdateFrameUseCase,
+    private val useCases: UseCases,
     private val breakCalculator: BreakCalculator,
-    private val getPenaltyValueUseCase: GetPenaltyValueUseCase,
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : ViewModel<FrameUiState, FrameUiAction>(initialState = FrameUiState()) {
 
@@ -41,7 +40,7 @@ class FrameViewModel(
 
             val player1 = firstFrame.match.player1.toDomain()
             val player2 = firstFrame.match.player2.toDomain()
-            val playerDrawn = drawPlayerUseCase(player1, player2).toUi()
+            val playerDrawn = useCases.drawPlayerUseCase(player1, player2).toUi()
             currentPlayer = playerDrawn
             setState { state -> state.setCurrentPlayer(playerDrawn) }
         }
@@ -79,7 +78,7 @@ class FrameViewModel(
 
     fun onFoul(foul: Foul) {
         takeFrameAndPlayerIfNotNull { frame, player ->
-            val penaltyValue = getPenaltyValueUseCase(foul)
+            val penaltyValue = useCases.getPenaltyValueUseCase(foul)
 
             if (player == frame.match.player1) {
                 frame.player2Score += penaltyValue
@@ -129,9 +128,26 @@ class FrameViewModel(
         }
     }
 
+    fun onForfeitMatchClicked() {
+        takeFrameAndPlayerIfNotNull { frame, _ ->
+            viewModelScope.launch {
+                useCases.deleteMatchUseCase(frame.match.toDomain()).flowOn(dispatcher)
+                    .onStart {
+                        sendAction { FrameUiAction.ShowLoading }
+                    }.onCompletion {
+                        sendAction { FrameUiAction.HideLoading }
+                    }.catch {
+                        sendAction { FrameUiAction.ShowError }
+                    }.collect {
+                        sendAction { FrameUiAction.OpenMain }
+                    }
+            }
+        }
+    }
+
     private fun addOrUpdateFrame(frame: UiFrame) {
         viewModelScope.launch {
-            addOrUpdateFrameUseCase(frame.toDomain()).flowOn(dispatcher)
+            useCases.addOrUpdateFrameUseCase(frame.toDomain()).flowOn(dispatcher)
                 .onStart {
                     sendAction { FrameUiAction.ShowLoading }
                 }.onCompletion {
@@ -151,5 +167,12 @@ class FrameViewModel(
             }
         }
     }
+
+    class UseCases(
+        val drawPlayerUseCase: DrawPlayerUseCase,
+        val addOrUpdateFrameUseCase: AddOrUpdateFrameUseCase,
+        val getPenaltyValueUseCase: GetPenaltyValueUseCase,
+        val deleteMatchUseCase: DeleteMatchUseCase,
+    )
 
 }
