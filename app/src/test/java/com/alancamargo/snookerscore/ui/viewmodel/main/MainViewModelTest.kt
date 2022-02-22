@@ -2,6 +2,8 @@ package com.alancamargo.snookerscore.ui.viewmodel.main
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
+import com.alancamargo.snookerscore.domain.usecase.rules.GetRulesUrlUseCase
+import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
 import org.junit.Before
@@ -14,13 +16,14 @@ class MainViewModelTest {
     @JvmField
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
+    private val mockGetRulesUrlUseCase = mockk<GetRulesUrlUseCase>()
     private val mockActionObserver = mockk<Observer<MainUiAction>>(relaxed = true)
 
     private lateinit var viewModel: MainViewModel
 
     @Before
     fun setUp() {
-        viewModel = MainViewModel().apply {
+        viewModel = MainViewModel(mockGetRulesUrlUseCase).apply {
             action.observeForever(mockActionObserver)
         }
     }
@@ -41,9 +44,12 @@ class MainViewModelTest {
 
     @Test
     fun `onClickRules should send OpenRules action`() {
+        val expected = "https://thepiratebay.org"
+        every { mockGetRulesUrlUseCase.invoke() } returns expected
+
         viewModel.onClickRules()
 
-        verify { mockActionObserver.onChanged(MainUiAction.OpenRules) }
+        verify { mockActionObserver.onChanged(MainUiAction.OpenRules(expected)) }
     }
 
     @Test

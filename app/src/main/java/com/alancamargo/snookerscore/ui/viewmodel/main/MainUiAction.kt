@@ -8,7 +8,7 @@ sealed class MainUiAction : UiAction {
 
     object OpenPlayers : MainUiAction()
 
-    object OpenRules : MainUiAction()
+    data class OpenRules(val url: String) : MainUiAction()
 
     object ShowAppInfo : MainUiAction()
 

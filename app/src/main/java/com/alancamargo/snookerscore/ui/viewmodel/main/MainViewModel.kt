@@ -1,8 +1,11 @@
 package com.alancamargo.snookerscore.ui.viewmodel.main
 
 import com.alancamargo.snookerscore.core.arch.viewmodel.ActionViewModel
+import com.alancamargo.snookerscore.domain.usecase.rules.GetRulesUrlUseCase
 
-class MainViewModel : ActionViewModel<MainUiAction>() {
+class MainViewModel(
+    private val getRulesUrlUseCase: GetRulesUrlUseCase
+) : ActionViewModel<MainUiAction>() {
 
     fun onClickMatches() {
         sendAction { MainUiAction.OpenMatches }
@@ -13,7 +16,8 @@ class MainViewModel : ActionViewModel<MainUiAction>() {
     }
 
     fun onClickRules() {
-        sendAction { MainUiAction.OpenRules }
+        val url = getRulesUrlUseCase()
+        sendAction { MainUiAction.OpenRules(url) }
     }
 
     fun onClickAbout() {

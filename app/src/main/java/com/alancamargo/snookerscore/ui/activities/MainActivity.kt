@@ -34,10 +34,10 @@ class MainActivity : AppCompatActivity() {
 
     private fun handleAction(action: MainUiAction) {
         when (action) {
-            MainUiAction.OpenMatches -> openMatches()
-            MainUiAction.OpenPlayers -> openPlayers()
-            MainUiAction.OpenRules -> openRules()
-            MainUiAction.ShowAppInfo -> showAppInfo()
+            is MainUiAction.OpenMatches -> openMatches()
+            is MainUiAction.OpenPlayers -> openPlayers()
+            is MainUiAction.OpenRules -> openRules(action.url)
+            is MainUiAction.ShowAppInfo -> showAppInfo()
         }
     }
 
@@ -51,9 +51,9 @@ class MainActivity : AppCompatActivity() {
         Toast.makeText(this, "Players", Toast.LENGTH_SHORT).show()
     }
 
-    private fun openRules() {
+    private fun openRules(url: String) {
         // TODO
-        Toast.makeText(this, "Rules", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, url, Toast.LENGTH_SHORT).show()
     }
 
     private fun showAppInfo() {
