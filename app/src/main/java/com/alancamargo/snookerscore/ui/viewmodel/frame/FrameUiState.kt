@@ -7,7 +7,8 @@ import com.alancamargo.snookerscore.ui.model.UiPlayer
 data class FrameUiState(
     val currentFrame: UiFrame? = null,
     val currentPlayer: UiPlayer? = null,
-    val isUndoLastPottedBallButtonEnabled: Boolean = false
+    val isUndoLastPottedBallButtonEnabled: Boolean = false,
+    val breakValue: Int = 0
 ) : UiState {
 
     fun setCurrentFrame(currentFrame: UiFrame) = copy(currentFrame = currentFrame)
@@ -17,5 +18,7 @@ data class FrameUiState(
     fun onEnableLastPottedBallButton() = copy(isUndoLastPottedBallButtonEnabled = true)
 
     fun onDisableLastPottedBallButton() = copy(isUndoLastPottedBallButtonEnabled = false)
+
+    fun onBreakUpdated(breakValue: Int) = copy(breakValue = breakValue)
 
 }

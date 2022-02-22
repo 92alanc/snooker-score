@@ -9,6 +9,7 @@ import com.alancamargo.snookerscore.domain.usecase.foul.GetPenaltyValueUseCase
 import com.alancamargo.snookerscore.domain.usecase.frame.AddOrUpdateFrameUseCase
 import com.alancamargo.snookerscore.domain.usecase.match.DeleteMatchUseCase
 import com.alancamargo.snookerscore.domain.usecase.player.DrawPlayerUseCase
+import com.alancamargo.snookerscore.domain.usecase.playerstats.GetPlayerStatsUseCase
 import com.alancamargo.snookerscore.testtools.getUiFrameList
 import com.alancamargo.snookerscore.ui.mapping.toDomain
 import com.alancamargo.snookerscore.ui.model.UiBall
@@ -37,6 +38,7 @@ class FrameViewModelTest {
     private val mockBreakCalculator = mockk<BreakCalculator>(relaxed = true)
     private val mockGetPenaltyValueUseCase = mockk<GetPenaltyValueUseCase>()
     private val mockDeleteMatchUseCase = mockk<DeleteMatchUseCase>()
+    private val mockGetPlayerStatsUseCase = mockk<GetPlayerStatsUseCase>()
     private val mockStateObserver = mockk<Observer<FrameUiState>>(relaxed = true)
     private val mockActionObserver = mockk<Observer<FrameUiAction>>(relaxed = true)
 
@@ -327,7 +329,8 @@ class FrameViewModelTest {
                 drawPlayerUseCase = mockDrawPlayerUseCase,
                 addOrUpdateFrameUseCase = mockAddOrUpdateFrameUseCase,
                 getPenaltyValueUseCase = mockGetPenaltyValueUseCase,
-                deleteMatchUseCase = mockDeleteMatchUseCase
+                deleteMatchUseCase = mockDeleteMatchUseCase,
+                getPlayerStatsUseCase = mockGetPlayerStatsUseCase
             ),
             breakCalculator = mockBreakCalculator,
             dispatcher = testCoroutineDispatcher

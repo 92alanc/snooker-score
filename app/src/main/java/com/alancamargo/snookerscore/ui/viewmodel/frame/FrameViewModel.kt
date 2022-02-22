@@ -8,6 +8,7 @@ import com.alancamargo.snookerscore.domain.usecase.foul.GetPenaltyValueUseCase
 import com.alancamargo.snookerscore.domain.usecase.frame.AddOrUpdateFrameUseCase
 import com.alancamargo.snookerscore.domain.usecase.match.DeleteMatchUseCase
 import com.alancamargo.snookerscore.domain.usecase.player.DrawPlayerUseCase
+import com.alancamargo.snookerscore.domain.usecase.playerstats.GetPlayerStatsUseCase
 import com.alancamargo.snookerscore.ui.mapping.toDomain
 import com.alancamargo.snookerscore.ui.mapping.toUi
 import com.alancamargo.snookerscore.ui.model.UiBall
@@ -59,6 +60,10 @@ class FrameViewModel(
 
             addOrUpdateFrame(frame)
             setState { state -> state.onEnableLastPottedBallButton() }
+
+            val breakValue = breakCalculator.getPoints()
+            setState { state -> state.onBreakUpdated(breakValue) }
+            // TODO: add test
         }
     }
 
@@ -118,6 +123,8 @@ class FrameViewModel(
         onEndTurnClicked()
         val newFrameIndex = ++currentFrameIndex
 
+        // TODO: update highest scores and breaks
+
         if (newFrameIndex <= frames.lastIndex) {
             currentFrame = frames[currentFrameIndex]
             setState { state -> state.setCurrentFrame(frames[currentFrameIndex]) }
@@ -173,6 +180,7 @@ class FrameViewModel(
         val addOrUpdateFrameUseCase: AddOrUpdateFrameUseCase,
         val getPenaltyValueUseCase: GetPenaltyValueUseCase,
         val deleteMatchUseCase: DeleteMatchUseCase,
+        val getPlayerStatsUseCase: GetPlayerStatsUseCase
     )
 
 }
