@@ -23,9 +23,4 @@ class PlayerLocalDataSourceImpl(private val playerDao: PlayerDao) : PlayerLocalD
         emit(task)
     }
 
-    override fun hasPlayers() = flow {
-        val hasPlayers = playerDao.getPlayerCount() > 0
-        emit(hasPlayers)
-    }
-
 }

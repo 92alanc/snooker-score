@@ -15,6 +15,4 @@ class PlayerRepositoryImpl(private val localDataSource: PlayerLocalDataSource) :
 
     override fun deletePlayer(player: Player): Flow<Unit> = localDataSource.deletePlayer(player)
 
-    override fun hasPlayers(): Flow<Boolean> = localDataSource.hasPlayers()
-
 }

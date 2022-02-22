@@ -21,7 +21,6 @@ import com.alancamargo.snookerscore.domain.usecase.player.ArePlayersTheSameUseCa
 import com.alancamargo.snookerscore.domain.usecase.player.DeletePlayerUseCase
 import com.alancamargo.snookerscore.domain.usecase.player.DrawPlayerUseCase
 import com.alancamargo.snookerscore.domain.usecase.player.GetPlayersUseCase
-import com.alancamargo.snookerscore.domain.usecase.player.HasPlayersUseCase
 import com.alancamargo.snookerscore.domain.usecase.playerstats.AddOrUpdatePlayerStatsUseCase
 import com.alancamargo.snookerscore.domain.usecase.playerstats.GetPlayerStatsUseCase
 import org.koin.dsl.module
@@ -42,7 +41,6 @@ val domainModule = module {
     factory { AddOrUpdateFrameUseCase(repository = get()) }
     factory { GetFramesUseCase(repository = get()) }
     factory { GetMatchesUseCase(repository = get()) }
-    factory { HasPlayersUseCase(repository = get()) }
     factory<BreakCalculator> { BreakCalculatorImpl() }
     factory { ArePlayersTheSameUseCase() }
     factory { DrawPlayerUseCase() }

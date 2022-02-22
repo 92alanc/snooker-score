@@ -57,17 +57,4 @@ class PlayerRepositoryImplTest {
         }
     }
 
-    @Test
-    fun `hasPlayers should return whether database has players`() = runBlocking {
-        every { mockLocalDataSource.hasPlayers() } returns flow { emit(true) }
-
-        val result = repository.hasPlayers()
-
-        result.test {
-            val item = awaitItem()
-            assertThat(item).isTrue()
-            awaitComplete()
-        }
-    }
-
 }

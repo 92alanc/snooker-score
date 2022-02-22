@@ -10,6 +10,6 @@ sealed class MatchDetailsUiAction : UiAction {
 
     object ShowError : MatchDetailsUiAction()
 
-    object Refresh : MatchDetailsUiAction()
+    object Finish : MatchDetailsUiAction()
 
 }

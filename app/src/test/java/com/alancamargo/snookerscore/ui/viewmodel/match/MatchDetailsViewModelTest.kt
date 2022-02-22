@@ -52,12 +52,12 @@ class MatchDetailsViewModelTest {
     }
 
     @Test
-    fun `onDeleteMatchClicked should send Refresh action`() {
+    fun `onDeleteMatchClicked should send Finish action`() {
         every { mockDeleteMatchUseCase.invoke(match = any()) } returns flow { emit(Unit) }
 
         viewModel.onDeleteMatchClicked(getUiMatch())
 
-        verify { mockActionObserver.onChanged(MatchDetailsUiAction.Refresh) }
+        verify { mockActionObserver.onChanged(MatchDetailsUiAction.Finish) }
     }
 
     @Test

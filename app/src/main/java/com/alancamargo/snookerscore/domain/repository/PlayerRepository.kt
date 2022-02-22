@@ -11,6 +11,4 @@ interface PlayerRepository {
 
     fun deletePlayer(player: Player): Flow<Unit>
 
-    fun hasPlayers(): Flow<Boolean>
-
 }

@@ -29,7 +29,7 @@ class MatchDetailsViewModel(
                 }.catch {
                     sendAction { MatchDetailsUiAction.ShowError }
                 }.collect {
-                    sendAction { MatchDetailsUiAction.Refresh }
+                    sendAction { MatchDetailsUiAction.Finish }
                 }
         }
     }
