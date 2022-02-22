@@ -2,6 +2,7 @@ package com.alancamargo.snookerscore.ui.di
 
 import com.alancamargo.snookerscore.ui.viewmodel.frame.FrameViewModel
 import com.alancamargo.snookerscore.ui.viewmodel.main.MainViewModel
+import com.alancamargo.snookerscore.ui.viewmodel.match.MatchDetailsViewModel
 import com.alancamargo.snookerscore.ui.viewmodel.matchlist.MatchListViewModel
 import com.alancamargo.snookerscore.ui.viewmodel.newmatch.NewMatchViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -29,4 +30,5 @@ val uiModule = module {
             breakCalculator = get(),
         )
     }
+    viewModel { MatchDetailsViewModel(deleteMatchUseCase = get()) }
 }
