@@ -1,5 +1,7 @@
 package com.alancamargo.snookerscore.ui.di
 
+import com.alancamargo.snookerscore.navigation.WebsiteNavigation
+import com.alancamargo.snookerscore.ui.navigation.WebsiteNavigationImpl
 import com.alancamargo.snookerscore.ui.viewmodel.frame.FrameViewModel
 import com.alancamargo.snookerscore.ui.viewmodel.main.MainViewModel
 import com.alancamargo.snookerscore.ui.viewmodel.match.MatchDetailsViewModel
@@ -41,4 +43,5 @@ val uiModule = module {
         )
     }
     viewModel { PlayerStatsViewModel(getPlayerStatsUseCase = get()) }
+    factory<WebsiteNavigation> { WebsiteNavigationImpl() }
 }

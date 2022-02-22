@@ -5,8 +5,10 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.alancamargo.snookerscore.core.arch.extensions.observeAction
 import com.alancamargo.snookerscore.databinding.ActivityMainBinding
+import com.alancamargo.snookerscore.navigation.WebsiteNavigation
 import com.alancamargo.snookerscore.ui.viewmodel.main.MainUiAction
 import com.alancamargo.snookerscore.ui.viewmodel.main.MainViewModel
+import org.koin.android.ext.android.get
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
@@ -52,8 +54,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun openRules(url: String) {
-        // TODO
-        Toast.makeText(this, url, Toast.LENGTH_SHORT).show()
+        val navigation = get<WebsiteNavigation>()
+        navigation.openWebsite(context = this, url = url)
     }
 
     private fun showAppInfo() {

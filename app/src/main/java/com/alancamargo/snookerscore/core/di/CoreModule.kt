@@ -10,6 +10,7 @@ val coreModule = module {
     factory {
         FirebaseRemoteConfig.getInstance().apply {
             setDefaultsAsync(R.xml.remote_config_defaults)
+            fetchAndActivate()
         }
     }
     factory<RemoteConfigManager> { RemoteConfigManagerImpl(firebaseRemoteConfig = get()) }
