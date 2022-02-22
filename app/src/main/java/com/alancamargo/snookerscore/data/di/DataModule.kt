@@ -11,6 +11,7 @@ import com.alancamargo.snookerscore.data.local.player.PlayerLocalDataSourceImpl
 import com.alancamargo.snookerscore.data.local.playerstats.PlayerStatsLocalDataSource
 import com.alancamargo.snookerscore.data.local.playerstats.PlayerStatsLocalDataSourceImpl
 import com.alancamargo.snookerscore.data.remote.RulesUrlRemoteDataSource
+import com.alancamargo.snookerscore.data.remote.RulesUrlRemoteDataSourceImpl
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.scope.Scope
 import org.koin.dsl.module
@@ -45,11 +46,7 @@ val dataModule = module {
         FrameLocalDataSourceImpl(frameDao = getDatabaseProvider().provideFrameDao())
     }
 
-    factory<RulesUrlRemoteDataSource> {
-        object : RulesUrlRemoteDataSource {
-            override fun getRulesUrl(): String = "https://thepiratebay.org"
-        }
-    }
+    factory<RulesUrlRemoteDataSource> { RulesUrlRemoteDataSourceImpl(remoteConfigManager = get()) }
 }
 
 private fun Scope.getDatabaseProvider() = get<DatabaseProvider>()
