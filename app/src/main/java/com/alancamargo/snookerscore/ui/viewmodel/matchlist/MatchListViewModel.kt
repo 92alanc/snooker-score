@@ -19,10 +19,6 @@ class MatchListViewModel(
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : ViewModel<MatchListUiState, MatchListUiAction>(initialState = MatchListUiState()) {
 
-    init {
-        getMatches()
-    }
-
     fun onNewMatchClicked() {
         sendAction { MatchListUiAction.OpenNewMatch }
     }
@@ -31,7 +27,7 @@ class MatchListViewModel(
         sendAction { MatchListUiAction.OpenMatchDetails(match) }
     }
 
-    private fun getMatches() {
+    fun getMatches() {
         viewModelScope.launch {
             getMatchesUseCase().flowOn(dispatcher)
                 .onStart {

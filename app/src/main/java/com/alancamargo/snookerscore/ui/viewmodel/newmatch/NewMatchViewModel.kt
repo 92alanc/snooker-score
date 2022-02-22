@@ -30,10 +30,6 @@ class NewMatchViewModel(
     private var player2: UiPlayer? = null
     private var numberOfFrames = 0
 
-    init {
-        getPlayers()
-    }
-
     fun onFieldErased() {
         setState { state -> state.onDisableStartMatchButton() }
     }
@@ -63,7 +59,7 @@ class NewMatchViewModel(
         sendAction { NewMatchUiAction.ShowHelp }
     }
 
-    private fun getPlayers() {
+    fun getPlayers() {
         viewModelScope.launch {
             getPlayersUseCase().flowOn(dispatcher)
                 .onStart {

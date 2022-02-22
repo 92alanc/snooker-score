@@ -17,6 +17,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.setMain
 import org.junit.After
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import java.io.IOException
@@ -36,70 +37,8 @@ class MatchListViewModelTest {
 
     private lateinit var viewModel: MatchListViewModel
 
-    @After
-    fun tearDown() {
-        viewModel.action.removeObserver(mockActionObserver)
-    }
-
-    @Test
-    fun `at startup should send ShowLoading action`() {
-        every { mockGetMatchesUseCase.invoke() } returns flow { delay(timeMillis = 50) }
-
-        createViewModel()
-
-        verify { mockActionObserver.onChanged(MatchListUiAction.ShowLoading) }
-    }
-
-    @Test
-    fun `with successful response at startup should set state with matches`() {
-        mockSuccessfulResponse()
-
-        createViewModel()
-
-        val expected = matches.map { it.toUi() }
-        verify { mockStateObserver.onChanged(MatchListUiState(expected)) }
-    }
-
-    @Test
-    fun `with error response at startup should send ShowError action`() {
-        every { mockGetMatchesUseCase.invoke() } returns flow { throw IOException(ERROR_MESSAGE) }
-
-        createViewModel()
-
-        verify { mockActionObserver.onChanged(MatchListUiAction.ShowError) }
-    }
-
-    @Test
-    fun `at startup should send HideLoading action`() {
-        mockSuccessfulResponse()
-
-        createViewModel()
-
-        verify { mockActionObserver.onChanged(MatchListUiAction.HideLoading) }
-    }
-
-    @Test
-    fun `onNewMatchClicked should send OpenNewMatch action`() {
-        mockSuccessfulResponse()
-        createViewModel()
-
-        viewModel.onNewMatchClicked()
-
-        verify { mockActionObserver.onChanged(MatchListUiAction.OpenNewMatch) }
-    }
-
-    @Test
-    fun `onMatchClicked should send OpenMatchDetails action`() {
-        mockSuccessfulResponse()
-        createViewModel()
-
-        val match = getUiMatch()
-        viewModel.onMatchClicked(match)
-
-        verify { mockActionObserver.onChanged(MatchListUiAction.OpenMatchDetails(match)) }
-    }
-
-    private fun createViewModel() {
+    @Before
+    fun setUp() {
         val testCoroutineDispatcher = TestCoroutineDispatcher()
         Dispatchers.setMain(testCoroutineDispatcher)
 
@@ -110,6 +49,67 @@ class MatchListViewModelTest {
             state.observeForever(mockStateObserver)
             action.observeForever(mockActionObserver)
         }
+    }
+
+    @After
+    fun tearDown() {
+        viewModel.action.removeObserver(mockActionObserver)
+    }
+
+    @Test
+    fun `getMatches should send ShowLoading action`() {
+        every { mockGetMatchesUseCase.invoke() } returns flow { delay(timeMillis = 50) }
+
+        viewModel.getMatches()
+
+        verify { mockActionObserver.onChanged(MatchListUiAction.ShowLoading) }
+    }
+
+    @Test
+    fun `with successful response getMatches should set state with matches`() {
+        mockSuccessfulResponse()
+
+        viewModel.getMatches()
+
+        val expected = matches.map { it.toUi() }
+        verify { mockStateObserver.onChanged(MatchListUiState(expected)) }
+    }
+
+    @Test
+    fun `with error response getMatches should send ShowError action`() {
+        every { mockGetMatchesUseCase.invoke() } returns flow { throw IOException(ERROR_MESSAGE) }
+
+        viewModel.getMatches()
+
+        verify { mockActionObserver.onChanged(MatchListUiAction.ShowError) }
+    }
+
+    @Test
+    fun `getMatches should send HideLoading action`() {
+        mockSuccessfulResponse()
+
+        viewModel.getMatches()
+
+        verify { mockActionObserver.onChanged(MatchListUiAction.HideLoading) }
+    }
+
+    @Test
+    fun `onNewMatchClicked should send OpenNewMatch action`() {
+        mockSuccessfulResponse()
+
+        viewModel.onNewMatchClicked()
+
+        verify { mockActionObserver.onChanged(MatchListUiAction.OpenNewMatch) }
+    }
+
+    @Test
+    fun `onMatchClicked should send OpenMatchDetails action`() {
+        mockSuccessfulResponse()
+
+        val match = getUiMatch()
+        viewModel.onMatchClicked(match)
+
+        verify { mockActionObserver.onChanged(MatchListUiAction.OpenMatchDetails(match)) }
     }
 
     private fun mockSuccessfulResponse() {

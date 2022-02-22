@@ -18,6 +18,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.setMain
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import java.io.IOException
@@ -39,38 +40,55 @@ class NewMatchViewModelTest {
 
     private lateinit var viewModel: NewMatchViewModel
 
+    @Before
+    fun setUp() {
+        val testCoroutineDispatcher = TestCoroutineDispatcher()
+        Dispatchers.setMain(testCoroutineDispatcher)
+
+        viewModel = NewMatchViewModel(
+            getPlayersUseCase = mockGetPlayersUseCase,
+            arePlayersTheSameUseCase = mockArePlayersTheSameUseCase,
+            addMatchUseCase = mockAddMatchUseCase,
+            dispatcher = testCoroutineDispatcher
+        ).apply {
+            state.observeForever(mockStateObserver)
+            action.observeForever(mockActionObserver)
+        }
+    }
+
     @Test
-    fun `when loading players at startup should send ShowLoading action`() {
+    fun `when loading players getPlayers should send ShowLoading action`() {
         every { mockGetPlayersUseCase.invoke() } returns flow { delay(timeMillis = 50) }
 
-        createViewModel()
+        viewModel.getPlayers()
 
         verify { mockActionObserver.onChanged(NewMatchUiAction.ShowLoading) }
     }
 
     @Test
-    fun `with successful response at startup should set state with players`() {
+    fun `with successful response getPlayers should set state with players`() {
         mockSuccessfulPlayersResponse()
 
-        createViewModel()
+        viewModel.getPlayers()
 
         val expected = players.map { it.toUi() }
         verify { mockStateObserver.onChanged(NewMatchUiState(expected)) }
     }
 
     @Test
-    fun `with error response at startup should send ShowError action`() {
+    fun `with error response getPlayers should send ShowError action`() {
         every { mockGetPlayersUseCase.invoke() } returns flow { throw IOException(ERROR_MESSAGE) }
 
-        createViewModel()
+        viewModel.getPlayers()
 
         verify { mockActionObserver.onChanged(NewMatchUiAction.ShowError) }
     }
 
     @Test
-    fun `after loading players at startup should send HideLoading action`() {
+    fun `after loading players getPlayers should send HideLoading action`() {
         mockSuccessfulPlayersResponse()
-        createViewModel()
+
+        viewModel.getPlayers()
 
         verify { mockActionObserver.onChanged(NewMatchUiAction.HideLoading) }
     }
@@ -78,7 +96,7 @@ class NewMatchViewModelTest {
     @Test
     fun `onFieldErased should disable start match button`() {
         mockSuccessfulPlayersResponse()
-        createViewModel()
+        viewModel.getPlayers()
 
         viewModel.onFieldErased()
 
@@ -95,7 +113,7 @@ class NewMatchViewModelTest {
     @Test
     fun `onAllFieldsFilled should enable start match button`() {
         mockSuccessfulPlayersResponse()
-        createViewModel()
+        viewModel.getPlayers()
 
         viewModel.onAllFieldsFilled()
 
@@ -112,7 +130,6 @@ class NewMatchViewModelTest {
     @Test
     fun `when players are the same onStartMatchButtonClicked should send ShowSamePlayersDialogue action`() {
         mockSuccessfulPlayersResponse()
-        createViewModel()
         every { mockArePlayersTheSameUseCase.invoke(player1 = any(), player2 = any()) } returns true
 
         val player = UiPlayer(name = "Judd Trump")
@@ -124,7 +141,6 @@ class NewMatchViewModelTest {
     @Test
     fun `when creating match onStartMatchButtonClicked should send ShowLoading action`() {
         mockSuccessfulPlayersResponse()
-        createViewModel()
         every {
             mockArePlayersTheSameUseCase.invoke(player1 = any(), player2 = any())
         } returns false
@@ -139,7 +155,6 @@ class NewMatchViewModelTest {
     @Test
     fun `when match is successfully added onStartMatchButtonClicked should send StartMatch action`() {
         mockSuccessfulPlayersResponse()
-        createViewModel()
         every {
             mockArePlayersTheSameUseCase.invoke(player1 = any(), player2 = any())
         } returns false
@@ -154,7 +169,6 @@ class NewMatchViewModelTest {
     @Test
     fun `with error response onStartMatchButtonClicked should send ShowError action`() {
         mockSuccessfulPlayersResponse()
-        createViewModel()
         every {
             mockArePlayersTheSameUseCase.invoke(player1 = any(), player2 = any())
         } returns false
@@ -169,7 +183,6 @@ class NewMatchViewModelTest {
     @Test
     fun `after creating match onStartMatchButtonClicked should send HideLoading action`() {
         mockSuccessfulPlayersResponse()
-        createViewModel()
         every {
             mockArePlayersTheSameUseCase.invoke(player1 = any(), player2 = any())
         } returns false
@@ -184,26 +197,10 @@ class NewMatchViewModelTest {
     @Test
     fun `onHelpButtonClicked should send ShowHelp action`() {
         mockSuccessfulPlayersResponse()
-        createViewModel()
 
         viewModel.onHelpButtonClicked()
 
         verify { mockActionObserver.onChanged(NewMatchUiAction.ShowHelp) }
-    }
-
-    private fun createViewModel() {
-        val testCoroutineDispatcher = TestCoroutineDispatcher()
-        Dispatchers.setMain(testCoroutineDispatcher)
-
-        viewModel = NewMatchViewModel(
-            getPlayersUseCase = mockGetPlayersUseCase,
-            arePlayersTheSameUseCase = mockArePlayersTheSameUseCase,
-            addMatchUseCase = mockAddMatchUseCase,
-            dispatcher = testCoroutineDispatcher
-        ).apply {
-            state.observeForever(mockStateObserver)
-            action.observeForever(mockActionObserver)
-        }
     }
 
     private fun mockSuccessfulPlayersResponse() {

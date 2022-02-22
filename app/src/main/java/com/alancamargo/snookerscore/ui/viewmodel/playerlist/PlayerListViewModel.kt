@@ -25,10 +25,6 @@ class PlayerListViewModel(
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : ViewModel<PlayerListUiState, PlayerListUiAction>(initialState = PlayerListUiState()) {
 
-    init {
-        getPlayers()
-    }
-
     fun onNewPlayerClicked() {
         sendAction { PlayerListUiAction.ShowNewPlayerDialogue }
     }
@@ -49,7 +45,7 @@ class PlayerListViewModel(
         }
     }
 
-    private fun getPlayers() {
+    fun getPlayers() {
         viewModelScope.launch {
             getPlayersUseCase().flowOn(dispatcher)
                 .onStart {
