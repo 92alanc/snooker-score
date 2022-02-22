@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "429989207945",
+    "project_id": "snooker-score-cfe69",
+    "storage_bucket": "snooker-score-cfe69.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:429989207945:android:200b745d124c7988808b58",
+        "android_client_info": {
+          "package_name": "com.alancamargo.snookerscore"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "429989207945-q3judb652ve7aor82bbdll4tnkilmo9v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCgDmUk7CEaM9waAi2csi5HJkADVSa6lqA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "429989207945-q3judb652ve7aor82bbdll4tnkilmo9v.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:429989207945:android:3ba68b9558faca5f808b58",
+        "android_client_info": {
+          "package_name": "com.alancamargo.snookerscore.debug"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "429989207945-q3judb652ve7aor82bbdll4tnkilmo9v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCgDmUk7CEaM9waAi2csi5HJkADVSa6lqA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "429989207945-q3judb652ve7aor82bbdll4tnkilmo9v.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
