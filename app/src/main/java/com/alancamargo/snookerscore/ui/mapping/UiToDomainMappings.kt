@@ -2,14 +2,21 @@ package com.alancamargo.snookerscore.ui.mapping
 
 import com.alancamargo.snookerscore.domain.model.Ball
 import com.alancamargo.snookerscore.domain.model.Frame
+import com.alancamargo.snookerscore.domain.model.Gender
 import com.alancamargo.snookerscore.domain.model.Match
 import com.alancamargo.snookerscore.domain.model.Player
 import com.alancamargo.snookerscore.ui.model.UiBall
 import com.alancamargo.snookerscore.ui.model.UiFrame
+import com.alancamargo.snookerscore.ui.model.UiGender
 import com.alancamargo.snookerscore.ui.model.UiMatch
 import com.alancamargo.snookerscore.ui.model.UiPlayer
 
-fun UiPlayer.toDomain() = Player(name = name)
+fun UiPlayer.toDomain() = Player(name = name, gender = gender.toDomain())
+
+fun UiGender.toDomain() = when (this) {
+    UiGender.MALE -> Gender.MALE
+    UiGender.FEMALE -> Gender.FEMALE
+}
 
 fun UiBall.toDomain() = when (this) {
     UiBall.CUE_BALL -> Ball.CUE_BALL

@@ -4,4 +4,4 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class UiPlayer(val name: String) : Parcelable
+data class UiPlayer(val name: String, val gender: UiGender) : Parcelable

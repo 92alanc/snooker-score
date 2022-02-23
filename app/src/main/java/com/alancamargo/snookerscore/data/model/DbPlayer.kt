@@ -6,4 +6,4 @@ import androidx.room.PrimaryKey
 const val PLAYER_COLUMN_NAME = "name"
 
 @Entity(tableName = "Players")
-data class DbPlayer(@PrimaryKey val name: String)
+data class DbPlayer(@PrimaryKey val name: String, val genderId: Int)

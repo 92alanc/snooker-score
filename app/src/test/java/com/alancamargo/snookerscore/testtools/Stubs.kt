@@ -2,6 +2,7 @@ package com.alancamargo.snookerscore.testtools
 
 import com.alancamargo.snookerscore.data.model.DbPlayer
 import com.alancamargo.snookerscore.domain.model.Frame
+import com.alancamargo.snookerscore.domain.model.Gender
 import com.alancamargo.snookerscore.domain.model.Match
 import com.alancamargo.snookerscore.domain.model.Player
 import com.alancamargo.snookerscore.domain.model.PlayerStats
@@ -13,7 +14,7 @@ const val ERROR_MESSAGE = "Something wrong happened. Figure it out"
 
 private const val MATCH_DATE_TIME = 12345L
 
-fun getPlayer() = Player(name = "Mark Selby")
+fun getPlayer() = Player(name = "Mark Selby", gender = Gender.MALE)
 
 fun getMatch(dateTime: Long = MATCH_DATE_TIME) = Match(
     dateTime = dateTime,
@@ -29,13 +30,13 @@ fun getMatchList() = listOf(
 )
 
 fun getPlayerList() = listOf(
-    Player(name = "Kyren Wilson"),
-    Player(name = "Neil Robertson")
+    Player(name = "Kyren Wilson", gender = Gender.MALE),
+    Player(name = "Neil Robertson", gender = Gender.MALE)
 )
 
 fun getDbPlayerList() = listOf(
-    DbPlayer(name = "Judd Trump"),
-    DbPlayer(name = "Ronnie o\' Sullivan")
+    DbPlayer(name = "Judd Trump", genderId = 0),
+    DbPlayer(name = "Ronnie o\' Sullivan", genderId = 0)
 )
 
 fun getPlayerStats() = PlayerStats(
