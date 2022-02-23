@@ -14,6 +14,24 @@ class AddOrUpdatePlayerStatsUseCase(private val repository: PlayerStatsRepositor
         frame: Frame,
         player: Player
     ): Flow<Unit> {
+        val updatedPlayerStats = getUpdatedPlayerStats(
+            currentPlayerStats,
+            frame,
+            player
+        )
+
+        return if (updatedPlayerStats == currentPlayerStats) {
+            flow { emit(Unit) }
+        } else {
+            repository.addOrUpdatePlayerStats(updatedPlayerStats)
+        }
+    }
+
+    private fun getUpdatedPlayerStats(
+        currentPlayerStats: PlayerStats,
+        frame: Frame,
+        player: Player
+    ): PlayerStats {
         var highestScore = currentPlayerStats.highestScore
         var highestBreak = currentPlayerStats.highestBreak
 
@@ -37,16 +55,12 @@ class AddOrUpdatePlayerStatsUseCase(private val repository: PlayerStatsRepositor
                     highestBreak = frame.player2HighestBreak
                 }
             }
-
-            else -> return flow { emit(Unit) }
         }
 
-        val newPlayerStats = currentPlayerStats.copy(
-            highestScore = highestScore,
-            highestBreak = highestBreak
+        return currentPlayerStats.copy(
+            highestBreak = highestBreak,
+            highestScore = highestScore
         )
-
-        return repository.addOrUpdatePlayerStats(newPlayerStats)
     }
 
 }
