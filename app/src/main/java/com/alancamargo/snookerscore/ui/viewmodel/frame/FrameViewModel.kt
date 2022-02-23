@@ -3,11 +3,14 @@ package com.alancamargo.snookerscore.ui.viewmodel.frame
 import androidx.lifecycle.viewModelScope
 import com.alancamargo.snookerscore.core.arch.viewmodel.ViewModel
 import com.alancamargo.snookerscore.domain.model.Foul
+import com.alancamargo.snookerscore.domain.model.Player
+import com.alancamargo.snookerscore.domain.model.PlayerStats
 import com.alancamargo.snookerscore.domain.tools.BreakCalculator
 import com.alancamargo.snookerscore.domain.usecase.foul.GetPenaltyValueUseCase
 import com.alancamargo.snookerscore.domain.usecase.frame.AddOrUpdateFrameUseCase
 import com.alancamargo.snookerscore.domain.usecase.match.DeleteMatchUseCase
 import com.alancamargo.snookerscore.domain.usecase.player.DrawPlayerUseCase
+import com.alancamargo.snookerscore.domain.usecase.playerstats.AddOrUpdatePlayerStatsUseCase
 import com.alancamargo.snookerscore.domain.usecase.playerstats.GetPlayerStatsUseCase
 import com.alancamargo.snookerscore.ui.mapping.toDomain
 import com.alancamargo.snookerscore.ui.mapping.toUi
@@ -21,6 +24,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.zip
 import kotlinx.coroutines.launch
 
 class FrameViewModel(
@@ -33,17 +37,28 @@ class FrameViewModel(
     private var currentFrameIndex = 0
     private var currentFrame: UiFrame? = null
     private var currentPlayer: UiPlayer? = null
+    private var player1: Player? = null
+    private var player2: Player? = null
+    private var player1Stats: PlayerStats? = null
+    private var player2Stats: PlayerStats? = null
 
     init {
         frames.first().let { firstFrame ->
             currentFrame = firstFrame
             setState { state -> state.setCurrentFrame(firstFrame) }
 
-            val player1 = firstFrame.match.player1.toDomain()
-            val player2 = firstFrame.match.player2.toDomain()
-            val playerDrawn = useCases.drawPlayerUseCase(player1, player2).toUi()
-            currentPlayer = playerDrawn
-            setState { state -> state.setCurrentPlayer(playerDrawn) }
+            firstFrame.match.player1.toDomain().let { p1 ->
+                firstFrame.match.player2.toDomain().let { p2 ->
+                    player1 = p1
+                    player2 = p2
+
+                    getPlayerStats(p1, p2)
+
+                    val playerDrawn = useCases.drawPlayerUseCase(p1, p2).toUi()
+                    currentPlayer = playerDrawn
+                    setState { state -> state.setCurrentPlayer(playerDrawn) }
+                }
+            }
         }
     }
 
@@ -54,7 +69,7 @@ class FrameViewModel(
 
             if (player == frame.match.player1) {
                 frame.player1Score += domainBall.value
-            } else {
+            } else if (player == frame.match.player2) {
                 frame.player2Score += domainBall.value
             }
 
@@ -73,7 +88,7 @@ class FrameViewModel(
         takeFrameAndPlayerIfNotNull { frame, player ->
             if (player == frame.match.player1) {
                 frame.player1Score -= lastPottedBall.value
-            } else {
+            } else if (player == frame.match.player2) {
                 frame.player2Score -= lastPottedBall.value
             }
 
@@ -87,7 +102,7 @@ class FrameViewModel(
 
             if (player == frame.match.player1) {
                 frame.player2Score += penaltyValue
-            } else {
+            } else if (player == frame.match.player2) {
                 frame.player1Score += penaltyValue
             }
 
@@ -105,7 +120,7 @@ class FrameViewModel(
                 }
 
                 setState { state -> state.setCurrentPlayer(frame.match.player2) }
-            } else {
+            } else if (player == frame.match.player2) {
                 if (breakPoints > frame.player2HighestBreak) {
                     frame.player2HighestBreak = breakPoints
                 }
@@ -167,6 +182,25 @@ class FrameViewModel(
         }
     }
 
+    private fun getPlayerStats(player1: Player, player2: Player) {
+        viewModelScope.launch {
+            useCases.getPlayerStatsUseCase(player1)
+                .zip(useCases.getPlayerStatsUseCase(player2)) { player1Stats, player2Stats ->
+                    player1Stats to player2Stats
+                }.flowOn(dispatcher)
+                .onStart {
+                    sendAction { FrameUiAction.ShowLoading }
+                }.onCompletion {
+                    sendAction { FrameUiAction.HideLoading }
+                }.catch {
+                    sendAction { FrameUiAction.ShowError }
+                }.collect {
+                    player1Stats = it.first
+                    player2Stats = it.second
+                }
+        }
+    }
+
     private fun takeFrameAndPlayerIfNotNull(block: (UiFrame, UiPlayer) -> Unit) {
         currentFrame?.let { frame ->
             currentPlayer?.let { player ->
@@ -180,7 +214,8 @@ class FrameViewModel(
         val addOrUpdateFrameUseCase: AddOrUpdateFrameUseCase,
         val getPenaltyValueUseCase: GetPenaltyValueUseCase,
         val deleteMatchUseCase: DeleteMatchUseCase,
-        val getPlayerStatsUseCase: GetPlayerStatsUseCase
+        val getPlayerStatsUseCase: GetPlayerStatsUseCase,
+        val addOrUpdatePlayerStatsUseCase: AddOrUpdatePlayerStatsUseCase
     )
 
 }

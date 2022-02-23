@@ -30,7 +30,8 @@ val uiModule = module {
                 addOrUpdateFrameUseCase = get(),
                 getPenaltyValueUseCase = get(),
                 deleteMatchUseCase = get(),
-                getPlayerStatsUseCase = get()
+                getPlayerStatsUseCase = get(),
+                addOrUpdatePlayerStatsUseCase = get()
             ),
             breakCalculator = get(),
         )
