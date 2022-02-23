@@ -18,7 +18,7 @@ import com.alancamargo.snookerscore.domain.usecase.frame.GetFramesUseCase
 import com.alancamargo.snookerscore.domain.usecase.match.AddMatchUseCase
 import com.alancamargo.snookerscore.domain.usecase.match.DeleteMatchUseCase
 import com.alancamargo.snookerscore.domain.usecase.match.GetMatchesUseCase
-import com.alancamargo.snookerscore.domain.usecase.match.GetWinningPlayerUseCase
+import com.alancamargo.snookerscore.domain.usecase.player.GetWinningPlayerUseCase
 import com.alancamargo.snookerscore.domain.usecase.player.AddOrUpdatePlayerUseCase
 import com.alancamargo.snookerscore.domain.usecase.player.ArePlayersTheSameUseCase
 import com.alancamargo.snookerscore.domain.usecase.player.DeletePlayerUseCase

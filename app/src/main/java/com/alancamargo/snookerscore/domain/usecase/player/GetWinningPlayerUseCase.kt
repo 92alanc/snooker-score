@@ -1,4 +1,4 @@
-package com.alancamargo.snookerscore.domain.usecase.match
+package com.alancamargo.snookerscore.domain.usecase.player
 
 import com.alancamargo.snookerscore.domain.model.Frame
 import com.alancamargo.snookerscore.domain.model.Player

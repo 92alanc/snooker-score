@@ -8,8 +8,8 @@ import com.alancamargo.snookerscore.domain.tools.BreakCalculator
 import com.alancamargo.snookerscore.domain.usecase.foul.GetPenaltyValueUseCase
 import com.alancamargo.snookerscore.domain.usecase.frame.AddOrUpdateFrameUseCase
 import com.alancamargo.snookerscore.domain.usecase.match.DeleteMatchUseCase
-import com.alancamargo.snookerscore.domain.usecase.match.GetWinningPlayerUseCase
 import com.alancamargo.snookerscore.domain.usecase.player.DrawPlayerUseCase
+import com.alancamargo.snookerscore.domain.usecase.player.GetWinningPlayerUseCase
 import com.alancamargo.snookerscore.domain.usecase.playerstats.AddOrUpdatePlayerStatsUseCase
 import com.alancamargo.snookerscore.domain.usecase.playerstats.GetPlayerStatsUseCase
 import com.alancamargo.snookerscore.domain.usecase.playerstats.UpdatePlayerStatsWithMatchResultUseCase
@@ -51,7 +51,7 @@ class FrameViewModel(
                     player1 = p1
                     player2 = p2
 
-                    val playerDrawn = useCases.drawPlayerUseCase(p1, p2).toUi()
+                    val playerDrawn = useCases.playerUseCases.drawPlayerUseCase(p1, p2).toUi()
                     currentPlayer = playerDrawn
                     setState { state -> state.setCurrentPlayer(playerDrawn) }
                 }
@@ -158,9 +158,9 @@ class FrameViewModel(
     }
 
     private suspend fun addOrUpdatePlayerStats(frame: UiFrame, player: UiPlayer) {
-        useCases.getPlayerStatsUseCase(player.toDomain()).handleDefaultActions()
+        useCases.playerStatsUseCases.getPlayerStatsUseCase(player.toDomain()).handleDefaultActions()
             .collect { currentPlayerStats ->
-                useCases.addOrUpdatePlayerStatsUseCase(
+                useCases.playerStatsUseCases.addOrUpdatePlayerStatsUseCase(
                     currentPlayerStats,
                     frame.toDomain(),
                     player.toDomain()
@@ -176,13 +176,14 @@ class FrameViewModel(
 
     private fun endMatch() {
         val domainFrames = frames.map { it.toDomain() }
-        val winningPlayer = useCases.getWinningPlayerUseCase(domainFrames)
+        val winningPlayer = useCases.playerUseCases.getWinningPlayerUseCase(domainFrames)
 
         viewModelScope.launch {
-            useCases.getPlayerStatsUseCase(winningPlayer).handleDefaultActions()
+            useCases.playerStatsUseCases.getPlayerStatsUseCase(winningPlayer).handleDefaultActions()
                 .collect { currentWinnerStats ->
-                    useCases.updatePlayerStatsWithMatchResultUseCase(currentWinnerStats)
-                        .handleDefaultActions()
+                    useCases.playerStatsUseCases.updatePlayerStatsWithMatchResultUseCase(
+                        currentWinnerStats
+                    ).handleDefaultActions()
                         .collect()
                 }
         }
@@ -208,13 +209,21 @@ class FrameViewModel(
     }
 
     class UseCases(
-        val drawPlayerUseCase: DrawPlayerUseCase,
+        val playerUseCases: PlayerUseCases,
+        val playerStatsUseCases: PlayerStatsUseCases,
         val addOrUpdateFrameUseCase: AddOrUpdateFrameUseCase,
         val getPenaltyValueUseCase: GetPenaltyValueUseCase,
-        val deleteMatchUseCase: DeleteMatchUseCase,
+        val deleteMatchUseCase: DeleteMatchUseCase
+    )
+
+    class PlayerUseCases(
+        val drawPlayerUseCase: DrawPlayerUseCase,
+        val getWinningPlayerUseCase: GetWinningPlayerUseCase
+    )
+
+    class PlayerStatsUseCases(
         val getPlayerStatsUseCase: GetPlayerStatsUseCase,
         val addOrUpdatePlayerStatsUseCase: AddOrUpdatePlayerStatsUseCase,
-        val getWinningPlayerUseCase: GetWinningPlayerUseCase,
         val updatePlayerStatsWithMatchResultUseCase: UpdatePlayerStatsWithMatchResultUseCase
     )
 

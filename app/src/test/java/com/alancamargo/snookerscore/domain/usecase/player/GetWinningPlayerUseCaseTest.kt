@@ -1,4 +1,4 @@
-package com.alancamargo.snookerscore.domain.usecase.match
+package com.alancamargo.snookerscore.domain.usecase.player
 
 import org.junit.Test
 

@@ -26,14 +26,18 @@ val uiModule = module {
         FrameViewModel(
             frames = parameters.get(),
             useCases = FrameViewModel.UseCases(
-                drawPlayerUseCase = get(),
+                playerUseCases = FrameViewModel.PlayerUseCases(
+                    drawPlayerUseCase = get(),
+                    getWinningPlayerUseCase = get()
+                ),
+                playerStatsUseCases = FrameViewModel.PlayerStatsUseCases(
+                    getPlayerStatsUseCase = get(),
+                    addOrUpdatePlayerStatsUseCase = get(),
+                    updatePlayerStatsWithMatchResultUseCase = get()
+                ),
                 addOrUpdateFrameUseCase = get(),
                 getPenaltyValueUseCase = get(),
-                deleteMatchUseCase = get(),
-                getPlayerStatsUseCase = get(),
-                addOrUpdatePlayerStatsUseCase = get(),
-                getWinningPlayerUseCase = get(),
-                updatePlayerStatsWithMatchResultUseCase = get()
+                deleteMatchUseCase = get()
             ),
             breakCalculator = get(),
         )

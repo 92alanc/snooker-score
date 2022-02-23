@@ -8,8 +8,8 @@ import com.alancamargo.snookerscore.domain.tools.BreakCalculator
 import com.alancamargo.snookerscore.domain.usecase.foul.GetPenaltyValueUseCase
 import com.alancamargo.snookerscore.domain.usecase.frame.AddOrUpdateFrameUseCase
 import com.alancamargo.snookerscore.domain.usecase.match.DeleteMatchUseCase
-import com.alancamargo.snookerscore.domain.usecase.match.GetWinningPlayerUseCase
 import com.alancamargo.snookerscore.domain.usecase.player.DrawPlayerUseCase
+import com.alancamargo.snookerscore.domain.usecase.player.GetWinningPlayerUseCase
 import com.alancamargo.snookerscore.domain.usecase.playerstats.AddOrUpdatePlayerStatsUseCase
 import com.alancamargo.snookerscore.domain.usecase.playerstats.GetPlayerStatsUseCase
 import com.alancamargo.snookerscore.domain.usecase.playerstats.UpdatePlayerStatsWithMatchResultUseCase
@@ -65,14 +65,18 @@ class FrameViewModelTest {
         viewModel = FrameViewModel(
             frames = frames,
             useCases = FrameViewModel.UseCases(
-                drawPlayerUseCase = mockDrawPlayerUseCase,
+                playerUseCases = FrameViewModel.PlayerUseCases(
+                    drawPlayerUseCase = mockDrawPlayerUseCase,
+                    getWinningPlayerUseCase = mockGetWinningPlayerUseCase
+                ),
+                playerStatsUseCases = FrameViewModel.PlayerStatsUseCases(
+                    getPlayerStatsUseCase = mockGetPlayerStatsUseCase,
+                    addOrUpdatePlayerStatsUseCase = mockAddOrUpdatePlayerStatsUseCase,
+                    updatePlayerStatsWithMatchResultUseCase = mockUpdatePlayerStatsWithMatchResultUseCase
+                ),
                 addOrUpdateFrameUseCase = mockAddOrUpdateFrameUseCase,
                 getPenaltyValueUseCase = mockGetPenaltyValueUseCase,
-                deleteMatchUseCase = mockDeleteMatchUseCase,
-                getPlayerStatsUseCase = mockGetPlayerStatsUseCase,
-                addOrUpdatePlayerStatsUseCase = mockAddOrUpdatePlayerStatsUseCase,
-                getWinningPlayerUseCase = mockGetWinningPlayerUseCase,
-                updatePlayerStatsWithMatchResultUseCase = mockUpdatePlayerStatsWithMatchResultUseCase
+                deleteMatchUseCase = mockDeleteMatchUseCase
             ),
             breakCalculator = mockBreakCalculator,
             dispatcher = testCoroutineDispatcher
