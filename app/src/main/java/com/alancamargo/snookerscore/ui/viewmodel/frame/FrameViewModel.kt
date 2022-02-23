@@ -4,7 +4,6 @@ import androidx.lifecycle.viewModelScope
 import com.alancamargo.snookerscore.core.arch.viewmodel.ViewModel
 import com.alancamargo.snookerscore.domain.model.Foul
 import com.alancamargo.snookerscore.domain.model.Player
-import com.alancamargo.snookerscore.domain.model.PlayerStats
 import com.alancamargo.snookerscore.domain.tools.BreakCalculator
 import com.alancamargo.snookerscore.domain.usecase.foul.GetPenaltyValueUseCase
 import com.alancamargo.snookerscore.domain.usecase.frame.AddOrUpdateFrameUseCase
@@ -19,12 +18,12 @@ import com.alancamargo.snookerscore.ui.model.UiFrame
 import com.alancamargo.snookerscore.ui.model.UiPlayer
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
-import kotlinx.coroutines.flow.zip
 import kotlinx.coroutines.launch
 
 class FrameViewModel(
@@ -39,8 +38,6 @@ class FrameViewModel(
     private var currentPlayer: UiPlayer? = null
     private var player1: Player? = null
     private var player2: Player? = null
-    private var player1Stats: PlayerStats? = null
-    private var player2Stats: PlayerStats? = null
 
     init {
         frames.first().let { firstFrame ->
@@ -51,8 +48,6 @@ class FrameViewModel(
                 firstFrame.match.player2.toDomain().let { p2 ->
                     player1 = p1
                     player2 = p2
-
-                    getPlayerStats(p1, p2)
 
                     val playerDrawn = useCases.drawPlayerUseCase(p1, p2).toUi()
                     currentPlayer = playerDrawn
@@ -69,16 +64,16 @@ class FrameViewModel(
 
             if (player == frame.match.player1) {
                 frame.player1Score += domainBall.value
+                setState { state -> state.onPlayer1ScoreUpdated(frame.player1Score) }
             } else if (player == frame.match.player2) {
                 frame.player2Score += domainBall.value
+                setState { state -> state.onPlayer2ScoreUpdated(frame.player2Score) }
             }
 
-            addOrUpdateFrame(frame)
             setState { state -> state.onEnableLastPottedBallButton() }
 
             val breakValue = breakCalculator.getPoints()
             setState { state -> state.onBreakUpdated(breakValue) }
-            // TODO: add test
         }
     }
 
@@ -88,11 +83,14 @@ class FrameViewModel(
         takeFrameAndPlayerIfNotNull { frame, player ->
             if (player == frame.match.player1) {
                 frame.player1Score -= lastPottedBall.value
+                setState { state -> state.onPlayer1ScoreUpdated(frame.player1Score) }
             } else if (player == frame.match.player2) {
                 frame.player2Score -= lastPottedBall.value
+                setState { state -> state.onPlayer2ScoreUpdated(frame.player2Score) }
             }
 
-            addOrUpdateFrame(frame)
+            val breakValue = breakCalculator.getPoints()
+            setState { state -> state.onBreakUpdated(breakValue) }
         }
     }
 
@@ -102,8 +100,10 @@ class FrameViewModel(
 
             if (player == frame.match.player1) {
                 frame.player2Score += penaltyValue
+                setState { state -> state.onPlayer2ScoreUpdated(frame.player2Score) }
             } else if (player == frame.match.player2) {
                 frame.player1Score += penaltyValue
+                setState { state -> state.onPlayer1ScoreUpdated(frame.player1Score) }
             }
 
             onEndTurnClicked()
@@ -112,23 +112,17 @@ class FrameViewModel(
 
     fun onEndTurnClicked() {
         takeFrameAndPlayerIfNotNull { frame, player ->
-            val breakPoints = breakCalculator.getPoints()
-
             if (player == frame.match.player1) {
-                if (breakPoints > frame.player1HighestBreak) {
-                    frame.player1HighestBreak = breakPoints
-                }
-
                 setState { state -> state.setCurrentPlayer(frame.match.player2) }
-            } else if (player == frame.match.player2) {
-                if (breakPoints > frame.player2HighestBreak) {
-                    frame.player2HighestBreak = breakPoints
-                }
-
+            } else {
                 setState { state -> state.setCurrentPlayer(frame.match.player1) }
             }
 
-            addOrUpdateFrame(frame)
+            viewModelScope.launch {
+                addOrUpdatePlayerStats(frame, player)
+                addOrUpdateFrame(frame)
+            }
+
             breakCalculator.clear()
             setState { state -> state.onDisableLastPottedBallButton() }
         }
@@ -137,8 +131,6 @@ class FrameViewModel(
     fun onEndFrameClicked() {
         onEndTurnClicked()
         val newFrameIndex = ++currentFrameIndex
-
-        // TODO: update highest scores and breaks
 
         if (newFrameIndex <= frames.lastIndex) {
             currentFrame = frames[currentFrameIndex]
@@ -153,51 +145,30 @@ class FrameViewModel(
     fun onForfeitMatchClicked() {
         takeFrameAndPlayerIfNotNull { frame, _ ->
             viewModelScope.launch {
-                useCases.deleteMatchUseCase(frame.match.toDomain()).flowOn(dispatcher)
-                    .onStart {
-                        sendAction { FrameUiAction.ShowLoading }
-                    }.onCompletion {
-                        sendAction { FrameUiAction.HideLoading }
-                    }.catch {
-                        sendAction { FrameUiAction.ShowError }
-                    }.collect {
+                useCases.deleteMatchUseCase(frame.match.toDomain()).handleDefaultActions()
+                    .collect {
                         sendAction { FrameUiAction.OpenMain }
                     }
             }
         }
     }
 
-    private fun addOrUpdateFrame(frame: UiFrame) {
-        viewModelScope.launch {
-            useCases.addOrUpdateFrameUseCase(frame.toDomain()).flowOn(dispatcher)
-                .onStart {
-                    sendAction { FrameUiAction.ShowLoading }
-                }.onCompletion {
-                    sendAction { FrameUiAction.HideLoading }
-                }.catch {
-                    sendAction { FrameUiAction.ShowError }
-                }.collect {
-                    setState { state -> state.setCurrentFrame(frame) }
-                }
-        }
+    private suspend fun addOrUpdatePlayerStats(
+        frame: UiFrame, player: UiPlayer
+    ) {
+        useCases.getPlayerStatsUseCase(player.toDomain()).handleDefaultActions()
+            .collect { currentPlayerStats ->
+                useCases.addOrUpdatePlayerStatsUseCase(
+                    currentPlayerStats,
+                    frame.toDomain(),
+                    player.toDomain()
+                ).handleDefaultActions().collect()
+            }
     }
 
-    private fun getPlayerStats(player1: Player, player2: Player) {
-        viewModelScope.launch {
-            useCases.getPlayerStatsUseCase(player1)
-                .zip(useCases.getPlayerStatsUseCase(player2)) { player1Stats, player2Stats ->
-                    player1Stats to player2Stats
-                }.flowOn(dispatcher)
-                .onStart {
-                    sendAction { FrameUiAction.ShowLoading }
-                }.onCompletion {
-                    sendAction { FrameUiAction.HideLoading }
-                }.catch {
-                    sendAction { FrameUiAction.ShowError }
-                }.collect {
-                    player1Stats = it.first
-                    player2Stats = it.second
-                }
+    private suspend fun addOrUpdateFrame(frame: UiFrame) {
+        useCases.addOrUpdateFrameUseCase(frame.toDomain()).handleDefaultActions().collect {
+            setState { state -> state.setCurrentFrame(frame) }
         }
     }
 
@@ -207,6 +178,17 @@ class FrameViewModel(
                 block(frame, player)
             }
         }
+    }
+
+    private fun <T> Flow<T>.handleDefaultActions(): Flow<T> {
+        return this.flowOn(dispatcher)
+            .onStart {
+                sendAction { FrameUiAction.ShowLoading }
+            }.onCompletion {
+                sendAction { FrameUiAction.HideLoading }
+            }.catch {
+                sendAction { FrameUiAction.ShowError }
+            }
     }
 
     class UseCases(

@@ -12,28 +12,28 @@ class AddOrUpdatePlayerStatsUseCase(private val repository: PlayerStatsRepositor
     operator fun invoke(
         currentPlayerStats: PlayerStats,
         frame: Frame,
-        currentPlayer: Player
+        player: Player
     ): Flow<Unit> {
-        var highestScore = 0
-        var highestBreak = 0
+        var highestScore = currentPlayerStats.highestScore
+        var highestBreak = currentPlayerStats.highestBreak
 
-        when (currentPlayer) {
+        when (player) {
             frame.match.player1 -> {
-                if (frame.player1Score > currentPlayerStats.highestScore) {
+                if (frame.player1Score > highestScore) {
                     highestScore = frame.player1Score
                 }
 
-                if (frame.player1HighestBreak > currentPlayerStats.highestBreak) {
+                if (frame.player1HighestBreak > highestBreak) {
                     highestBreak = frame.player1HighestBreak
                 }
             }
 
             frame.match.player2 -> {
-                if (frame.player2Score > currentPlayerStats.highestScore) {
+                if (frame.player2Score > highestScore) {
                     highestScore = frame.player2Score
                 }
 
-                if (frame.player2HighestBreak > currentPlayerStats.highestBreak) {
+                if (frame.player2HighestBreak > highestBreak) {
                     highestBreak = frame.player2HighestBreak
                 }
             }

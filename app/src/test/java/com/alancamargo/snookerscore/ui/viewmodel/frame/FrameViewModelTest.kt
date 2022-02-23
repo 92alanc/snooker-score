@@ -11,6 +11,7 @@ import com.alancamargo.snookerscore.domain.usecase.match.DeleteMatchUseCase
 import com.alancamargo.snookerscore.domain.usecase.player.DrawPlayerUseCase
 import com.alancamargo.snookerscore.domain.usecase.playerstats.AddOrUpdatePlayerStatsUseCase
 import com.alancamargo.snookerscore.domain.usecase.playerstats.GetPlayerStatsUseCase
+import com.alancamargo.snookerscore.testtools.getPlayerStats
 import com.alancamargo.snookerscore.testtools.getUiFrameList
 import com.alancamargo.snookerscore.ui.mapping.toDomain
 import com.alancamargo.snookerscore.ui.model.UiBall
@@ -23,6 +24,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.setMain
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import java.io.IOException
@@ -49,281 +51,12 @@ class FrameViewModelTest {
 
     private lateinit var viewModel: FrameViewModel
 
-    @Test
-    fun `at startup should set current frame and player and undo last potted ball button should be disabled`() {
-        createViewModel()
-
-        val firstFrame = frames.first()
-        verify {
-            mockStateObserver.onChanged(
-                FrameUiState(
-                    currentFrame = firstFrame,
-                    currentPlayer = firstFrame.match.player1,
-                    isUndoLastPottedBallButtonEnabled = false
-                )
-            )
-        }
-    }
-
-    @Test
-    fun `onBallPotted should enableUndoLastPottedBall button`() {
-        createViewModel()
-
-        viewModel.onBallPotted(UiBall.BROWN)
-
-        verify { mockStateObserver.onChanged(any()) }
-    }
-
-    @Test
-    fun `onBallPotted should register potted ball on calculator`() {
-        createViewModel()
-
-        viewModel.onBallPotted(UiBall.RED)
-
-        verify { mockBreakCalculator.potBall(Ball.RED) }
-    }
-
-    @Test
-    fun `onBallPotted should send ShowLoading action`() {
-        createViewModel()
-        mockDelay()
-
-        viewModel.onBallPotted(UiBall.BLACK)
-
-        verify { mockActionObserver.onChanged(FrameUiAction.ShowLoading) }
-    }
-
-    @Test
-    fun `with successful response onBallPotted should set state with updated frame`() {
-        createViewModel()
-        mockSuccessfulResponse()
-
-        viewModel.onBallPotted(UiBall.BLUE)
-
-        verify { mockStateObserver.onChanged(any()) }
-    }
-
-    @Test
-    fun `with error response onBallPotted should send ShowError action`() {
-        createViewModel()
-        mockErrorResponse()
-
-        viewModel.onBallPotted(UiBall.PINK)
-
-        verify { mockActionObserver.onChanged(FrameUiAction.ShowError) }
-    }
-
-    @Test
-    fun `onBallPotted should send HideLoading action`() {
-        createViewModel()
-        mockSuccessfulResponse()
-
-        viewModel.onBallPotted(UiBall.GREEN)
-
-        verify { mockActionObserver.onChanged(FrameUiAction.HideLoading) }
-    }
-
-    @Test
-    fun `onUndoLastPottedBallClicked should undo last potted ball on calculator`() {
-        createViewModel()
-
-        viewModel.onUndoLastPottedBallClicked()
-
-        verify { mockBreakCalculator.undoLastPottedBall() }
-    }
-
-    @Test
-    fun `onUndoLastPottedBallClicked should update frame`() {
-        createViewModel()
-        mockSuccessfulResponse()
-
-        viewModel.onUndoLastPottedBallClicked()
-
-        verify { mockAddOrUpdateFrameUseCase.invoke(any()) }
-    }
-
-    @Test
-    fun `onFoul should calculate penalty value`() {
-        createViewModel()
-
-        viewModel.onFoul(Foul.HitNothing)
-
-        verify { mockGetPenaltyValueUseCase.invoke(Foul.HitNothing) }
-    }
-
-    @Test
-    fun `onFoul should add or update frame`() {
-        createViewModel()
-        mockSuccessfulResponse()
-
-        val foul = Foul.BallPotted(Ball.CUE_BALL)
-        viewModel.onFoul(foul)
-
-        verify { mockAddOrUpdateFrameUseCase.invoke(any()) }
-    }
-
-    @Test
-    fun `onEndTurnClicked should disable undo last potted ball button`() {
-        createViewModel()
-        mockSuccessfulResponse()
-
-        viewModel.onEndTurnClicked()
-
-        verify { mockStateObserver.onChanged(any()) }
-    }
-
-    @Test
-    fun `onEndTurnClicked should get break points`() {
-        createViewModel()
-        mockSuccessfulResponse()
-
-        viewModel.onEndTurnClicked()
-
-        verify { mockBreakCalculator.getPoints() }
-    }
-
-    @Test
-    fun `onEndTurnClicked should swap current player`() {
-        createViewModel()
-        mockSuccessfulResponse()
-
-        viewModel.onEndTurnClicked()
-
-        verify { mockStateObserver.onChanged(any()) }
-    }
-
-    @Test
-    fun `onEndTurnClicked should update frame`() {
-        createViewModel()
-        mockSuccessfulResponse()
-
-        viewModel.onEndTurnClicked()
-
-        verify { mockAddOrUpdateFrameUseCase.invoke(any()) }
-    }
-
-    @Test
-    fun `onEndTurnClicked should clear break calculator`() {
-        createViewModel()
-        mockSuccessfulResponse()
-
-        viewModel.onEndTurnClicked()
-
-        verify { mockBreakCalculator.clear() }
-    }
-
-    @Test
-    fun `onEndFrameClicked should get break points`() {
-        createViewModel()
-        mockSuccessfulResponse()
-
-        viewModel.onEndFrameClicked()
-
-        verify { mockBreakCalculator.getPoints() }
-    }
-
-    @Test
-    fun `onEndFrameClicked should swap current player`() {
-        createViewModel()
-        mockSuccessfulResponse()
-
-        viewModel.onEndFrameClicked()
-
-        verify { mockStateObserver.onChanged(any()) }
-    }
-
-    @Test
-    fun `onEndFrameClicked should update frame and swap current`() {
-        createViewModel()
-        mockSuccessfulResponse()
-
-        viewModel.onEndFrameClicked()
-
-        verify { mockAddOrUpdateFrameUseCase.invoke(any()) }
-    }
-
-    @Test
-    fun `onEndFrameClicked should clear break calculator`() {
-        createViewModel()
-        mockSuccessfulResponse()
-
-        viewModel.onEndFrameClicked()
-
-        verify { mockBreakCalculator.clear() }
-    }
-
-    @Test
-    fun `when not on last frame onEndFrameClicked should change current frame`() {
-        createViewModel()
-        mockSuccessfulResponse()
-
-        viewModel.onEndFrameClicked()
-
-        verify { mockStateObserver.onChanged(any()) }
-    }
-
-    @Test
-    fun `when on last frame onEndFrameClicked should send OpenMatchSummary action`() {
-        createViewModel()
-        mockSuccessfulResponse()
-
-        repeat(3) {
-            viewModel.onEndFrameClicked()
-        }
-
-        verify { mockActionObserver.onChanged(FrameUiAction.OpenMatchSummary(match)) }
-    }
-
-    @Test
-    fun `onForfeitMatchClicked should send ShowLoading action`() {
-        createViewModel()
-        every { mockDeleteMatchUseCase.invoke(any()) } returns flow { delay(timeMillis = 50) }
-
-        viewModel.onForfeitMatchClicked()
-
-        verify { mockActionObserver.onChanged(FrameUiAction.ShowLoading) }
-    }
-
-    @Test
-    fun `with successful response onForfeitMatchClicked should send OpenMain action`() {
-        createViewModel()
-        every { mockDeleteMatchUseCase.invoke(any()) } returns flow { emit(Unit) }
-
-        viewModel.onForfeitMatchClicked()
-
-        verify { mockActionObserver.onChanged(FrameUiAction.OpenMain) }
-    }
-
-    @Test
-    fun `with error response onForfeitMatchClicked should send ShowError action`() {
-        createViewModel()
-        every { mockDeleteMatchUseCase.invoke(any()) } returns flow { throw IOException() }
-
-        viewModel.onForfeitMatchClicked()
-
-        verify { mockActionObserver.onChanged(FrameUiAction.ShowError) }
-    }
-
-    @Test
-    fun `onForfeitMatchClicked should send HideLoading action`() {
-        createViewModel()
-        every { mockDeleteMatchUseCase.invoke(any()) } returns flow { emit(Unit) }
-
-        viewModel.onForfeitMatchClicked()
-
-        verify { mockActionObserver.onChanged(FrameUiAction.HideLoading) }
-    }
-
-    private fun createViewModel() {
+    @Before
+    fun setUp() {
         val testCoroutineDispatcher = TestCoroutineDispatcher()
         Dispatchers.setMain(testCoroutineDispatcher)
 
-        val domainMatch = match.toDomain()
-        every {
-            mockDrawPlayerUseCase.invoke(domainMatch.player1, domainMatch.player2)
-        } returns domainMatch.player1
-        every { mockBreakCalculator.getPoints() } returns 10
-        every { mockGetPenaltyValueUseCase.invoke(any()) } returns 4
+        configureMocks()
 
         viewModel = FrameViewModel(
             frames = frames,
@@ -343,20 +76,214 @@ class FrameViewModelTest {
         }
     }
 
+    @Test
+    fun `at startup should set current frame and player and undo last potted ball button should be disabled`() {
+        val firstFrame = frames.first()
+        verify {
+            mockStateObserver.onChanged(
+                FrameUiState(
+                    currentFrame = firstFrame,
+                    currentPlayer = firstFrame.match.player1,
+                    isUndoLastPottedBallButtonEnabled = false
+                )
+            )
+        }
+    }
+
+    @Test
+    fun `onBallPotted should enableUndoLastPottedBall button`() {
+        viewModel.onBallPotted(UiBall.BROWN)
+
+        verify { mockStateObserver.onChanged(any()) }
+    }
+
+    @Test
+    fun `onBallPotted should register potted ball on calculator`() {
+        viewModel.onBallPotted(UiBall.RED)
+
+        verify { mockBreakCalculator.potBall(Ball.RED) }
+    }
+
+    @Test
+    fun `onBallPotted should update UI state`() {
+        mockSuccessfulResponse()
+
+        viewModel.onBallPotted(UiBall.BLUE)
+
+        verify(exactly = 4) { mockStateObserver.onChanged(any()) }
+    }
+
+    @Test
+    fun `onUndoLastPottedBallClicked should undo last potted ball on calculator`() {
+        viewModel.onUndoLastPottedBallClicked()
+
+        verify { mockBreakCalculator.undoLastPottedBall() }
+    }
+
+    @Test
+    fun `onUndoLastPottedBallClicked should update UI state`() {
+        viewModel.onUndoLastPottedBallClicked()
+
+        verify(exactly = 3) { mockStateObserver.onChanged(any()) }
+    }
+
+    @Test
+    fun `onFoul should calculate penalty value`() {
+        viewModel.onFoul(Foul.HitNothing)
+
+        verify { mockGetPenaltyValueUseCase.invoke(Foul.HitNothing) }
+    }
+
+    @Test
+    fun `onFoul should add or update frame`() {
+        mockSuccessfulResponse()
+
+        val foul = Foul.BallPotted(Ball.CUE_BALL)
+        viewModel.onFoul(foul)
+
+        verify { mockAddOrUpdateFrameUseCase.invoke(any()) }
+    }
+
+    @Test
+    fun `onEndTurnClicked should disable undo last potted ball button`() {
+        mockSuccessfulResponse()
+
+        viewModel.onEndTurnClicked()
+
+        verify { mockStateObserver.onChanged(any()) }
+    }
+
+    @Test
+    fun `onEndTurnClicked should swap current player`() {
+        mockSuccessfulResponse()
+
+        viewModel.onEndTurnClicked()
+
+        verify { mockStateObserver.onChanged(any()) }
+    }
+
+    @Test
+    fun `onEndTurnClicked should update frame`() {
+        mockSuccessfulResponse()
+
+        viewModel.onEndTurnClicked()
+
+        verify { mockAddOrUpdateFrameUseCase.invoke(any()) }
+    }
+
+    @Test
+    fun `onEndTurnClicked should clear break calculator`() {
+        mockSuccessfulResponse()
+
+        viewModel.onEndTurnClicked()
+
+        verify { mockBreakCalculator.clear() }
+    }
+
+    @Test
+    fun `onEndFrameClicked should swap current player`() {
+        mockSuccessfulResponse()
+
+        viewModel.onEndFrameClicked()
+
+        verify { mockStateObserver.onChanged(any()) }
+    }
+
+    @Test
+    fun `onEndFrameClicked should update frame and swap current`() {
+        mockSuccessfulResponse()
+
+        viewModel.onEndFrameClicked()
+
+        verify { mockAddOrUpdateFrameUseCase.invoke(any()) }
+    }
+
+    @Test
+    fun `onEndFrameClicked should clear break calculator`() {
+        mockSuccessfulResponse()
+
+        viewModel.onEndFrameClicked()
+
+        verify { mockBreakCalculator.clear() }
+    }
+
+    @Test
+    fun `when not on last frame onEndFrameClicked should change current frame`() {
+        mockSuccessfulResponse()
+
+        viewModel.onEndFrameClicked()
+
+        verify { mockStateObserver.onChanged(any()) }
+    }
+
+    @Test
+    fun `when on last frame onEndFrameClicked should send OpenMatchSummary action`() {
+        mockSuccessfulResponse()
+
+        repeat(3) {
+            viewModel.onEndFrameClicked()
+        }
+
+        verify { mockActionObserver.onChanged(FrameUiAction.OpenMatchSummary(match)) }
+    }
+
+    @Test
+    fun `onForfeitMatchClicked should send ShowLoading action`() {
+        every { mockDeleteMatchUseCase.invoke(any()) } returns flow { delay(timeMillis = 50) }
+
+        viewModel.onForfeitMatchClicked()
+
+        verify { mockActionObserver.onChanged(FrameUiAction.ShowLoading) }
+    }
+
+    @Test
+    fun `with successful response onForfeitMatchClicked should send OpenMain action`() {
+        every { mockDeleteMatchUseCase.invoke(any()) } returns flow { emit(Unit) }
+
+        viewModel.onForfeitMatchClicked()
+
+        verify { mockActionObserver.onChanged(FrameUiAction.OpenMain) }
+    }
+
+    @Test
+    fun `with error response onForfeitMatchClicked should send ShowError action`() {
+        every { mockDeleteMatchUseCase.invoke(any()) } returns flow { throw IOException() }
+
+        viewModel.onForfeitMatchClicked()
+
+        verify { mockActionObserver.onChanged(FrameUiAction.ShowError) }
+    }
+
+    @Test
+    fun `onForfeitMatchClicked should send HideLoading action`() {
+        every { mockDeleteMatchUseCase.invoke(any()) } returns flow { emit(Unit) }
+
+        viewModel.onForfeitMatchClicked()
+
+        verify { mockActionObserver.onChanged(FrameUiAction.HideLoading) }
+    }
+
+    private fun configureMocks() {
+        val domainMatch = match.toDomain()
+        every {
+            mockDrawPlayerUseCase.invoke(domainMatch.player1, domainMatch.player2)
+        } returns domainMatch.player1
+        every { mockBreakCalculator.getPoints() } returns 10
+        every { mockGetPenaltyValueUseCase.invoke(any()) } returns 4
+        every {
+            mockGetPlayerStatsUseCase.invoke(player = any())
+        } returns flow { emit(getPlayerStats()) }
+        every {
+            mockAddOrUpdatePlayerStatsUseCase.invoke(
+                currentPlayerStats = any(),
+                frame = any(),
+                player = any()
+            )
+        } returns flow { emit(Unit) }
+    }
+
     private fun mockSuccessfulResponse() {
         every { mockAddOrUpdateFrameUseCase.invoke(frame = any()) } returns flow { emit(Unit) }
-    }
-
-    private fun mockDelay() {
-        every {
-            mockAddOrUpdateFrameUseCase.invoke(frame = any())
-        } returns flow { delay(timeMillis = 50) }
-    }
-
-    private fun mockErrorResponse() {
-        every {
-            mockAddOrUpdateFrameUseCase.invoke(frame = any())
-        } returns flow { throw IOException() }
     }
 
 }
