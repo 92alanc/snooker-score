@@ -8,9 +8,11 @@ import com.alancamargo.snookerscore.domain.tools.BreakCalculator
 import com.alancamargo.snookerscore.domain.usecase.foul.GetPenaltyValueUseCase
 import com.alancamargo.snookerscore.domain.usecase.frame.AddOrUpdateFrameUseCase
 import com.alancamargo.snookerscore.domain.usecase.match.DeleteMatchUseCase
+import com.alancamargo.snookerscore.domain.usecase.match.GetWinningPlayerUseCase
 import com.alancamargo.snookerscore.domain.usecase.player.DrawPlayerUseCase
 import com.alancamargo.snookerscore.domain.usecase.playerstats.AddOrUpdatePlayerStatsUseCase
 import com.alancamargo.snookerscore.domain.usecase.playerstats.GetPlayerStatsUseCase
+import com.alancamargo.snookerscore.domain.usecase.playerstats.UpdatePlayerStatsWithMatchResultUseCase
 import com.alancamargo.snookerscore.testtools.getPlayerStats
 import com.alancamargo.snookerscore.testtools.getUiFrameList
 import com.alancamargo.snookerscore.ui.mapping.toDomain
@@ -43,6 +45,8 @@ class FrameViewModelTest {
     private val mockDeleteMatchUseCase = mockk<DeleteMatchUseCase>()
     private val mockGetPlayerStatsUseCase = mockk<GetPlayerStatsUseCase>()
     private val mockAddOrUpdatePlayerStatsUseCase = mockk<AddOrUpdatePlayerStatsUseCase>()
+    private val mockGetWinningPlayerUseCase = mockk<GetWinningPlayerUseCase>()
+    private val mockUpdatePlayerStatsWithMatchResultUseCase = mockk<UpdatePlayerStatsWithMatchResultUseCase>()
     private val mockStateObserver = mockk<Observer<FrameUiState>>(relaxed = true)
     private val mockActionObserver = mockk<Observer<FrameUiAction>>(relaxed = true)
 
@@ -66,7 +70,9 @@ class FrameViewModelTest {
                 getPenaltyValueUseCase = mockGetPenaltyValueUseCase,
                 deleteMatchUseCase = mockDeleteMatchUseCase,
                 getPlayerStatsUseCase = mockGetPlayerStatsUseCase,
-                addOrUpdatePlayerStatsUseCase = mockAddOrUpdatePlayerStatsUseCase
+                addOrUpdatePlayerStatsUseCase = mockAddOrUpdatePlayerStatsUseCase,
+                getWinningPlayerUseCase = mockGetWinningPlayerUseCase,
+                updatePlayerStatsWithMatchResultUseCase = mockUpdatePlayerStatsWithMatchResultUseCase
             ),
             breakCalculator = mockBreakCalculator,
             dispatcher = testCoroutineDispatcher
@@ -217,6 +223,28 @@ class FrameViewModelTest {
     }
 
     @Test
+    fun `when on last frame onEndFrameClicked should get winning player`() {
+        mockSuccessfulResponse()
+
+        repeat(3) {
+            viewModel.onEndFrameClicked()
+        }
+
+        verify { mockGetWinningPlayerUseCase.invoke(frames = any()) }
+    }
+
+    @Test
+    fun `when on last frame onEndFrameClicked should update winning player stats`() {
+        mockSuccessfulResponse()
+
+        repeat(3) {
+            viewModel.onEndFrameClicked()
+        }
+
+        verify { mockUpdatePlayerStatsWithMatchResultUseCase.invoke(winnerCurrentStats = any()) }
+    }
+
+    @Test
     fun `when on last frame onEndFrameClicked should send OpenMatchSummary action`() {
         mockSuccessfulResponse()
 
@@ -279,6 +307,10 @@ class FrameViewModelTest {
                 frame = any(),
                 player = any()
             )
+        } returns flow { emit(Unit) }
+        every { mockGetWinningPlayerUseCase.invoke(frames = any()) } returns domainMatch.player1
+        every {
+            mockUpdatePlayerStatsWithMatchResultUseCase.invoke(winnerCurrentStats = any())
         } returns flow { emit(Unit) }
     }
 
