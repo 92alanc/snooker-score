@@ -49,7 +49,7 @@ class MainViewModelTest {
 
         viewModel.onClickRules()
 
-        verify { mockActionObserver.onChanged(MainUiAction.OpenRules(expected)) }
+        verify { mockActionObserver.onChanged(MainUiAction.OpenRules(, expected)) }
     }
 
     @Test

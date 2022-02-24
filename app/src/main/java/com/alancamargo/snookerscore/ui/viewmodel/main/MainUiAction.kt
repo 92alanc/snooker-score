@@ -1,5 +1,6 @@
 package com.alancamargo.snookerscore.ui.viewmodel.main
 
+import androidx.annotation.StringRes
 import com.alancamargo.snookerscore.core.arch.viewmodel.UiAction
 
 sealed class MainUiAction : UiAction {
@@ -8,7 +9,7 @@ sealed class MainUiAction : UiAction {
 
     object OpenPlayers : MainUiAction()
 
-    data class OpenRules(val url: String) : MainUiAction()
+    data class OpenRules(@StringRes val screenTitleRes: Int, val url: String) : MainUiAction()
 
     object ShowAppInfo : MainUiAction()
 
