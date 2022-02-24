@@ -1,8 +1,11 @@
 package com.alancamargo.snookerscore.ui.activities
 
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.alancamargo.snookerscore.R
 import com.alancamargo.snookerscore.core.arch.extensions.observeAction
 import com.alancamargo.snookerscore.databinding.ActivityMainBinding
 import com.alancamargo.snookerscore.navigation.WebViewNavigation
@@ -27,11 +30,34 @@ class MainActivity : AppCompatActivity() {
         observeAction(viewModel, ::handleAction)
     }
 
-    private fun setUpUi() = with(binding) {
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_main, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.itemAbout -> {
+                showAppInfo()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun setUpUi() {
+        setUpToolbar()
+        setUpButtons()
+    }
+
+    private fun setUpToolbar() {
+        setSupportActionBar(binding.toolbar)
+    }
+
+    private fun setUpButtons() = with(binding) {
         btMatches.setOnClickListener { viewModel.onClickMatches() }
         btPlayers.setOnClickListener { viewModel.onClickPlayers() }
         btRules.setOnClickListener { viewModel.onClickRules() }
-        btAbout.setOnClickListener { viewModel.onClickAbout() }
     }
 
     private fun handleAction(action: MainUiAction) {

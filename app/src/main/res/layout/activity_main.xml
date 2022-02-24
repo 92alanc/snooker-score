@@ -5,15 +5,25 @@
     android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="@dimen/spacing_02"
     tools:context=".ui.activities.MainActivity">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:title="@string/app_name"/>
 
     <ImageView
         android:id="@+id/imgLogo"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginTop="@dimen/spacing_02"
+        android:layout_marginHorizontal="@dimen/spacing_02"
         android:importantForAccessibility="no"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
         app:layout_constraintBottom_toTopOf="@+id/btMatches"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -25,6 +35,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/spacing_02"
+        android:layout_marginHorizontal="@dimen/spacing_02"
         android:text="@string/matches"
         app:layout_constraintTop_toBottomOf="@id/imgLogo"
         app:layout_constraintBottom_toTopOf="@+id/btPlayers"
@@ -36,6 +47,7 @@
         style="@style/SnookerScore.Button"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/spacing_02"
         android:text="@string/players"
         app:layout_constraintTop_toBottomOf="@id/btMatches"
         app:layout_constraintBottom_toTopOf="@+id/btRules"
@@ -47,19 +59,10 @@
         style="@style/SnookerScore.Button"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/spacing_02"
+        android:layout_marginHorizontal="@dimen/spacing_02"
         android:text="@string/rules"
         app:layout_constraintTop_toBottomOf="@id/btPlayers"
-        app:layout_constraintBottom_toTopOf="@+id/btAbout"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btAbout"
-        style="@style/SnookerScore.Button"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="@string/about"
-        app:layout_constraintTop_toBottomOf="@id/btRules"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
