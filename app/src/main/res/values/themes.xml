@@ -11,6 +11,6 @@
         <!-- Status bar colour -->
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- App theme -->
-        <item name="fontFamily">@font/fredericka_the_great_regular</item>
+        <item name="fontFamily">@font/raleway_regular</item>
     </style>
 </resources>
