@@ -6,12 +6,8 @@ sealed class WebViewUiAction : UiAction {
 
     object ShowLoading : WebViewUiAction()
 
-    object RenderPage : WebViewUiAction()
+    object HideLoading : WebViewUiAction()
 
-    object ShowError : WebViewUiAction()
-
-    object Reload : WebViewUiAction()
-
-    object Finish : WebViewUiAction()
+    object Refresh : WebViewUiAction()
 
 }

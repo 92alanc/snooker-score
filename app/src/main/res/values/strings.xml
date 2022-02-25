@@ -5,4 +5,5 @@
     <string name="rules">Rules</string>
     <string name="about">About</string>
     <string name="rules_web_view_title">Snooker Rules</string>
+    <string name="refresh">Refresh</string>
 </resources>

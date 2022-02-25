@@ -5,13 +5,14 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.os.Parcelable
-import android.webkit.WebResourceError
-import android.webkit.WebResourceRequest
+import android.view.Menu
+import android.view.MenuItem
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
+import com.alancamargo.snookerscore.R
 import com.alancamargo.snookerscore.core.arch.extensions.args
 import com.alancamargo.snookerscore.core.arch.extensions.createIntent
 import com.alancamargo.snookerscore.core.arch.extensions.observeAction
@@ -25,8 +26,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class WebViewActivity : AppCompatActivity() {
 
     private var _binding: ActivityWebViewBinding? = null
-    private val binding
-        get() = _binding!!
+    private val binding get() = _binding!!
 
     private val args by args<Args>()
     private val viewModel by viewModel<WebViewViewModel>()
@@ -44,6 +44,21 @@ class WebViewActivity : AppCompatActivity() {
         return true
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_web_view, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.itemRefresh -> {
+                viewModel.onRefresh()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
     private fun setUpUi() {
         setUpToolbar()
         setUpWebView()
@@ -52,10 +67,8 @@ class WebViewActivity : AppCompatActivity() {
     private fun onActionChanged(action: WebViewUiAction) {
         when (action) {
             WebViewUiAction.ShowLoading -> binding.progressBar.isVisible = true
-            WebViewUiAction.RenderPage -> renderPage()
-            WebViewUiAction.Finish -> finish()
-            WebViewUiAction.ShowError -> showError()
-            WebViewUiAction.Reload -> binding.webView.loadUrl(args.url)
+            WebViewUiAction.HideLoading -> binding.progressBar.isVisible = false
+            WebViewUiAction.Refresh -> binding.webView.loadUrl(args.url)
         }
     }
 
@@ -78,29 +91,10 @@ class WebViewActivity : AppCompatActivity() {
                     super.onPageFinished(view, url)
                     viewModel.onFinishedLoading()
                 }
-
-                override fun onReceivedError(
-                    view: WebView?,
-                    request: WebResourceRequest?,
-                    error: WebResourceError?
-                ) {
-                    viewModel.onError()
-                }
             }
             settings.javaScriptEnabled = true
             loadUrl(args.url)
         }
-    }
-
-    private fun renderPage() = with(binding) {
-        progressBar.isVisible = false
-        webView.isVisible = true
-    }
-
-    private fun showError() = with(binding) {
-        progressBar.isVisible = false
-        webView.isVisible = false
-        // TODO: show error
     }
 
     @Parcelize

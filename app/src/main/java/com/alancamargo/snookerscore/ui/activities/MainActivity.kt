@@ -17,8 +17,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class MainActivity : AppCompatActivity() {
 
     private var _binding: ActivityMainBinding? = null
-    private val binding
-        get() = _binding!!
+    private val binding get() = _binding!!
 
     private val viewModel by viewModel<MainViewModel>()
 

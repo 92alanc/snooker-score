@@ -9,19 +9,11 @@ class WebViewViewModel : ActionViewModel<WebViewUiAction>() {
     }
 
     fun onFinishedLoading() {
-        sendAction { WebViewUiAction.RenderPage }
+        sendAction { WebViewUiAction.HideLoading }
     }
 
-    fun onError() {
-        sendAction { WebViewUiAction.ShowError }
-    }
-
-    fun onReloadClicked() {
-        sendAction { WebViewUiAction.Reload }
-    }
-
-    fun onExitClicked() {
-        sendAction { WebViewUiAction.Finish }
+    fun onRefresh() {
+        sendAction { WebViewUiAction.Refresh }
     }
 
 }
