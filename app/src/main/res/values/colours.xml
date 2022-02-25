@@ -12,6 +12,9 @@
     <!-- endregion -->
 
     <!-- region Brand colours -->
-    <!-- TODO -->
+    <color name="black">#060A07</color>
+    <color name="green">#184C16</color>
+    <color name="red">#D5010C</color>
+    <color name="light_grey">#E0E0DF</color>
     <!-- endregion -->
 </resources>

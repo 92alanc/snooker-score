@@ -1,16 +1,19 @@
 <resources>
     <style name="Theme.SnookerScore" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <!-- Primary brand colour -->
-        <item name="colorPrimary">@color/ball_brown</item>
-        <item name="colorPrimaryVariant">@color/ball_green</item>
-        <item name="colorOnPrimary">@color/ball_white</item>
-        <!-- Secondary brand colour -->
+        <!-- Primary brand colours -->
+        <item name="colorPrimary">@color/light_grey</item>
+        <item name="colorPrimaryVariant">@color/green</item>
+        <item name="colorOnPrimary">@color/black</item>
+        <!-- Secondary brand colours -->
         <item name="colorSecondary">@color/ball_blue</item>
         <item name="colorSecondaryVariant">@color/ball_blue</item>
         <item name="colorOnSecondary">@color/ball_black</item>
         <!-- Status bar colour -->
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- App theme -->
+        <item name="android:textColor">?attr/colorOnPrimary</item>
+        <item name="android:colorForeground">@color/light_grey</item>
+        <item name="android:colorBackground">?attr/colorPrimaryVariant</item>
         <item name="fontFamily">@font/raleway_regular</item>
     </style>
 </resources>
