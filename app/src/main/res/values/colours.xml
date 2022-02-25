@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- region Ball colours -->
-    <color name="white">#FFFFFF</color>
-    <color name="red">#D32F2F</color>
-    <color name="yellow">#FBC02D</color>
-    <color name="green">#388E3C</color>
-    <color name="brown">#A55B0C</color>
-    <color name="blue">#0F2EDD</color>
-    <color name="pink">#F06292</color>
-    <color name="black">#000000</color>
-    <color name="green_light">#81C784</color>
+    <color name="ball_white">#FFFFFF</color>
+    <color name="ball_red">#D32F2F</color>
+    <color name="ball_yellow">#FBC02D</color>
+    <color name="ball_green">#388E3C</color>
+    <color name="ball_brown">#A55B0C</color>
+    <color name="ball_blue">#0F2EDD</color>
+    <color name="ball_pink">#F06292</color>
+    <color name="ball_black">#000000</color>
     <!-- endregion -->
 
     <!-- region Brand colours -->
