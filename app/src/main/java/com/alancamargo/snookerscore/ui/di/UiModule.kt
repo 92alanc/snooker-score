@@ -9,6 +9,7 @@ import com.alancamargo.snookerscore.ui.viewmodel.matchlist.MatchListViewModel
 import com.alancamargo.snookerscore.ui.viewmodel.newmatch.NewMatchViewModel
 import com.alancamargo.snookerscore.ui.viewmodel.playerlist.PlayerListViewModel
 import com.alancamargo.snookerscore.ui.viewmodel.playerstats.PlayerStatsViewModel
+import com.alancamargo.snookerscore.ui.viewmodel.webview.WebViewViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
@@ -52,4 +53,5 @@ val uiModule = module {
     }
     viewModel { PlayerStatsViewModel(getPlayerStatsUseCase = get()) }
     factory<WebViewNavigation> { WebViewNavigationImpl() }
+    viewModel { WebViewViewModel() }
 }
