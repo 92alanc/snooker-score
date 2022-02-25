@@ -2,6 +2,7 @@ package com.alancamargo.snookerscore.ui.viewmodel.main
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
+import com.alancamargo.snookerscore.R
 import com.alancamargo.snookerscore.domain.usecase.rules.GetRulesUrlUseCase
 import io.mockk.every
 import io.mockk.mockk
@@ -44,12 +45,20 @@ class MainViewModelTest {
 
     @Test
     fun `onClickRules should send OpenRules action`() {
-        val expected = "https://thepiratebay.org"
-        every { mockGetRulesUrlUseCase.invoke() } returns expected
+        val expectedTitleRes = R.string.rules_web_view_title
+        val expectedUrl = "https://thepiratebay.org"
+        every { mockGetRulesUrlUseCase.invoke() } returns expectedUrl
 
         viewModel.onClickRules()
 
-        verify { mockActionObserver.onChanged(MainUiAction.OpenRules(, expected)) }
+        verify {
+            mockActionObserver.onChanged(
+                MainUiAction.OpenRules(
+                    screenTitleRes = expectedTitleRes,
+                    url = expectedUrl
+                )
+            )
+        }
     }
 
     @Test

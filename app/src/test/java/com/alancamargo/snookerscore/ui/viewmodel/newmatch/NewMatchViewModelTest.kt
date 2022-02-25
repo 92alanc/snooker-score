@@ -8,6 +8,7 @@ import com.alancamargo.snookerscore.domain.usecase.player.GetPlayersUseCase
 import com.alancamargo.snookerscore.testtools.ERROR_MESSAGE
 import com.alancamargo.snookerscore.testtools.getPlayerList
 import com.alancamargo.snookerscore.ui.mapping.toUi
+import com.alancamargo.snookerscore.ui.model.UiGender
 import com.alancamargo.snookerscore.ui.model.UiPlayer
 import io.mockk.every
 import io.mockk.mockk
@@ -132,7 +133,7 @@ class NewMatchViewModelTest {
         mockSuccessfulPlayersResponse()
         every { mockArePlayersTheSameUseCase.invoke(player1 = any(), player2 = any()) } returns true
 
-        val player = UiPlayer(name = "Judd Trump")
+        val player = UiPlayer(name = "Judd Trump", gender = UiGender.MALE)
         viewModel.onStartMatchButtonClicked(player, player, numberOfFrames = 3)
 
         verify { mockActionObserver.onChanged(NewMatchUiAction.ShowSamePlayersDialogue) }
@@ -146,7 +147,7 @@ class NewMatchViewModelTest {
         } returns false
         every { mockAddMatchUseCase.invoke(match = any()) } returns flow { delay(timeMillis = 50) }
 
-        val player = UiPlayer(name = "Judd Trump")
+        val player = UiPlayer(name = "Judd Trump", gender = UiGender.MALE)
         viewModel.onStartMatchButtonClicked(player, player, numberOfFrames = 3)
 
         verify { mockActionObserver.onChanged(NewMatchUiAction.ShowLoading) }
@@ -160,7 +161,7 @@ class NewMatchViewModelTest {
         } returns false
         every { mockAddMatchUseCase.invoke(match = any()) } returns flow { emit(Unit) }
 
-        val player = UiPlayer(name = "Judd Trump")
+        val player = UiPlayer(name = "Judd Trump", gender = UiGender.MALE)
         viewModel.onStartMatchButtonClicked(player, player, numberOfFrames = 3)
 
         verify { mockActionObserver.onChanged(any<NewMatchUiAction.StartMatch>()) }
@@ -174,7 +175,7 @@ class NewMatchViewModelTest {
         } returns false
         every { mockAddMatchUseCase.invoke(match = any()) } returns flow { throw IOException() }
 
-        val player = UiPlayer(name = "Judd Trump")
+        val player = UiPlayer(name = "Judd Trump", gender = UiGender.MALE)
         viewModel.onStartMatchButtonClicked(player, player, numberOfFrames = 3)
 
         verify { mockActionObserver.onChanged(NewMatchUiAction.ShowError) }
@@ -188,7 +189,7 @@ class NewMatchViewModelTest {
         } returns false
         every { mockAddMatchUseCase.invoke(match = any()) } returns flow { emit(Unit) }
 
-        val player = UiPlayer(name = "Judd Trump")
+        val player = UiPlayer(name = "Judd Trump", gender = UiGender.MALE)
         viewModel.onStartMatchButtonClicked(player, player, numberOfFrames = 3)
 
         verify { mockActionObserver.onChanged(NewMatchUiAction.HideLoading) }
