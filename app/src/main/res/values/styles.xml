@@ -4,4 +4,7 @@
     <style name="SnookerScore.Button">
         <item name="android:textAllCaps">false</item>
     </style>
+    <style name="SnookerScore.Toolbar" parent="@style/Widget.MaterialComponents.Toolbar">
+        <item name="titleTextColor">@color/light_grey</item>
+    </style>
 </resources>
