@@ -3,7 +3,6 @@ package com.alancamargo.snookerscore.ui.viewmodel.playerlist
 import androidx.lifecycle.viewModelScope
 import com.alancamargo.snookerscore.core.arch.viewmodel.ViewModel
 import com.alancamargo.snookerscore.domain.usecase.player.AddOrUpdatePlayerUseCase
-import com.alancamargo.snookerscore.domain.usecase.player.DeletePlayerUseCase
 import com.alancamargo.snookerscore.domain.usecase.player.GetPlayersUseCase
 import com.alancamargo.snookerscore.ui.mapping.toDomain
 import com.alancamargo.snookerscore.ui.mapping.toUi
@@ -20,7 +19,6 @@ import kotlinx.coroutines.launch
 
 class PlayerListViewModel(
     private val addOrUpdatePlayerUseCase: AddOrUpdatePlayerUseCase,
-    private val deletePlayerUseCase: DeletePlayerUseCase,
     private val getPlayersUseCase: GetPlayersUseCase,
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : ViewModel<PlayerListUiState, PlayerListUiAction>(initialState = PlayerListUiState()) {
@@ -29,19 +27,13 @@ class PlayerListViewModel(
         sendAction { PlayerListUiAction.ShowNewPlayerDialogue }
     }
 
-    fun onPlayerSelected(player: UiPlayer) {
-        sendAction { PlayerListUiAction.SelectPlayer(player) }
+    fun onPlayerClicked(player: UiPlayer) {
+        sendAction { PlayerListUiAction.OpenPlayerStats(player) }
     }
 
     fun onSavePlayerClicked(player: UiPlayer) {
         viewModelScope.launch {
             addOrUpdatePlayerUseCase(player.toDomain()).getPlayersOnSuccess()
-        }
-    }
-
-    fun onDeletePlayerClicked(player: UiPlayer) {
-        viewModelScope.launch {
-            deletePlayerUseCase(player.toDomain()).getPlayersOnSuccess()
         }
     }
 

@@ -5,7 +5,7 @@ import com.alancamargo.snookerscore.ui.model.UiPlayer
 
 sealed class PlayerListUiAction : UiAction {
 
-    data class SelectPlayer(val player: UiPlayer) : PlayerListUiAction()
+    data class OpenPlayerStats(val player: UiPlayer) : PlayerListUiAction()
 
     object ShowNewPlayerDialogue : PlayerListUiAction()
 

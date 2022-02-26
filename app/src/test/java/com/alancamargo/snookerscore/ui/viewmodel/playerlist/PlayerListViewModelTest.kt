@@ -3,7 +3,6 @@ package com.alancamargo.snookerscore.ui.viewmodel.playerlist
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import com.alancamargo.snookerscore.domain.usecase.player.AddOrUpdatePlayerUseCase
-import com.alancamargo.snookerscore.domain.usecase.player.DeletePlayerUseCase
 import com.alancamargo.snookerscore.domain.usecase.player.GetPlayersUseCase
 import com.alancamargo.snookerscore.testtools.getPlayer
 import com.alancamargo.snookerscore.testtools.getPlayerList
@@ -30,7 +29,6 @@ class PlayerListViewModelTest {
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
     private val mockAddOrUpdatePlayerUseCase = mockk<AddOrUpdatePlayerUseCase>()
-    private val mockDeletePlayerUseCase = mockk<DeletePlayerUseCase>()
     private val mockGetPlayersUseCase = mockk<GetPlayersUseCase>()
     private val mockStateObserver = mockk<Observer<PlayerListUiState>>(relaxed = true)
     private val mockActionObserver = mockk<Observer<PlayerListUiAction>>(relaxed = true)
@@ -44,7 +42,6 @@ class PlayerListViewModelTest {
 
         viewModel = PlayerListViewModel(
             addOrUpdatePlayerUseCase = mockAddOrUpdatePlayerUseCase,
-            deletePlayerUseCase = mockDeletePlayerUseCase,
             getPlayersUseCase = mockGetPlayersUseCase,
             dispatcher = testCoroutineDispatcher
         ).apply {
@@ -100,11 +97,11 @@ class PlayerListViewModelTest {
     }
 
     @Test
-    fun `onPlayerSelected should send SelectPlayer action`() {
+    fun `onPlayerClicked should send OpenPlayerStats action`() {
         val player = getPlayer().toUi()
-        viewModel.onPlayerSelected(player)
+        viewModel.onPlayerClicked(player)
 
-        verify { mockActionObserver.onChanged(PlayerListUiAction.SelectPlayer(player)) }
+        verify { mockActionObserver.onChanged(PlayerListUiAction.OpenPlayerStats(player)) }
     }
 
     @Test
@@ -145,48 +142,6 @@ class PlayerListViewModelTest {
 
         val player = getPlayer().toUi()
         viewModel.onSavePlayerClicked(player)
-
-        verify { mockActionObserver.onChanged(PlayerListUiAction.ShowError) }
-    }
-
-    @Test
-    fun `onDeletePlayerClicked should send ShowLoading action`() {
-        every { mockDeletePlayerUseCase.invoke(any()) } returns flow { delay(timeMillis = 50) }
-
-        val player = getPlayer().toUi()
-        viewModel.onDeletePlayerClicked(player)
-
-        verify { mockActionObserver.onChanged(PlayerListUiAction.ShowLoading) }
-    }
-
-    @Test
-    fun `onDeletePlayerClicked should refresh players`() {
-        val players = getPlayerList()
-        every { mockGetPlayersUseCase.invoke() } returns flow { emit(players) }
-        every { mockDeletePlayerUseCase.invoke(any()) } returns flow { emit(Unit) }
-
-        val player = getPlayer().toUi()
-        viewModel.onDeletePlayerClicked(player)
-
-        verify { mockGetPlayersUseCase.invoke() }
-    }
-
-    @Test
-    fun `onDeletePlayerClicked should send HideLoading action`() {
-        every { mockDeletePlayerUseCase.invoke(any()) } returns flow { emit(Unit) }
-
-        val player = getPlayer().toUi()
-        viewModel.onDeletePlayerClicked(player)
-
-        verify { mockActionObserver.onChanged(PlayerListUiAction.HideLoading) }
-    }
-
-    @Test
-    fun `with error onDeletePlayerClicked should send ShowError action`() {
-        every { mockDeletePlayerUseCase.invoke(any()) } returns flow { throw IOException() }
-
-        val player = getPlayer().toUi()
-        viewModel.onDeletePlayerClicked(player)
 
         verify { mockActionObserver.onChanged(PlayerListUiAction.ShowError) }
     }

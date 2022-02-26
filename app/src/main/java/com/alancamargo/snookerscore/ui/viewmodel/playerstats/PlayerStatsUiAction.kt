@@ -10,4 +10,6 @@ sealed class PlayerStatsUiAction : UiAction {
 
     object ShowError : PlayerStatsUiAction()
 
+    object Finish : PlayerStatsUiAction()
+
 }

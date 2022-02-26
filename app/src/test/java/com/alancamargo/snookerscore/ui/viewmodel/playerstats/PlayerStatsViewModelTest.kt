@@ -2,6 +2,7 @@ package com.alancamargo.snookerscore.ui.viewmodel.playerstats
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
+import com.alancamargo.snookerscore.domain.usecase.player.DeletePlayerUseCase
 import com.alancamargo.snookerscore.domain.usecase.playerstats.GetPlayerStatsUseCase
 import com.alancamargo.snookerscore.testtools.getPlayer
 import com.alancamargo.snookerscore.testtools.getPlayerStats
@@ -28,6 +29,7 @@ class PlayerStatsViewModelTest {
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
     private val mockGetPlayerStatsUseCase = mockk<GetPlayerStatsUseCase>()
+    private val mockDeletePlayerUseCase = mockk<DeletePlayerUseCase>()
     private val mockStateObserver = mockk<Observer<PlayerStatsUiState>>(relaxed = true)
     private val mockActionObserver = mockk<Observer<PlayerStatsUiAction>>(relaxed = true)
 
@@ -40,7 +42,11 @@ class PlayerStatsViewModelTest {
         val testCoroutineDispatcher = TestCoroutineDispatcher()
         Dispatchers.setMain(testCoroutineDispatcher)
 
-        viewModel = PlayerStatsViewModel(mockGetPlayerStatsUseCase, testCoroutineDispatcher).apply {
+        viewModel = PlayerStatsViewModel(
+            mockGetPlayerStatsUseCase,
+            mockDeletePlayerUseCase,
+            testCoroutineDispatcher
+        ).apply {
             state.observeForever(mockStateObserver)
             action.observeForever(mockActionObserver)
         }
@@ -89,6 +95,46 @@ class PlayerStatsViewModelTest {
         } returns flow { throw IOException() }
 
         viewModel.getPlayerStats(player)
+
+        verify { mockActionObserver.onChanged(PlayerStatsUiAction.ShowError) }
+    }
+
+    @Test
+    fun `onDeletePlayerClicked should send ShowLoading action`() {
+        every { mockDeletePlayerUseCase.invoke(any()) } returns flow { delay(timeMillis = 50) }
+
+        val player = getPlayer().toUi()
+        viewModel.onDeletePlayerClicked(player)
+
+        verify { mockActionObserver.onChanged(PlayerStatsUiAction.ShowLoading) }
+    }
+
+    @Test
+    fun `onDeletePlayerClicked should send Finish action`() {
+        every { mockDeletePlayerUseCase.invoke(any()) } returns flow { emit(Unit) }
+
+        val player = getPlayer().toUi()
+        viewModel.onDeletePlayerClicked(player)
+
+        verify { mockActionObserver.onChanged(PlayerStatsUiAction.Finish) }
+    }
+
+    @Test
+    fun `onDeletePlayerClicked should send HideLoading action`() {
+        every { mockDeletePlayerUseCase.invoke(any()) } returns flow { emit(Unit) }
+
+        val player = getPlayer().toUi()
+        viewModel.onDeletePlayerClicked(player)
+
+        verify { mockActionObserver.onChanged(PlayerStatsUiAction.HideLoading) }
+    }
+
+    @Test
+    fun `with error onDeletePlayerClicked should send ShowError action`() {
+        every { mockDeletePlayerUseCase.invoke(any()) } returns flow { throw IOException() }
+
+        val player = getPlayer().toUi()
+        viewModel.onDeletePlayerClicked(player)
 
         verify { mockActionObserver.onChanged(PlayerStatsUiAction.ShowError) }
     }

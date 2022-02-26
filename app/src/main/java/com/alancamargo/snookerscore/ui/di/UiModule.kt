@@ -49,11 +49,15 @@ val uiModule = module {
     viewModel {
         PlayerListViewModel(
             addOrUpdatePlayerUseCase = get(),
-            deletePlayerUseCase = get(),
             getPlayersUseCase = get()
         )
     }
-    viewModel { PlayerStatsViewModel(getPlayerStatsUseCase = get()) }
+    viewModel {
+        PlayerStatsViewModel(
+            getPlayerStatsUseCase = get(),
+            deletePlayerUseCase = get()
+        )
+    }
     factory<WebViewNavigation> { WebViewNavigationImpl() }
     viewModel { WebViewViewModel() }
     factory<PlayerListNavigation> { PlayerListNavigationImpl() }

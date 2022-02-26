@@ -24,7 +24,7 @@ class PlayerListActivity : AppCompatActivity() {
     private var _binding: ActivityPlayerListBinding? = null
     private val binding get() = _binding!!
 
-    private val adapter by lazy { PlayerAdapter(viewModel::onPlayerSelected) }
+    private val adapter by lazy { PlayerAdapter(viewModel::onPlayerClicked) }
     private val viewModel by viewModel<PlayerListViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -60,7 +60,7 @@ class PlayerListActivity : AppCompatActivity() {
             is PlayerListUiAction.HideLoading -> hideLoading()
             is PlayerListUiAction.ShowError -> showError()
             is PlayerListUiAction.ShowNewPlayerDialogue -> showNewPlayerDialogue()
-            is PlayerListUiAction.SelectPlayer -> showPlayerDetails(action.player)
+            is PlayerListUiAction.OpenPlayerStats -> showPlayerStats(action.player)
         }
     }
 
@@ -91,7 +91,7 @@ class PlayerListActivity : AppCompatActivity() {
         Toast.makeText(this, "New player", Toast.LENGTH_SHORT).show()
     }
 
-    private fun showPlayerDetails(player: UiPlayer) {
+    private fun showPlayerStats(player: UiPlayer) {
         // TODO
         Toast.makeText(this, player.name, Toast.LENGTH_SHORT).show()
     }
