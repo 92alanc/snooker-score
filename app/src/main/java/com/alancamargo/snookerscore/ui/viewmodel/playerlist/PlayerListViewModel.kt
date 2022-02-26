@@ -9,7 +9,6 @@ import com.alancamargo.snookerscore.ui.mapping.toUi
 import com.alancamargo.snookerscore.ui.model.UiPlayer
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flowOn
@@ -33,7 +32,16 @@ class PlayerListViewModel(
 
     fun onSavePlayerClicked(player: UiPlayer) {
         viewModelScope.launch {
-            addOrUpdatePlayerUseCase(player.toDomain()).getPlayersOnSuccess()
+            addOrUpdatePlayerUseCase(player.toDomain()).flowOn(dispatcher)
+                .onStart {
+                    sendAction { PlayerListUiAction.ShowLoading }
+                }.onCompletion {
+                    sendAction { PlayerListUiAction.HideLoading }
+                }.catch {
+                    sendAction { PlayerListUiAction.ShowError }
+                }.collect {
+                    getPlayers()
+                }
         }
     }
 
@@ -51,19 +59,6 @@ class PlayerListViewModel(
                     setState { state -> state.onPlayersReceived(players) }
                 }
         }
-    }
-
-    private suspend fun Flow<Unit>.getPlayersOnSuccess() {
-        flowOn(dispatcher)
-            .onStart {
-                sendAction { PlayerListUiAction.ShowLoading }
-            }.onCompletion {
-                sendAction { PlayerListUiAction.HideLoading }
-            }.catch {
-                sendAction { PlayerListUiAction.ShowError }
-            }.collect {
-                getPlayers()
-            }
     }
 
 }
