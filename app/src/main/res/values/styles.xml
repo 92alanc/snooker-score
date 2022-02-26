@@ -7,4 +7,16 @@
     <style name="SnookerScore.Toolbar" parent="@style/Widget.MaterialComponents.Toolbar">
         <item name="titleTextColor">@color/light_grey</item>
     </style>
+    <style name="SnookerScore.Button.Primary" parent="@style/Widget.Material3.Button">
+        <item name="android:backgroundTint">@color/green</item>
+        <item name="android:textAppearance">@style/TextAppearance.Material3.BodyLarge</item>
+        <item name="android:textColor">@color/light_grey</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="SnookerScore.Button.Secondary" parent="@style/Widget.Material3.Button.OutlinedButton">
+        <item name="strokeColor">@color/green</item>
+        <item name="strokeWidth">@dimen/secondary_button_width</item>
+        <item name="android:textAppearance">@style/TextAppearance.Material3.BodyLarge</item>
+        <item name="android:textColor">@color/green</item>
+    </style>
 </resources>

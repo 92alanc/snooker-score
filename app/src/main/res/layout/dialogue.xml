@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/shape_dialogue"
+    android:padding="@dimen/spacing_02">
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/txtTitle"
+        style="@style/TextAppearance.Material3.HeadlineSmall"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:maxLines="1"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:text="Title"/>
+
+    <ImageView
+        android:id="@+id/imgIllustration"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:importantForAccessibility="no"
+        app:layout_constraintDimensionRatio="3:1"
+        app:layout_constraintTop_toBottomOf="@id/txtTitle"
+        app:layout_constraintBottom_toTopOf="@+id/txtMessage"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:src="@drawable/illu_table"/>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/txtMessage"
+        style="@style/TextAppearance.Material3.BodyLarge"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_02"
+        android:gravity="center_horizontal"
+        app:layout_constraintTop_toBottomOf="@id/imgIllustration"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:text="A short but sweet message"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btSecondary"
+        style="@style/SnookerScore.Button.Secondary"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_03"
+        android:layout_marginEnd="@dimen/spacing_01"
+        app:layout_constraintTop_toBottomOf="@id/txtMessage"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btPrimary"
+        tools:text="No"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btPrimary"
+        style="@style/SnookerScore.Button.Primary"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_03"
+        android:layout_marginStart="@dimen/spacing_01"
+        app:layout_constraintTop_toBottomOf="@id/txtMessage"
+        app:layout_constraintStart_toEndOf="@id/btSecondary"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:text="Yes"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
