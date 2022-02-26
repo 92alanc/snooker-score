@@ -58,7 +58,7 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btPrimary"
-        style="@style/SnookerScore.Button.Primary"
+        style="@style/SnookerScore.Button.PrimaryDialogue"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/spacing_03"

@@ -33,7 +33,7 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btMatches"
-        style="@style/SnookerScore.Button"
+        style="@style/SnookerScore.Button.Primary"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/spacing_02"
@@ -46,9 +46,10 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btPlayers"
-        style="@style/SnookerScore.Button"
+        style="@style/SnookerScore.Button.Primary"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_01"
         android:layout_marginHorizontal="@dimen/spacing_02"
         android:text="@string/players"
         app:layout_constraintTop_toBottomOf="@id/btMatches"
@@ -58,9 +59,10 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btRules"
-        style="@style/SnookerScore.Button"
+        style="@style/SnookerScore.Button.Primary"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_01"
         android:layout_marginBottom="@dimen/spacing_02"
         android:layout_marginHorizontal="@dimen/spacing_02"
         android:text="@string/rules"
