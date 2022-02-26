@@ -9,4 +9,7 @@
     <string name="add_player">Add player</string>
     <string name="error_message">An error occurred</string>
     <string name="retry">Retry</string>
+    <string name="empty"/>
+    <string name="app_info">App developed by Alan Camargo\n\nIllustrations: Chanut is Industries and Smashicons</string>
+    <string name="ok">OK</string>
 </resources>

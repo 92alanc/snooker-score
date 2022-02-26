@@ -7,6 +7,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.alancamargo.snookerscore.R
 import com.alancamargo.snookerscore.core.arch.extensions.observeAction
+import com.alancamargo.snookerscore.core.ui.button
+import com.alancamargo.snookerscore.core.ui.makeDialogue
 import com.alancamargo.snookerscore.databinding.ActivityMainBinding
 import com.alancamargo.snookerscore.navigation.PlayerListNavigation
 import com.alancamargo.snookerscore.navigation.WebViewNavigation
@@ -14,6 +16,8 @@ import com.alancamargo.snookerscore.ui.viewmodel.main.MainUiAction
 import com.alancamargo.snookerscore.ui.viewmodel.main.MainViewModel
 import org.koin.android.ext.android.get
 import org.koin.androidx.viewmodel.ext.android.viewModel
+
+private const val DIALOGUE_TAG = "DialogueTag"
 
 class MainActivity : AppCompatActivity() {
 
@@ -88,8 +92,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showAppInfo() {
-        // TODO
-        Toast.makeText(this, "App info", Toast.LENGTH_SHORT).show()
+        makeDialogue {
+            titleRes = R.string.about
+            messageRes = R.string.app_info
+            primaryButton = button {
+                textRes = R.string.ok
+            }
+        }.show(supportFragmentManager, DIALOGUE_TAG)
     }
 
 }
