@@ -6,6 +6,7 @@
         <item name="colorOnPrimary">@color/black</item>
         <!-- Secondary brand colours -->
         <item name="colorSecondary">@color/red</item>
+        <item name="colorOnSecondary">@color/light_grey</item>
         <!-- Status bar colour -->
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- App theme -->

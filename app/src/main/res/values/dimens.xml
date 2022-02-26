@@ -2,4 +2,7 @@
 <resources>
     <dimen name="spacing_01">8dp</dimen>
     <dimen name="spacing_02">16dp</dimen>
+    <dimen name="spacing_03">24dp</dimen>
+
+    <dimen name="radius_01">4dp</dimen>
 </resources>

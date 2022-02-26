@@ -1,0 +1,12 @@
+{
+  "data": [
+    {
+      "icon": "@drawable/ic_male",
+      "name": "Alan"
+    },
+    {
+      "icon": "@drawable/ic_female",
+      "name": "Carina"
+    }
+  ]
+}
