@@ -39,6 +39,11 @@ class PlayerListActivity : AppCompatActivity() {
         viewModel.getPlayers()
     }
 
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
+    }
+
     private fun setUpUi() = with(binding) {
         setUpToolbar()
         recyclerView.adapter = adapter
