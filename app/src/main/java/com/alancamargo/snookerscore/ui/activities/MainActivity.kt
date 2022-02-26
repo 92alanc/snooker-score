@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.alancamargo.snookerscore.R
 import com.alancamargo.snookerscore.core.arch.extensions.observeAction
 import com.alancamargo.snookerscore.databinding.ActivityMainBinding
+import com.alancamargo.snookerscore.navigation.PlayerListNavigation
 import com.alancamargo.snookerscore.navigation.WebViewNavigation
 import com.alancamargo.snookerscore.ui.viewmodel.main.MainUiAction
 import com.alancamargo.snookerscore.ui.viewmodel.main.MainViewModel
@@ -77,8 +78,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun openPlayers() {
-        // TODO
-        Toast.makeText(this, "Players", Toast.LENGTH_SHORT).show()
+        val navigation = get<PlayerListNavigation>()
+        navigation.startActivity(context = this)
     }
 
     private fun openRules(titleRes: Int, url: String) {
