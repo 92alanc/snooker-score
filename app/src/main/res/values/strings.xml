@@ -12,4 +12,9 @@
     <string name="empty"/>
     <string name="app_info">App developed by Alan Camargo\n\nIllustrations: Chanut is Industries and Smashicons</string>
     <string name="ok">OK</string>
+    <string name="name">Name</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
 </resources>

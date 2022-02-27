@@ -2,9 +2,10 @@ package com.alancamargo.snookerscore.ui.viewmodel.playerlist
 
 import androidx.lifecycle.viewModelScope
 import com.alancamargo.snookerscore.core.arch.viewmodel.ViewModel
+import com.alancamargo.snookerscore.domain.model.Gender
+import com.alancamargo.snookerscore.domain.model.Player
 import com.alancamargo.snookerscore.domain.usecase.player.AddOrUpdatePlayerUseCase
 import com.alancamargo.snookerscore.domain.usecase.player.GetPlayersUseCase
-import com.alancamargo.snookerscore.ui.mapping.toDomain
 import com.alancamargo.snookerscore.ui.mapping.toUi
 import com.alancamargo.snookerscore.ui.model.UiPlayer
 import kotlinx.coroutines.CoroutineDispatcher
@@ -22,6 +23,9 @@ class PlayerListViewModel(
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : ViewModel<PlayerListUiState, PlayerListUiAction>(initialState = PlayerListUiState()) {
 
+    private var newPlayerName = ""
+    private var newPlayerGenderOrdinal = -1
+
     fun onNewPlayerClicked() {
         sendAction { PlayerListUiAction.ShowNewPlayerDialogue }
     }
@@ -30,9 +34,17 @@ class PlayerListViewModel(
         sendAction { PlayerListUiAction.OpenPlayerStats(player) }
     }
 
-    fun onSavePlayerClicked(player: UiPlayer) {
+    fun onSavePlayerClicked() {
+        if (newPlayerName.isBlank() || newPlayerGenderOrdinal < 0) {
+            sendAction { PlayerListUiAction.ShowError }
+            return
+        }
+
+        val newPlayerGender = Gender.values()[newPlayerGenderOrdinal]
+        val player = Player(newPlayerName, newPlayerGender)
+
         viewModelScope.launch {
-            addOrUpdatePlayerUseCase(player.toDomain()).flowOn(dispatcher)
+            addOrUpdatePlayerUseCase(player).flowOn(dispatcher)
                 .onStart {
                     sendAction { PlayerListUiAction.ShowLoading }
                 }.onCompletion {
@@ -43,6 +55,14 @@ class PlayerListViewModel(
                     getPlayers()
                 }
         }
+    }
+
+    fun setNewPlayerName(name: String) {
+        newPlayerName = name
+    }
+
+    fun setNewPlayerGenderOrdinal(ordinal: Int) {
+        newPlayerGenderOrdinal = ordinal
     }
 
     fun getPlayers() {

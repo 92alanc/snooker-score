@@ -109,7 +109,11 @@ class PlayerListViewModelTest {
         every { mockAddOrUpdatePlayerUseCase.invoke(any()) } returns flow { delay(timeMillis = 50) }
 
         val player = getPlayer().toUi()
-        viewModel.onSavePlayerClicked(player)
+        with(viewModel) {
+            setNewPlayerName(player.name)
+            setNewPlayerGenderOrdinal(player.gender.ordinal)
+        }
+        viewModel.onSavePlayerClicked()
 
         verify { mockActionObserver.onChanged(PlayerListUiAction.ShowLoading) }
     }
@@ -121,7 +125,11 @@ class PlayerListViewModelTest {
         every { mockAddOrUpdatePlayerUseCase.invoke(any()) } returns flow { emit(Unit) }
 
         val player = getPlayer().toUi()
-        viewModel.onSavePlayerClicked(player)
+        with(viewModel) {
+            setNewPlayerName(player.name)
+            setNewPlayerGenderOrdinal(player.gender.ordinal)
+        }
+        viewModel.onSavePlayerClicked()
 
         verify { mockGetPlayersUseCase.invoke() }
     }
@@ -131,7 +139,11 @@ class PlayerListViewModelTest {
         every { mockAddOrUpdatePlayerUseCase.invoke(any()) } returns flow { emit(Unit) }
 
         val player = getPlayer().toUi()
-        viewModel.onSavePlayerClicked(player)
+        with(viewModel) {
+            setNewPlayerName(player.name)
+            setNewPlayerGenderOrdinal(player.gender.ordinal)
+        }
+        viewModel.onSavePlayerClicked()
 
         verify { mockActionObserver.onChanged(PlayerListUiAction.HideLoading) }
     }
@@ -141,7 +153,11 @@ class PlayerListViewModelTest {
         every { mockAddOrUpdatePlayerUseCase.invoke(any()) } returns flow { throw IOException() }
 
         val player = getPlayer().toUi()
-        viewModel.onSavePlayerClicked(player)
+        with(viewModel) {
+            setNewPlayerName(player.name)
+            setNewPlayerGenderOrdinal(player.gender.ordinal)
+        }
+        viewModel.onSavePlayerClicked()
 
         verify { mockActionObserver.onChanged(PlayerListUiAction.ShowError) }
     }

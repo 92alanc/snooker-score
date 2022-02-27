@@ -10,7 +10,13 @@ import com.alancamargo.snookerscore.R
 import com.alancamargo.snookerscore.core.arch.extensions.createIntent
 import com.alancamargo.snookerscore.core.arch.extensions.observeAction
 import com.alancamargo.snookerscore.core.arch.extensions.observeState
+import com.alancamargo.snookerscore.core.ui.button
+import com.alancamargo.snookerscore.core.ui.editText
+import com.alancamargo.snookerscore.core.ui.makeDialogue
+import com.alancamargo.snookerscore.core.ui.radioButton
+import com.alancamargo.snookerscore.core.ui.radioButtons
 import com.alancamargo.snookerscore.databinding.ActivityPlayerListBinding
+import com.alancamargo.snookerscore.domain.model.Gender
 import com.alancamargo.snookerscore.ui.adapter.PlayerAdapter
 import com.alancamargo.snookerscore.ui.model.UiPlayer
 import com.alancamargo.snookerscore.ui.viewmodel.playerlist.PlayerListUiAction
@@ -18,6 +24,8 @@ import com.alancamargo.snookerscore.ui.viewmodel.playerlist.PlayerListUiState
 import com.alancamargo.snookerscore.ui.viewmodel.playerlist.PlayerListViewModel
 import com.google.android.material.snackbar.Snackbar
 import org.koin.androidx.viewmodel.ext.android.viewModel
+
+private const val DIALOGUE_TAG = "DialogueTag"
 
 class PlayerListActivity : AppCompatActivity() {
 
@@ -87,8 +95,31 @@ class PlayerListActivity : AppCompatActivity() {
     }
 
     private fun showNewPlayerDialogue() {
-        // TODO
-        Toast.makeText(this, "New player", Toast.LENGTH_SHORT).show()
+        makeDialogue {
+            titleRes = R.string.add_player
+            editText = editText {
+                hintRes = R.string.name
+                onSubmitText = viewModel::setNewPlayerName
+            }
+            radioButtons = radioButtons {
+                radioButton {
+                    id = Gender.MALE.ordinal
+                    textRes = R.string.male
+                }
+                radioButton {
+                    id = Gender.FEMALE.ordinal
+                    textRes = R.string.female
+                }
+                onSubmitSelection = viewModel::setNewPlayerGenderOrdinal
+            }
+            primaryButton = button {
+                textRes = R.string.save
+                onClick = viewModel::onSavePlayerClicked
+            }
+            secondaryButton = button {
+                textRes = R.string.cancel
+            }
+        }.show(supportFragmentManager, DIALOGUE_TAG)
     }
 
     private fun showPlayerStats(player: UiPlayer) {
