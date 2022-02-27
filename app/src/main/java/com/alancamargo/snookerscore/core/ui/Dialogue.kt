@@ -1,12 +1,15 @@
 package com.alancamargo.snookerscore.core.ui
 
+import android.app.Dialog
+import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.os.Parcelable
 import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
 import androidx.fragment.app.DialogFragment
 import com.alancamargo.snookerscore.R
@@ -24,19 +27,14 @@ class Dialogue : DialogFragment() {
     var primaryButton: ButtonData = ButtonData()
     var secondaryButton: ButtonData? = null
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = DialogueBinding.inflate(inflater, container, false)
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        setUpUi()
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        val context = requireContext()
+        val inflater = LayoutInflater.from(context)
+        _binding = DialogueBinding.inflate(inflater)
         isCancelable = false
+
+        setUpUi()
+        return getDialogue(context)
     }
 
     private fun setUpUi() = with(binding) {
@@ -78,6 +76,12 @@ class Dialogue : DialogFragment() {
             }
         } ?: run {
             btSecondary.isVisible = false
+        }
+    }
+
+    private fun getDialogue(context: Context): AlertDialog {
+        return AlertDialog.Builder(context).setView(binding.root).create().apply {
+            window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         }
     }
 
