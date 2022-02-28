@@ -9,6 +9,10 @@
         <item name="android:textAppearance">@style/TextAppearance.Material3.BodyLarge</item>
         <item name="android:textStyle">bold</item>
     </style>
+    <style name="SnookerScore.Button.Primary.Critical">
+        <item name="backgroundTint">@color/red</item>
+        <item name="android:textColor">@color/light_grey</item>
+    </style>
     <style name="SnookerScore.Button.PrimaryDialogue" parent="@style/Widget.Material3.Button">
         <item name="android:backgroundTint">@color/green</item>
         <item name="android:textAppearance">@style/TextAppearance.Material3.BodyLarge</item>

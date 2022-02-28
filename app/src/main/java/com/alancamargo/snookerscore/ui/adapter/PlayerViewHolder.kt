@@ -12,6 +12,7 @@ class PlayerViewHolder(
     fun bindTo(player: UiPlayer) = with(binding) {
         imgAvatar.setImageResource(player.gender.iconRes)
         txtName.text = player.name
+        root.setOnClickListener { onItemClick(player) }
     }
 
 }

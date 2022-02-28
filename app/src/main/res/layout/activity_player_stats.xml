@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.activities.PlayerStatsActivity">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        style="@style/SnookerScore.Toolbar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:navigationIcon="@drawable/ic_arrow_back"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:title="Mark Selby"/>
+
+    <LinearLayout
+        android:id="@+id/containerMatchesWon"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_02"
+        android:layout_marginHorizontal="@dimen/spacing_02"
+        android:padding="@dimen/spacing_01"
+        android:orientation="vertical"
+        android:background="@drawable/shape_label_value_outline"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/labelMatchesWon"
+            style="@style/TextAppearance.Material3.TitleMedium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_02"
+            android:text="@string/matches_won"
+            android:textColor="@color/light_grey"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/txtMatchesWon"
+            style="@style/TextAppearance.Material3.BodyMedium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_01"
+            android:layout_marginStart="@dimen/spacing_03"
+            android:textColor="@color/light_grey"
+            tools:text="17"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/containerHighestScore"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="@dimen/spacing_01"
+        android:layout_marginHorizontal="@dimen/spacing_02"
+        android:padding="@dimen/spacing_01"
+        android:background="@drawable/shape_label_value_outline"
+        app:layout_constraintTop_toBottomOf="@id/containerMatchesWon"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/labelHighestScore"
+            style="@style/TextAppearance.Material3.TitleMedium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_02"
+            android:text="@string/highest_score"
+            android:textColor="@color/light_grey"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/txtHighestScore"
+            style="@style/TextAppearance.Material3.BodyMedium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_01"
+            android:layout_marginStart="@dimen/spacing_03"
+            android:textColor="@color/light_grey"
+            tools:text="147"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/containerHighestBreak"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="@dimen/spacing_01"
+        android:layout_marginHorizontal="@dimen/spacing_02"
+        android:padding="@dimen/spacing_01"
+        android:background="@drawable/shape_label_value_outline"
+        app:layout_constraintTop_toBottomOf="@id/containerHighestScore"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/labelHighestBreak"
+            style="@style/TextAppearance.Material3.TitleMedium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_02"
+            android:text="@string/highest_break"
+            android:textColor="@color/light_grey"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/txtHighestBreak"
+            style="@style/TextAppearance.Material3.BodyMedium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_01"
+            android:layout_marginStart="@dimen/spacing_03"
+            android:textColor="@color/light_grey"
+            tools:text="147"/>
+
+    </LinearLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btDeletePlayer"
+        style="@style/SnookerScore.Button.Primary.Critical"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="@dimen/spacing_02"
+        android:layout_marginHorizontal="@dimen/spacing_02"
+        android:text="@string/delete_player"
+        app:layout_constraintTop_toBottomOf="@id/containerHighestBreak"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintVertical_bias="1"/>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/groupContent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="containerMatchesWon, containerHighestScore, containerHighestBreak, btDeletePlayer"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -3,7 +3,6 @@ package com.alancamargo.snookerscore.ui.activities
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import com.alancamargo.snookerscore.R
@@ -17,12 +16,14 @@ import com.alancamargo.snookerscore.core.ui.radioButton
 import com.alancamargo.snookerscore.core.ui.radioButtons
 import com.alancamargo.snookerscore.databinding.ActivityPlayerListBinding
 import com.alancamargo.snookerscore.domain.model.Gender
+import com.alancamargo.snookerscore.navigation.PlayerStatsNavigation
 import com.alancamargo.snookerscore.ui.adapter.PlayerAdapter
 import com.alancamargo.snookerscore.ui.model.UiPlayer
 import com.alancamargo.snookerscore.ui.viewmodel.playerlist.PlayerListUiAction
 import com.alancamargo.snookerscore.ui.viewmodel.playerlist.PlayerListUiState
 import com.alancamargo.snookerscore.ui.viewmodel.playerlist.PlayerListViewModel
 import com.google.android.material.snackbar.Snackbar
+import org.koin.android.ext.android.get
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 private const val DIALOGUE_TAG = "DialogueTag"
@@ -88,7 +89,7 @@ class PlayerListActivity : AppCompatActivity() {
     }
 
     private fun showError() {
-        Snackbar.make(binding.root, R.string.error_message, Snackbar.LENGTH_SHORT)
+        Snackbar.make(binding.root, R.string.error_message, Snackbar.LENGTH_LONG)
             .setAction(R.string.retry) {
                 viewModel.getPlayers()
             }.show()
@@ -123,8 +124,8 @@ class PlayerListActivity : AppCompatActivity() {
     }
 
     private fun showPlayerStats(player: UiPlayer) {
-        // TODO
-        Toast.makeText(this, player.name, Toast.LENGTH_SHORT).show()
+        val navigation = get<PlayerStatsNavigation>()
+        navigation.startActivity(context = this, player = player)
     }
 
     companion object {

@@ -17,4 +17,8 @@
     <string name="female">Female</string>
     <string name="save">Save</string>
     <string name="cancel">Cancel</string>
+    <string name="matches_won">Matches won</string>
+    <string name="highest_score">Highest score</string>
+    <string name="highest_break">Highest break</string>
+    <string name="delete_player">Delete player</string>
 </resources>
