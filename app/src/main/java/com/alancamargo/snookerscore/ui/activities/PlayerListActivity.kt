@@ -45,6 +45,10 @@ class PlayerListActivity : AppCompatActivity() {
 
         observeState(viewModel, ::handleState)
         observeAction(viewModel, ::handleAction)
+    }
+
+    override fun onResume() {
+        super.onResume()
         viewModel.getPlayers()
     }
 

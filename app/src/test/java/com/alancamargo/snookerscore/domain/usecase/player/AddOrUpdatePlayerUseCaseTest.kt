@@ -2,6 +2,7 @@ package com.alancamargo.snookerscore.domain.usecase.player
 
 import app.cash.turbine.test
 import com.alancamargo.snookerscore.domain.repository.PlayerRepository
+import com.alancamargo.snookerscore.domain.repository.PlayerStatsRepository
 import com.alancamargo.snookerscore.testtools.getPlayer
 import io.mockk.every
 import io.mockk.mockk
@@ -13,13 +14,17 @@ import kotlin.time.ExperimentalTime
 @ExperimentalTime
 class AddOrUpdatePlayerUseCaseTest {
 
-    private val mockRepository = mockk<PlayerRepository>()
-    private val useCase = AddOrUpdatePlayerUseCase(mockRepository)
+    private val mockPlayerRepository = mockk<PlayerRepository>()
+    private val mockPlayerStatsRepository = mockk<PlayerStatsRepository>()
+    private val useCase = AddOrUpdatePlayerUseCase(mockPlayerRepository, mockPlayerStatsRepository)
 
     @Test
     fun `invoke should add or update player`() = runBlocking {
         val player = getPlayer()
-        every { mockRepository.addOrUpdatePlayer(player) } returns flow { emit(Unit) }
+        every { mockPlayerRepository.addOrUpdatePlayer(player) } returns flow { emit(Unit) }
+        every {
+            mockPlayerStatsRepository.addOrUpdatePlayerStats(playerStats = any())
+        } returns flow { emit(Unit) }
 
         val result = useCase.invoke(player)
 

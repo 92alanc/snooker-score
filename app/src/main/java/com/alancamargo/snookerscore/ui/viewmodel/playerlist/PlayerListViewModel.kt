@@ -10,6 +10,7 @@ import com.alancamargo.snookerscore.ui.mapping.toUi
 import com.alancamargo.snookerscore.ui.model.UiPlayer
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flowOn
@@ -44,16 +45,9 @@ class PlayerListViewModel(
         val player = Player(newPlayerName, newPlayerGender)
 
         viewModelScope.launch {
-            addOrUpdatePlayerUseCase(player).flowOn(dispatcher)
-                .onStart {
-                    sendAction { PlayerListUiAction.ShowLoading }
-                }.onCompletion {
-                    sendAction { PlayerListUiAction.HideLoading }
-                }.catch {
-                    sendAction { PlayerListUiAction.ShowError }
-                }.collect {
-                    getPlayers()
-                }
+            addOrUpdatePlayerUseCase(player).handleFlow {
+                getPlayers()
+            }
         }
     }
 
@@ -67,18 +61,24 @@ class PlayerListViewModel(
 
     fun getPlayers() {
         viewModelScope.launch {
-            getPlayersUseCase().flowOn(dispatcher)
-                .onStart {
-                    sendAction { PlayerListUiAction.ShowLoading }
-                }.onCompletion {
-                    sendAction { PlayerListUiAction.HideLoading }
-                }.catch {
-                    sendAction { PlayerListUiAction.ShowError }
-                }.collect {
-                    val players = it.map { domainPlayer -> domainPlayer.toUi() }
-                    setState { state -> state.onPlayersReceived(players) }
-                }
+            getPlayersUseCase().handleFlow {
+                val players = it.map { domainPlayer -> domainPlayer.toUi() }
+                setState { state -> state.onPlayersReceived(players) }
+            }
         }
+    }
+
+    private suspend fun <T> Flow<T>.handleFlow(block: (T) -> Unit) {
+        flowOn(dispatcher)
+            .onStart {
+                sendAction { PlayerListUiAction.ShowLoading }
+            }.onCompletion {
+                sendAction { PlayerListUiAction.HideLoading }
+            }.catch {
+                sendAction { PlayerListUiAction.ShowError }
+            }.collect {
+                block(it)
+            }
     }
 
 }

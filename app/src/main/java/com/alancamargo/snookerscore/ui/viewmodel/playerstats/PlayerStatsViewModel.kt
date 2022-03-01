@@ -1,5 +1,6 @@
 package com.alancamargo.snookerscore.ui.viewmodel.playerstats
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.alancamargo.snookerscore.core.arch.viewmodel.ViewModel
 import com.alancamargo.snookerscore.domain.usecase.player.DeletePlayerUseCase
@@ -38,14 +39,19 @@ class PlayerStatsViewModel(
         }
     }
 
-    fun onDeletePlayerClicked(player: UiPlayer) {
+    fun onDeletePlayerClicked() {
+        sendAction { PlayerStatsUiAction.ShowDeletePlayerConfirmation }
+    }
+
+    fun onDeletePlayerConfirmed(player: UiPlayer) {
         viewModelScope.launch {
             deletePlayerUseCase(player.toDomain()).flowOn(dispatcher)
                 .onStart {
                     sendAction { PlayerStatsUiAction.ShowLoading }
                 }.onCompletion {
                     sendAction { PlayerStatsUiAction.HideLoading }
-                }.catch {
+                }.catch { throwable ->
+                    Log.e("TEST_ALAN", throwable.message, throwable)
                     sendAction { PlayerStatsUiAction.ShowError }
                 }.collect {
                     sendAction { PlayerStatsUiAction.Finish }

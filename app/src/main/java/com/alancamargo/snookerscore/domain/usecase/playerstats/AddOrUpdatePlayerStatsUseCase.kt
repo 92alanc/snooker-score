@@ -6,8 +6,21 @@ import com.alancamargo.snookerscore.domain.model.PlayerStats
 import com.alancamargo.snookerscore.domain.repository.PlayerStatsRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import java.util.UUID
 
 class AddOrUpdatePlayerStatsUseCase(private val repository: PlayerStatsRepository) {
+
+    operator fun invoke(player: Player): Flow<Unit> {
+        val playerStats = PlayerStats(
+            id = UUID.randomUUID().toString(),
+            player = player,
+            matchesWon = 0,
+            highestScore = 0,
+            highestBreak = 0
+        )
+
+        return repository.addOrUpdatePlayerStats(playerStats)
+    }
 
     operator fun invoke(
         currentPlayerStats: PlayerStats,

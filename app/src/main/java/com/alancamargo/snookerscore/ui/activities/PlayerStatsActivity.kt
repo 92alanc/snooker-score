@@ -12,6 +12,8 @@ import com.alancamargo.snookerscore.core.arch.extensions.createIntent
 import com.alancamargo.snookerscore.core.arch.extensions.observeAction
 import com.alancamargo.snookerscore.core.arch.extensions.observeState
 import com.alancamargo.snookerscore.core.arch.extensions.putArguments
+import com.alancamargo.snookerscore.core.ui.button
+import com.alancamargo.snookerscore.core.ui.makeDialogue
 import com.alancamargo.snookerscore.databinding.ActivityPlayerStatsBinding
 import com.alancamargo.snookerscore.ui.model.UiPlayer
 import com.alancamargo.snookerscore.ui.viewmodel.playerstats.PlayerStatsUiAction
@@ -20,6 +22,8 @@ import com.alancamargo.snookerscore.ui.viewmodel.playerstats.PlayerStatsViewMode
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.parcelize.Parcelize
 import org.koin.androidx.viewmodel.ext.android.viewModel
+
+private const val DIALOGUE_TAG = "DialogueTag"
 
 class PlayerStatsActivity : AppCompatActivity() {
 
@@ -52,9 +56,7 @@ class PlayerStatsActivity : AppCompatActivity() {
             binding.txtMatchesWon.text = matchesWon.toString()
             binding.txtHighestScore.text = highestScore.toString()
             binding.txtHighestBreak.text = highestBreak.toString()
-            binding.btDeletePlayer.setOnClickListener {
-                viewModel.onDeletePlayerClicked(player)
-            }
+            binding.btDeletePlayer.setOnClickListener { viewModel.onDeletePlayerClicked() }
         }
     }
 
@@ -64,6 +66,7 @@ class PlayerStatsActivity : AppCompatActivity() {
             PlayerStatsUiAction.HideLoading -> binding.progressBar.isVisible = false
             PlayerStatsUiAction.ShowError -> showError()
             PlayerStatsUiAction.Finish -> finish()
+            PlayerStatsUiAction.ShowDeletePlayerConfirmation -> showDeletePlayerConfirmation()
         }
     }
 
@@ -84,6 +87,21 @@ class PlayerStatsActivity : AppCompatActivity() {
             .setAction(R.string.retry) {
                 viewModel.getPlayerStats(args.player)
             }.show()
+    }
+
+    private fun showDeletePlayerConfirmation() {
+        makeDialogue {
+            titleRes = R.string.delete_player
+            messageRes = R.string.delete_player_confirmation
+            illustrationRes = R.drawable.ic_warning
+            primaryButton = button {
+                textRes = R.string.cancel
+            }
+            secondaryButton = button {
+                textRes = R.string.yes
+                onClick = { viewModel.onDeletePlayerConfirmed(args.player) }
+            }
+        }.show(supportFragmentManager, DIALOGUE_TAG)
     }
 
     @Parcelize

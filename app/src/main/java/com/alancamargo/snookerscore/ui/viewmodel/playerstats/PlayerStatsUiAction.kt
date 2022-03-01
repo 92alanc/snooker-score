@@ -12,4 +12,6 @@ sealed class PlayerStatsUiAction : UiAction {
 
     object Finish : PlayerStatsUiAction()
 
+    object ShowDeletePlayerConfirmation : PlayerStatsUiAction()
+
 }

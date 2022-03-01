@@ -100,41 +100,48 @@ class PlayerStatsViewModelTest {
     }
 
     @Test
-    fun `onDeletePlayerClicked should send ShowLoading action`() {
+    fun `onDeletePlayerClicked should send ShowDeletePlayerConfirmation`() {
+        viewModel.onDeletePlayerClicked()
+
+        verify { mockActionObserver.onChanged(PlayerStatsUiAction.ShowDeletePlayerConfirmation) }
+    }
+
+    @Test
+    fun `onDeletePlayerConfirmed should send ShowLoading action`() {
         every { mockDeletePlayerUseCase.invoke(any()) } returns flow { delay(timeMillis = 50) }
 
         val player = getPlayer().toUi()
-        viewModel.onDeletePlayerClicked(player)
+        viewModel.onDeletePlayerConfirmed(player)
 
         verify { mockActionObserver.onChanged(PlayerStatsUiAction.ShowLoading) }
     }
 
     @Test
-    fun `onDeletePlayerClicked should send Finish action`() {
+    fun `onDeletePlayerConfirmed should send Finish action`() {
         every { mockDeletePlayerUseCase.invoke(any()) } returns flow { emit(Unit) }
 
         val player = getPlayer().toUi()
-        viewModel.onDeletePlayerClicked(player)
+        viewModel.onDeletePlayerConfirmed(player)
 
         verify { mockActionObserver.onChanged(PlayerStatsUiAction.Finish) }
     }
 
     @Test
-    fun `onDeletePlayerClicked should send HideLoading action`() {
+    fun `onDeletePlayerConfirmed should send HideLoading action`() {
         every { mockDeletePlayerUseCase.invoke(any()) } returns flow { emit(Unit) }
 
         val player = getPlayer().toUi()
-        viewModel.onDeletePlayerClicked(player)
+        viewModel.onDeletePlayerConfirmed(player)
 
         verify { mockActionObserver.onChanged(PlayerStatsUiAction.HideLoading) }
     }
 
     @Test
-    fun `with error onDeletePlayerClicked should send ShowError action`() {
+    fun `with error onDeletePlayerConfirmed should send ShowError action`() {
         every { mockDeletePlayerUseCase.invoke(any()) } returns flow { throw IOException() }
 
         val player = getPlayer().toUi()
-        viewModel.onDeletePlayerClicked(player)
+        viewModel.onDeletePlayerConfirmed(player)
 
         verify { mockActionObserver.onChanged(PlayerStatsUiAction.ShowError) }
     }

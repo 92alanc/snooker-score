@@ -33,7 +33,7 @@ import org.koin.dsl.module
 val domainModule = module {
     factory<PlayerRepository> { PlayerRepositoryImpl(localDataSource = get()) }
     factory { GetPlayersUseCase(repository = get()) }
-    factory { AddOrUpdatePlayerUseCase(repository = get()) }
+    factory { AddOrUpdatePlayerUseCase(playerRepository = get(), playerStatsRepository = get()) }
     factory { DeletePlayerUseCase(repository = get()) }
     factory { GetPenaltyValueUseCase() }
     factory<PlayerStatsRepository> { PlayerStatsRepositoryImpl(localDataSource = get()) }
