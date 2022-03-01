@@ -6,6 +6,7 @@
         <item name="titleTextColor">@color/light_grey</item>
     </style>
     <style name="SnookerScore.Button.Primary" parent="@style/Widget.Material3.Button">
+        <item name="backgroundTint">@color/light_grey</item>
         <item name="android:textAppearance">@style/TextAppearance.Material3.BodyLarge</item>
         <item name="android:textStyle">bold</item>
     </style>
@@ -14,7 +15,7 @@
         <item name="android:textColor">@color/light_grey</item>
     </style>
     <style name="SnookerScore.Button.PrimaryDialogue" parent="@style/Widget.Material3.Button">
-        <item name="android:backgroundTint">@color/green</item>
+        <item name="backgroundTint">@color/green</item>
         <item name="android:textAppearance">@style/TextAppearance.Material3.BodyLarge</item>
         <item name="android:textColor">@color/light_grey</item>
         <item name="android:textStyle">bold</item>
