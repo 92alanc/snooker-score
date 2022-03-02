@@ -26,4 +26,10 @@
         <item name="android:textAppearance">@style/TextAppearance.Material3.BodyLarge</item>
         <item name="android:textColor">@color/green</item>
     </style>
+    <style name="SnookerScore.CardView">
+        <item name="cardBackgroundColor">@color/light_grey</item>
+        <item name="cardCornerRadius">@dimen/radius_01</item>
+        <item name="cardUseCompatPadding">true</item>
+        <item name="contentPadding">@dimen/spacing_02</item>
+    </style>
 </resources>

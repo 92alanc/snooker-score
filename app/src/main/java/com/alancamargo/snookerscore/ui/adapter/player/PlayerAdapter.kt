@@ -1,4 +1,4 @@
-package com.alancamargo.snookerscore.ui.adapter
+package com.alancamargo.snookerscore.ui.adapter.player
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

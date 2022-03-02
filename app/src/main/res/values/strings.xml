@@ -10,7 +10,7 @@
     <string name="error_message">An error occurred</string>
     <string name="retry">Retry</string>
     <string name="empty"/>
-    <string name="app_info">App developed by Alan Camargo\n\nIllustrations by: Chanut is Industries and Smashicons</string>
+    <string name="app_info">App developed by Alan Camargo\n\nIllustrations by: Those Icons, Chanut is Industries and Smashicons</string>
     <string name="ok">OK</string>
     <string name="name">Name</string>
     <string name="male">Male</string>
@@ -23,4 +23,7 @@
     <string name="delete_player">Delete player</string>
     <string name="delete_player_confirmation">Are you sure you want to delete this player? This cannot be undone and will delete everything related to him/her!</string>
     <string name="yes">Yes</string>
+    <string name="players_format">%1$s vs. %2$s</string>
+    <string name="frames_format">%d frames</string>
+    <string name="new_match">New match</string>
 </resources>

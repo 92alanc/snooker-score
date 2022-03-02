@@ -1,4 +1,4 @@
-package com.alancamargo.snookerscore.ui.adapter
+package com.alancamargo.snookerscore.ui.adapter.player
 
 import androidx.recyclerview.widget.RecyclerView
 import com.alancamargo.snookerscore.databinding.ItemPlayerBinding

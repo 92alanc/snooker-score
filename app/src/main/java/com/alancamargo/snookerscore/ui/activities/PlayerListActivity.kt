@@ -22,7 +22,7 @@ import com.alancamargo.snookerscore.core.ui.radioButtons
 import com.alancamargo.snookerscore.databinding.ActivityPlayerListBinding
 import com.alancamargo.snookerscore.domain.model.Gender
 import com.alancamargo.snookerscore.navigation.PlayerStatsNavigation
-import com.alancamargo.snookerscore.ui.adapter.PlayerAdapter
+import com.alancamargo.snookerscore.ui.adapter.player.PlayerAdapter
 import com.alancamargo.snookerscore.ui.model.UiPlayer
 import com.alancamargo.snookerscore.ui.viewmodel.playerlist.PlayerListUiAction
 import com.alancamargo.snookerscore.ui.viewmodel.playerlist.PlayerListUiState

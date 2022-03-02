@@ -3,13 +3,13 @@ package com.alancamargo.snookerscore.ui.activities
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.alancamargo.snookerscore.R
 import com.alancamargo.snookerscore.core.arch.extensions.observeAction
 import com.alancamargo.snookerscore.core.ui.button
 import com.alancamargo.snookerscore.core.ui.makeDialogue
 import com.alancamargo.snookerscore.databinding.ActivityMainBinding
+import com.alancamargo.snookerscore.navigation.MatchListNavigation
 import com.alancamargo.snookerscore.navigation.PlayerListNavigation
 import com.alancamargo.snookerscore.navigation.WebViewNavigation
 import com.alancamargo.snookerscore.ui.viewmodel.main.MainUiAction
@@ -77,8 +77,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun openMatches() {
-        // TODO
-        Toast.makeText(this, "Matches", Toast.LENGTH_SHORT).show()
+        val navigation = get<MatchListNavigation>()
+        navigation.startActivity(context = this)
     }
 
     private fun openPlayers() {
