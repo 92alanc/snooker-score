@@ -4,6 +4,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import com.alancamargo.snookerscore.domain.usecase.player.AddOrUpdatePlayerUseCase
 import com.alancamargo.snookerscore.domain.usecase.player.GetPlayersUseCase
+import com.alancamargo.snookerscore.domain.usecase.playerstats.AddOrUpdatePlayerStatsUseCase
 import com.alancamargo.snookerscore.testtools.getPlayer
 import com.alancamargo.snookerscore.testtools.getPlayerList
 import com.alancamargo.snookerscore.ui.mapping.toUi
@@ -29,6 +30,7 @@ class PlayerListViewModelTest {
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
     private val mockAddOrUpdatePlayerUseCase = mockk<AddOrUpdatePlayerUseCase>()
+    private val mockAddOrUpdatePlayerStatsUseCase = mockk<AddOrUpdatePlayerStatsUseCase>()
     private val mockGetPlayersUseCase = mockk<GetPlayersUseCase>()
     private val mockStateObserver = mockk<Observer<PlayerListUiState>>(relaxed = true)
     private val mockActionObserver = mockk<Observer<PlayerListUiAction>>(relaxed = true)
@@ -42,6 +44,7 @@ class PlayerListViewModelTest {
 
         viewModel = PlayerListViewModel(
             addOrUpdatePlayerUseCase = mockAddOrUpdatePlayerUseCase,
+            addOrUpdatePlayerStatsUseCase = mockAddOrUpdatePlayerStatsUseCase,
             getPlayersUseCase = mockGetPlayersUseCase,
             dispatcher = testCoroutineDispatcher
         ).apply {
@@ -107,6 +110,9 @@ class PlayerListViewModelTest {
     @Test
     fun `onSavePlayerClicked should send ShowLoading action`() {
         every { mockAddOrUpdatePlayerUseCase.invoke(any()) } returns flow { delay(timeMillis = 50) }
+        every {
+            mockAddOrUpdatePlayerStatsUseCase.invoke(any())
+        } returns flow { delay(timeMillis = 50) }
 
         val player = getPlayer().toUi()
         with(viewModel) {
@@ -123,6 +129,7 @@ class PlayerListViewModelTest {
         val players = getPlayerList()
         every { mockGetPlayersUseCase.invoke() } returns flow { emit(players) }
         every { mockAddOrUpdatePlayerUseCase.invoke(any()) } returns flow { emit(Unit) }
+        every { mockAddOrUpdatePlayerStatsUseCase.invoke(any()) } returns flow { emit(Unit) }
 
         val player = getPlayer().toUi()
         with(viewModel) {
@@ -137,6 +144,7 @@ class PlayerListViewModelTest {
     @Test
     fun `onSavePlayerClicked should send HideLoading action`() {
         every { mockAddOrUpdatePlayerUseCase.invoke(any()) } returns flow { emit(Unit) }
+        every { mockAddOrUpdatePlayerStatsUseCase.invoke(any()) } returns flow { emit(Unit) }
 
         val player = getPlayer().toUi()
         with(viewModel) {
@@ -151,6 +159,7 @@ class PlayerListViewModelTest {
     @Test
     fun `with error onSavePlayerClicked should send ShowError action`() {
         every { mockAddOrUpdatePlayerUseCase.invoke(any()) } returns flow { throw IOException() }
+        every { mockAddOrUpdatePlayerStatsUseCase.invoke(any()) } returns flow { emit(Unit) }
 
         val player = getPlayer().toUi()
         with(viewModel) {

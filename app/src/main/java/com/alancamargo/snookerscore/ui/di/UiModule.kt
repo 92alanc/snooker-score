@@ -51,6 +51,7 @@ val uiModule = module {
     viewModel {
         PlayerListViewModel(
             addOrUpdatePlayerUseCase = get(),
+            addOrUpdatePlayerStatsUseCase = get(),
             getPlayersUseCase = get()
         )
     }

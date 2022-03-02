@@ -6,6 +6,7 @@ import com.alancamargo.snookerscore.domain.model.Gender
 import com.alancamargo.snookerscore.domain.model.Player
 import com.alancamargo.snookerscore.domain.usecase.player.AddOrUpdatePlayerUseCase
 import com.alancamargo.snookerscore.domain.usecase.player.GetPlayersUseCase
+import com.alancamargo.snookerscore.domain.usecase.playerstats.AddOrUpdatePlayerStatsUseCase
 import com.alancamargo.snookerscore.ui.mapping.toUi
 import com.alancamargo.snookerscore.ui.model.UiPlayer
 import kotlinx.coroutines.CoroutineDispatcher
@@ -20,6 +21,7 @@ import kotlinx.coroutines.launch
 
 class PlayerListViewModel(
     private val addOrUpdatePlayerUseCase: AddOrUpdatePlayerUseCase,
+    private val addOrUpdatePlayerStatsUseCase: AddOrUpdatePlayerStatsUseCase,
     private val getPlayersUseCase: GetPlayersUseCase,
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : ViewModel<PlayerListUiState, PlayerListUiAction>(initialState = PlayerListUiState()) {
@@ -46,7 +48,11 @@ class PlayerListViewModel(
 
         viewModelScope.launch {
             addOrUpdatePlayerUseCase(player).handleFlow {
-                getPlayers()
+                viewModelScope.launch {
+                    addOrUpdatePlayerStatsUseCase(player).handleFlow {
+                        getPlayers()
+                    }
+                }
             }
         }
     }
