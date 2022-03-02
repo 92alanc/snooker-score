@@ -57,7 +57,11 @@ class PlayerListViewModel(
             addOrUpdatePlayerUseCase(player).handleFlow {
                 viewModelScope.launch {
                     addOrUpdatePlayerStatsUseCase(player).handleFlow {
-                        getPlayers()
+                        if (isPickingPlayer) {
+                            sendAction { PlayerListUiAction.PickPlayer(player.toUi()) }
+                        } else {
+                            getPlayers()
+                        }
                     }
                 }
             }

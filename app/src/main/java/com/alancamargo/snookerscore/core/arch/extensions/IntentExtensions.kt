@@ -10,7 +10,11 @@ fun Intent.putArguments(args: Parcelable): Intent = putExtra(EXTRA_ARGUMENTS, ar
 
 fun Intent.putResponse(response: Parcelable): Intent = putExtra(EXTRA_RESPONSE, response)
 
-fun <T : Parcelable> Intent.getResponse(): T {
+fun <T : Parcelable> Intent?.getResponse(): T {
+    if (this == null) {
+        throw IllegalStateException("Intent must not be null")
+    }
+
     return getParcelableExtra(EXTRA_RESPONSE) ?: throw IllegalStateException(
         "Missing EXTRA_RESPONSE"
     )

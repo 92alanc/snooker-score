@@ -7,8 +7,6 @@ sealed class NewMatchUiAction : UiAction {
 
     data class StartMatch(val match: UiMatch) : NewMatchUiAction()
 
-    object ShowHelp : NewMatchUiAction()
-
     object ShowSamePlayersDialogue : NewMatchUiAction()
 
     object ShowLoading : NewMatchUiAction()
@@ -17,6 +15,6 @@ sealed class NewMatchUiAction : UiAction {
 
     object ShowError : NewMatchUiAction()
 
-    object ShowPlayers : NewMatchUiAction()
+    object PickPlayer : NewMatchUiAction()
 
 }

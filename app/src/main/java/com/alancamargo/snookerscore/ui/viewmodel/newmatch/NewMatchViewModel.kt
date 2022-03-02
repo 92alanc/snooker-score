@@ -31,30 +31,23 @@ class NewMatchViewModel(
     private var player1: UiPlayer? = null
     private var player2: UiPlayer? = null
     private var numberOfFrames = 1
+    private var playerToPick = PlayerToPick.PLAYER_1
 
-    fun onSelectPlayerButtonClicked() {
-        sendAction { NewMatchUiAction.ShowPlayers }
+    fun onSelectPlayer1ButtonClicked() {
+        playerToPick = PlayerToPick.PLAYER_1
+        sendAction { NewMatchUiAction.PickPlayer }
     }
 
-    fun onPlayer1Selected(player1: UiPlayer) {
-        this.player1 = player1
-        setState { state -> state.onPlayer1Selected(player1) }
-
-        if (player2 != null) {
-            setState { state -> state.onEnableStartMatchButton() }
-        } else {
-            setState { state -> state.onDisableStartMatchButton() }
-        }
+    fun onSelectPlayer2ButtonClicked() {
+        playerToPick = PlayerToPick.PLAYER_2
+        sendAction { NewMatchUiAction.PickPlayer }
     }
 
-    fun onPlayer2Selected(player2: UiPlayer) {
-        this.player2 = player2
-        setState { state -> state.onPlayer2Selected(player2) }
-
-        if (player1 != null) {
-            setState { state -> state.onEnableStartMatchButton() }
+    fun onPlayerSelected(player: UiPlayer) {
+        if (playerToPick == PlayerToPick.PLAYER_1) {
+            onPlayer1Selected(player)
         } else {
-            setState { state -> state.onDisableStartMatchButton() }
+            onPlayer2Selected(player)
         }
     }
 
@@ -75,10 +68,6 @@ class NewMatchViewModel(
         } ?: run { sendAction { NewMatchUiAction.ShowError } }
     }
 
-    fun onHelpButtonClicked() {
-        sendAction { NewMatchUiAction.ShowHelp }
-    }
-
     fun onNumberOfFramesIncreased() {
         numberOfFrames += 2
         setState { state -> state.onNumberOfFramesChanged(numberOfFrames) }
@@ -88,6 +77,28 @@ class NewMatchViewModel(
         if (numberOfFrames > INITIAL_NUMBER_OF_FRAMES) {
             numberOfFrames -= 2
             setState { state -> state.onNumberOfFramesChanged(numberOfFrames) }
+        }
+    }
+
+    private fun onPlayer1Selected(player1: UiPlayer) {
+        this.player1 = player1
+        setState { state -> state.onPlayer1Selected(player1) }
+
+        if (player2 != null) {
+            setState { state -> state.onEnableStartMatchButton() }
+        } else {
+            setState { state -> state.onDisableStartMatchButton() }
+        }
+    }
+
+    private fun onPlayer2Selected(player2: UiPlayer) {
+        this.player2 = player2
+        setState { state -> state.onPlayer2Selected(player2) }
+
+        if (player1 != null) {
+            setState { state -> state.onEnableStartMatchButton() }
+        } else {
+            setState { state -> state.onDisableStartMatchButton() }
         }
     }
 

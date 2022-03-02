@@ -6,21 +6,17 @@ import com.alancamargo.snookerscore.domain.usecase.match.AddMatchUseCase
 import com.alancamargo.snookerscore.domain.usecase.player.ArePlayersTheSameUseCase
 import com.alancamargo.snookerscore.domain.usecase.player.GetPlayersUseCase
 import com.alancamargo.snookerscore.testtools.getPlayerList
-import com.alancamargo.snookerscore.ui.model.UiGender
-import com.alancamargo.snookerscore.ui.model.UiPlayer
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.setMain
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import java.io.IOException
 
 @ExperimentalCoroutinesApi
 class NewMatchViewModelTest {
@@ -54,13 +50,23 @@ class NewMatchViewModelTest {
         }
     }
 
-    @Test
-    fun `onSelectPlayerButtonClicked should send ShowPlayers action`() {
+    // TODO
+    /*@Test
+    fun `onSelectPlayer1ButtonClicked should send PickPlayer1 action`() {
         mockSuccessfulPlayersResponse()
 
-        viewModel.onSelectPlayerButtonClicked()
+        viewModel.onSelectPlayer1ButtonClicked()
 
-        verify { mockActionObserver.onChanged(NewMatchUiAction.ShowPlayers) }
+        verify { mockActionObserver.onChanged(NewMatchUiAction.PickPlayer1) }
+    }
+
+    @Test
+    fun `onSelectPlayer2ButtonClicked should send PickPlayer2 action`() {
+        mockSuccessfulPlayersResponse()
+
+        viewModel.onSelectPlayer2ButtonClicked()
+
+        verify { mockActionObserver.onChanged(NewMatchUiAction.PickPlayer2) }
     }
 
     @Test
@@ -143,14 +149,7 @@ class NewMatchViewModelTest {
         viewModel.onStartMatchButtonClicked()
 
         verify { mockActionObserver.onChanged(NewMatchUiAction.HideLoading) }
-    }
-
-    @Test
-    fun `onHelpButtonClicked should send ShowHelp action`() {
-        viewModel.onHelpButtonClicked()
-
-        verify { mockActionObserver.onChanged(NewMatchUiAction.ShowHelp) }
-    }
+    }*/
 
     @Test
     fun `onNumberOfFramesIncreased should increase number of frames`() {
