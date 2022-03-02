@@ -2,6 +2,7 @@ package com.alancamargo.snookerscore.core.ui
 
 import android.app.Dialog
 import android.content.Context
+import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -10,6 +11,7 @@ import android.widget.RadioButton
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.DialogFragment
 import com.alancamargo.snookerscore.R
@@ -72,6 +74,8 @@ class Dialogue : DialogFragment() {
                 val radioButton = RadioButton(requireContext()).also { rb ->
                     rb.id = radioButtonData.id
                     rb.setText(radioButtonData.textRes)
+                    val colour = ContextCompat.getColor(radioGroup.context, R.color.green)
+                    rb.buttonTintList = ColorStateList.valueOf(colour)
                 }
                 
                 radioGroup.addView(radioButton)

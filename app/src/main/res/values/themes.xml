@@ -1,5 +1,5 @@
 <resources>
-    <style name="Theme.SnookerScore" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="Theme.SnookerScore" parent="Theme.Material3.Light.NoActionBar">
         <!-- Primary brand colours -->
         <item name="colorPrimary">@color/green</item>
         <item name="colorPrimaryVariant">@color/green</item>
@@ -10,7 +10,7 @@
         <!-- Status bar colour -->
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- App theme -->
-        <item name="colorControlNormal">@color/green</item>
+        <item name="colorControlNormal">@color/light_grey</item>
         <item name="colorControlActivated">@color/green</item>
         <item name="android:textColorSecondary">@color/light_grey</item>
         <item name="android:colorBackground">?attr/colorPrimaryVariant</item>

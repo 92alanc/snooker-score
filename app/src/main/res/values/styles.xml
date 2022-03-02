@@ -2,7 +2,7 @@
 <resources>
     <style name="SnookerScore"/>
     <style name="SnookerScore.Button"/>
-    <style name="SnookerScore.Toolbar" parent="@style/Widget.MaterialComponents.Toolbar">
+    <style name="SnookerScore.Toolbar" parent="@style/Widget.Material3.Toolbar">
         <item name="titleTextColor">@color/light_grey</item>
     </style>
     <style name="SnookerScore.Button.Primary" parent="@style/Widget.Material3.Button">

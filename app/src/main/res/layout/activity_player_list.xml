@@ -48,6 +48,8 @@
         android:layout_marginEnd="@dimen/spacing_03"
         android:contentDescription="@string/add_player"
         android:src="@drawable/ic_add"
+        app:backgroundTint="@color/red"
+        app:tint="@color/light_grey"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
