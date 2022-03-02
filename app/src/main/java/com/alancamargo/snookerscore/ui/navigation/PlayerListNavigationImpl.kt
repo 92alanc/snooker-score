@@ -6,8 +6,9 @@ import com.alancamargo.snookerscore.ui.activities.PlayerListActivity
 
 class PlayerListNavigationImpl : PlayerListNavigation {
 
-    override fun startActivity(context: Context) {
-        val intent = PlayerListActivity.getIntent(context)
+    override fun startActivity(context: Context, isPickingPlayer: Boolean) {
+        val args = PlayerListActivity.Args(isPickingPlayer)
+        val intent = PlayerListActivity.getIntent(context, args)
         context.startActivity(intent)
     }
 

@@ -48,8 +48,9 @@ val uiModule = module {
         )
     }
     viewModel { MatchDetailsViewModel(deleteMatchUseCase = get()) }
-    viewModel {
+    viewModel { params ->
         PlayerListViewModel(
+            isPickingPlayer = params.get(),
             addOrUpdatePlayerUseCase = get(),
             addOrUpdatePlayerStatsUseCase = get(),
             getPlayersUseCase = get()

@@ -15,4 +15,6 @@ sealed class PlayerListUiAction : UiAction {
 
     object ShowError : PlayerListUiAction()
 
+    data class PickPlayer(val player: UiPlayer) : PlayerListUiAction()
+
 }

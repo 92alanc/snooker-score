@@ -4,6 +4,6 @@ import android.content.Context
 
 interface PlayerListNavigation {
 
-    fun startActivity(context: Context)
+    fun startActivity(context: Context, isPickingPlayer: Boolean = false)
 
 }

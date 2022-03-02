@@ -17,7 +17,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.setMain
-import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import java.io.IOException
@@ -37,25 +36,10 @@ class PlayerListViewModelTest {
 
     private lateinit var viewModel: PlayerListViewModel
 
-    @Before
-    fun setUp() {
-        val testCoroutineDispatcher = TestCoroutineDispatcher()
-        Dispatchers.setMain(testCoroutineDispatcher)
-
-        viewModel = PlayerListViewModel(
-            addOrUpdatePlayerUseCase = mockAddOrUpdatePlayerUseCase,
-            addOrUpdatePlayerStatsUseCase = mockAddOrUpdatePlayerStatsUseCase,
-            getPlayersUseCase = mockGetPlayersUseCase,
-            dispatcher = testCoroutineDispatcher
-        ).apply {
-            state.observeForever(mockStateObserver)
-            action.observeForever(mockActionObserver)
-        }
-    }
-
     @Test
     fun `getPlayers should send ShowLoading action`() {
         every { mockGetPlayersUseCase.invoke() } returns flow { delay(timeMillis = 50) }
+        createViewModel()
 
         viewModel.getPlayers()
 
@@ -66,6 +50,7 @@ class PlayerListViewModelTest {
     fun `getPlayers should set state with players`() {
         val players = getPlayerList()
         every { mockGetPlayersUseCase.invoke() } returns flow { emit(players) }
+        createViewModel()
 
         viewModel.getPlayers()
 
@@ -77,6 +62,7 @@ class PlayerListViewModelTest {
     fun `getPlayers should send HideLoading action`() {
         val players = getPlayerList()
         every { mockGetPlayersUseCase.invoke() } returns flow { emit(players) }
+        createViewModel()
 
         viewModel.getPlayers()
 
@@ -86,6 +72,7 @@ class PlayerListViewModelTest {
     @Test
     fun `with error getting players getPlayers should send ShowError action`() {
         every { mockGetPlayersUseCase.invoke() } returns flow { throw IOException() }
+        createViewModel()
 
         viewModel.getPlayers()
 
@@ -94,6 +81,8 @@ class PlayerListViewModelTest {
 
     @Test
     fun `onNewPlayerClicked should send ShowNewPlayerDialogue action`() {
+        createViewModel()
+
         viewModel.onNewPlayerClicked()
 
         verify { mockActionObserver.onChanged(PlayerListUiAction.ShowNewPlayerDialogue) }
@@ -101,10 +90,22 @@ class PlayerListViewModelTest {
 
     @Test
     fun `onPlayerClicked should send OpenPlayerStats action`() {
+        createViewModel()
+
         val player = getPlayer().toUi()
         viewModel.onPlayerClicked(player)
 
         verify { mockActionObserver.onChanged(PlayerListUiAction.OpenPlayerStats(player)) }
+    }
+
+    @Test
+    fun `when picking player onPlayerClicked should send PickPlayer action`() {
+        createViewModel(isPickingPlayer = true)
+
+        val player = getPlayer().toUi()
+        viewModel.onPlayerClicked(player)
+
+        verify { mockActionObserver.onChanged(PlayerListUiAction.PickPlayer(player)) }
     }
 
     @Test
@@ -113,6 +114,8 @@ class PlayerListViewModelTest {
         every {
             mockAddOrUpdatePlayerStatsUseCase.invoke(any())
         } returns flow { delay(timeMillis = 50) }
+
+        createViewModel()
 
         val player = getPlayer().toUi()
         with(viewModel) {
@@ -131,6 +134,8 @@ class PlayerListViewModelTest {
         every { mockAddOrUpdatePlayerUseCase.invoke(any()) } returns flow { emit(Unit) }
         every { mockAddOrUpdatePlayerStatsUseCase.invoke(any()) } returns flow { emit(Unit) }
 
+        createViewModel()
+
         val player = getPlayer().toUi()
         with(viewModel) {
             setNewPlayerName(player.name)
@@ -145,6 +150,8 @@ class PlayerListViewModelTest {
     fun `onSavePlayerClicked should send HideLoading action`() {
         every { mockAddOrUpdatePlayerUseCase.invoke(any()) } returns flow { emit(Unit) }
         every { mockAddOrUpdatePlayerStatsUseCase.invoke(any()) } returns flow { emit(Unit) }
+
+        createViewModel()
 
         val player = getPlayer().toUi()
         with(viewModel) {
@@ -161,6 +168,8 @@ class PlayerListViewModelTest {
         every { mockAddOrUpdatePlayerUseCase.invoke(any()) } returns flow { throw IOException() }
         every { mockAddOrUpdatePlayerStatsUseCase.invoke(any()) } returns flow { emit(Unit) }
 
+        createViewModel()
+
         val player = getPlayer().toUi()
         with(viewModel) {
             setNewPlayerName(player.name)
@@ -169,6 +178,22 @@ class PlayerListViewModelTest {
         viewModel.onSavePlayerClicked()
 
         verify { mockActionObserver.onChanged(PlayerListUiAction.ShowError) }
+    }
+
+    private fun createViewModel(isPickingPlayer: Boolean = false) {
+        val testCoroutineDispatcher = TestCoroutineDispatcher()
+        Dispatchers.setMain(testCoroutineDispatcher)
+
+        viewModel = PlayerListViewModel(
+            isPickingPlayer = isPickingPlayer,
+            addOrUpdatePlayerUseCase = mockAddOrUpdatePlayerUseCase,
+            addOrUpdatePlayerStatsUseCase = mockAddOrUpdatePlayerStatsUseCase,
+            getPlayersUseCase = mockGetPlayersUseCase,
+            dispatcher = testCoroutineDispatcher
+        ).apply {
+            state.observeForever(mockStateObserver)
+            action.observeForever(mockActionObserver)
+        }
     }
 
 }

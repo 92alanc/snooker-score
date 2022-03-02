@@ -20,6 +20,7 @@ import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 
 class PlayerListViewModel(
+    private val isPickingPlayer: Boolean,
     private val addOrUpdatePlayerUseCase: AddOrUpdatePlayerUseCase,
     private val addOrUpdatePlayerStatsUseCase: AddOrUpdatePlayerStatsUseCase,
     private val getPlayersUseCase: GetPlayersUseCase,
@@ -34,7 +35,13 @@ class PlayerListViewModel(
     }
 
     fun onPlayerClicked(player: UiPlayer) {
-        sendAction { PlayerListUiAction.OpenPlayerStats(player) }
+        val action = if (isPickingPlayer) {
+            PlayerListUiAction.PickPlayer(player)
+        } else {
+            PlayerListUiAction.OpenPlayerStats(player)
+        }
+
+        sendAction { action }
     }
 
     fun onSavePlayerClicked() {
