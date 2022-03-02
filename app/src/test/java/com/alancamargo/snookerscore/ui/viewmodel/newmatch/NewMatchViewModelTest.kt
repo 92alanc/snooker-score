@@ -72,7 +72,7 @@ class NewMatchViewModelTest {
         viewModel.onPlayer1Selected(player)
         viewModel.onPlayer2Selected(player)
 
-        viewModel.onStartMatchButtonClicked(numberOfFrames = 3)
+        viewModel.onStartMatchButtonClicked()
 
         verify { mockActionObserver.onChanged(NewMatchUiAction.ShowSamePlayersDialogue) }
     }
@@ -89,7 +89,7 @@ class NewMatchViewModelTest {
         viewModel.onPlayer1Selected(player)
         viewModel.onPlayer2Selected(player)
 
-        viewModel.onStartMatchButtonClicked(numberOfFrames = 3)
+        viewModel.onStartMatchButtonClicked()
 
         verify { mockActionObserver.onChanged(NewMatchUiAction.ShowLoading) }
     }
@@ -106,7 +106,7 @@ class NewMatchViewModelTest {
         viewModel.onPlayer1Selected(player)
         viewModel.onPlayer2Selected(player)
 
-        viewModel.onStartMatchButtonClicked(numberOfFrames = 3)
+        viewModel.onStartMatchButtonClicked()
 
         verify { mockActionObserver.onChanged(any<NewMatchUiAction.StartMatch>()) }
     }
@@ -123,7 +123,7 @@ class NewMatchViewModelTest {
         viewModel.onPlayer1Selected(player)
         viewModel.onPlayer2Selected(player)
 
-        viewModel.onStartMatchButtonClicked(numberOfFrames = 3)
+        viewModel.onStartMatchButtonClicked()
 
         verify { mockActionObserver.onChanged(NewMatchUiAction.ShowError) }
     }
@@ -140,18 +140,39 @@ class NewMatchViewModelTest {
         viewModel.onPlayer1Selected(player)
         viewModel.onPlayer2Selected(player)
 
-        viewModel.onStartMatchButtonClicked(numberOfFrames = 3)
+        viewModel.onStartMatchButtonClicked()
 
         verify { mockActionObserver.onChanged(NewMatchUiAction.HideLoading) }
     }
 
     @Test
     fun `onHelpButtonClicked should send ShowHelp action`() {
-        mockSuccessfulPlayersResponse()
-
         viewModel.onHelpButtonClicked()
 
         verify { mockActionObserver.onChanged(NewMatchUiAction.ShowHelp) }
+    }
+
+    @Test
+    fun `onNumberOfFramesIncreased should increase number of frames`() {
+        viewModel.onNumberOfFramesIncreased()
+
+        verify { mockStateObserver.onChanged(NewMatchUiState(numberOfFrames = 3)) }
+    }
+
+    @Test
+    fun `when on initial number of frames onDecreaseNumberOfFrames should not decrease number of frames`() {
+        viewModel.onNumberOfFramesDecreased()
+
+        verify(exactly = 1) { mockStateObserver.onChanged(any()) }
+    }
+
+    @Test
+    fun `onDecreaseNumberOfFrames should decrease number of frames by 2`() {
+        viewModel.onNumberOfFramesIncreased()
+
+        viewModel.onNumberOfFramesDecreased()
+
+        verify(exactly = 2) { mockStateObserver.onChanged(NewMatchUiState(numberOfFrames = 1)) }
     }
 
     private fun mockSuccessfulPlayersResponse() {

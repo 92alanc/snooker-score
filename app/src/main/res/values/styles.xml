@@ -32,4 +32,18 @@
         <item name="cardUseCompatPadding">true</item>
         <item name="contentPadding">@dimen/spacing_02</item>
     </style>
+    <style name="SnookerScore.LargeTitle" parent="@style/TextAppearance.Material3.TitleLarge">
+        <item name="android:textColor">@color/light_grey</item>
+    </style>
+    <style name="SnookerScore.LargeBody" parent="@style/TextAppearance.Material3.BodyLarge">
+        <item name="android:textColor">@color/light_grey</item>
+    </style>
+    <style name="SnookerScore.ImageButton">
+        <item name="android:padding">@dimen/spacing_01</item>
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+    <style name="SnookerScore.ExtendedFloatingActionButton">
+        <item name="backgroundTint">@color/red</item>
+        <item name="android:textColor">@color/light_grey</item>
+    </style>
 </resources>

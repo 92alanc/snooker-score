@@ -12,12 +12,14 @@ import com.alancamargo.snookerscore.core.arch.extensions.observeAction
 import com.alancamargo.snookerscore.core.arch.extensions.observeState
 import com.alancamargo.snookerscore.core.ui.formatDateTime
 import com.alancamargo.snookerscore.databinding.ActivityMatchListBinding
+import com.alancamargo.snookerscore.navigation.NewMatchNavigation
 import com.alancamargo.snookerscore.ui.adapter.match.MatchAdapter
 import com.alancamargo.snookerscore.ui.model.UiMatch
 import com.alancamargo.snookerscore.ui.viewmodel.matchlist.MatchListUiAction
 import com.alancamargo.snookerscore.ui.viewmodel.matchlist.MatchListUiState
 import com.alancamargo.snookerscore.ui.viewmodel.matchlist.MatchListViewModel
 import com.google.android.material.snackbar.Snackbar
+import org.koin.android.ext.android.get
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MatchListActivity : AppCompatActivity() {
@@ -85,8 +87,8 @@ class MatchListActivity : AppCompatActivity() {
     }
 
     private fun openNewMatch() {
-        // TODO
-        Toast.makeText(this, "New match", Toast.LENGTH_SHORT).show()
+        val navigation = get<NewMatchNavigation>()
+        navigation.startActivity(context = this)
     }
 
     private fun openMatchDetails(match: UiMatch) {

@@ -1,10 +1,12 @@
 package com.alancamargo.snookerscore.ui.di
 
 import com.alancamargo.snookerscore.navigation.MatchListNavigation
+import com.alancamargo.snookerscore.navigation.NewMatchNavigation
 import com.alancamargo.snookerscore.navigation.PlayerListNavigation
 import com.alancamargo.snookerscore.navigation.PlayerStatsNavigation
 import com.alancamargo.snookerscore.navigation.WebViewNavigation
 import com.alancamargo.snookerscore.ui.navigation.MatchListNavigationImpl
+import com.alancamargo.snookerscore.ui.navigation.NewMatchNavigationImpl
 import com.alancamargo.snookerscore.ui.navigation.PlayerListNavigationImpl
 import com.alancamargo.snookerscore.ui.navigation.PlayerStatsNavigationImpl
 import com.alancamargo.snookerscore.ui.navigation.WebViewNavigationImpl
@@ -63,4 +65,5 @@ val uiModule = module {
     factory<PlayerListNavigation> { PlayerListNavigationImpl() }
     factory<PlayerStatsNavigation> { PlayerStatsNavigationImpl() }
     factory<MatchListNavigation> { MatchListNavigationImpl() }
+    factory<NewMatchNavigation> { NewMatchNavigationImpl() }
 }

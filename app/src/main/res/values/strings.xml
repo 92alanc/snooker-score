@@ -26,4 +26,12 @@
     <string name="players_format">%1$s vs. %2$s</string>
     <string name="frames_format">%d frames</string>
     <string name="new_match">New match</string>
+    <string name="player_1">Player 1</string>
+    <string name="player_2">Player 2</string>
+    <string name="select">Select</string>
+    <string name="number_of_frames">Number of frames</string>
+    <string name="more">More</string>
+    <string name="less">Less</string>
+    <string name="start_match">Start match</string>
+    <string name="change">Change</string>
 </resources>

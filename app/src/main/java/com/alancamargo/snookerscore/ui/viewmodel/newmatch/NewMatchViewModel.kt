@@ -18,15 +18,19 @@ import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 
+private const val INITIAL_NUMBER_OF_FRAMES = 1
+
 class NewMatchViewModel(
     private val arePlayersTheSameUseCase: ArePlayersTheSameUseCase,
     private val addMatchUseCase: AddMatchUseCase,
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO
-) : ViewModel<NewMatchUiState, NewMatchUiAction>(initialState = NewMatchUiState()) {
+) : ViewModel<NewMatchUiState, NewMatchUiAction>(
+    initialState = NewMatchUiState(numberOfFrames = INITIAL_NUMBER_OF_FRAMES)
+) {
 
     private var player1: UiPlayer? = null
     private var player2: UiPlayer? = null
-    private var numberOfFrames = 0
+    private var numberOfFrames = 1
 
     fun onSelectPlayerButtonClicked() {
         sendAction { NewMatchUiAction.ShowPlayers }
@@ -54,11 +58,9 @@ class NewMatchViewModel(
         }
     }
 
-    fun onStartMatchButtonClicked(numberOfFrames: Int) {
+    fun onStartMatchButtonClicked() {
         player1?.let { p1 ->
             player2?.let { p2 ->
-                this.numberOfFrames = numberOfFrames
-
                 val domainPlayer1 = p1.toDomain()
                 val domainPlayer2 = p2.toDomain()
 
@@ -75,6 +77,18 @@ class NewMatchViewModel(
 
     fun onHelpButtonClicked() {
         sendAction { NewMatchUiAction.ShowHelp }
+    }
+
+    fun onNumberOfFramesIncreased() {
+        numberOfFrames += 2
+        setState { state -> state.onNumberOfFramesChanged(numberOfFrames) }
+    }
+
+    fun onNumberOfFramesDecreased() {
+        if (numberOfFrames > INITIAL_NUMBER_OF_FRAMES) {
+            numberOfFrames -= 2
+            setState { state -> state.onNumberOfFramesChanged(numberOfFrames) }
+        }
     }
 
     private fun createMatch(player1: Player, player2: Player) {

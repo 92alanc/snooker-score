@@ -26,7 +26,7 @@
         android:layout_marginHorizontal="@dimen/spacing_02"
         android:padding="@dimen/spacing_01"
         android:orientation="vertical"
-        android:background="@drawable/shape_label_value_outline"
+        android:background="@drawable/shape_outline"
         app:layout_constraintTop_toBottomOf="@id/toolbar"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
@@ -60,7 +60,7 @@
         android:layout_marginTop="@dimen/spacing_01"
         android:layout_marginHorizontal="@dimen/spacing_02"
         android:padding="@dimen/spacing_01"
-        android:background="@drawable/shape_label_value_outline"
+        android:background="@drawable/shape_outline"
         app:layout_constraintTop_toBottomOf="@id/containerMatchesWon"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
@@ -94,7 +94,7 @@
         android:layout_marginTop="@dimen/spacing_01"
         android:layout_marginHorizontal="@dimen/spacing_02"
         android:padding="@dimen/spacing_01"
-        android:background="@drawable/shape_label_value_outline"
+        android:background="@drawable/shape_outline"
         app:layout_constraintTop_toBottomOf="@id/containerHighestScore"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
