@@ -6,7 +6,6 @@ import com.alancamargo.snookerscore.domain.model.Match
 import com.alancamargo.snookerscore.domain.model.Player
 import com.alancamargo.snookerscore.domain.usecase.match.AddMatchUseCase
 import com.alancamargo.snookerscore.domain.usecase.player.ArePlayersTheSameUseCase
-import com.alancamargo.snookerscore.domain.usecase.player.GetPlayersUseCase
 import com.alancamargo.snookerscore.ui.mapping.toDomain
 import com.alancamargo.snookerscore.ui.mapping.toUi
 import com.alancamargo.snookerscore.ui.model.UiPlayer
@@ -20,7 +19,6 @@ import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 
 class NewMatchViewModel(
-    private val getPlayersUseCase: GetPlayersUseCase,
     private val arePlayersTheSameUseCase: ArePlayersTheSameUseCase,
     private val addMatchUseCase: AddMatchUseCase,
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO
@@ -30,49 +28,53 @@ class NewMatchViewModel(
     private var player2: UiPlayer? = null
     private var numberOfFrames = 0
 
-    fun onFieldErased() {
-        setState { state -> state.onDisableStartMatchButton() }
+    fun onSelectPlayerButtonClicked() {
+        sendAction { NewMatchUiAction.ShowPlayers }
     }
 
-    fun onAllFieldsFilled() {
-        setState { state -> state.onEnableStartMatchButton() }
-    }
-
-    fun onStartMatchButtonClicked(player1: UiPlayer, player2: UiPlayer, numberOfFrames: Int) {
+    fun onPlayer1Selected(player1: UiPlayer) {
         this.player1 = player1
-        this.player2 = player2
-        this.numberOfFrames = numberOfFrames
+        setState { state -> state.onPlayer1Selected(player1) }
 
-        val domainPlayer1 = player1.toDomain()
-        val domainPlayer2 = player2.toDomain()
-
-        val arePlayersTheSame = arePlayersTheSameUseCase(domainPlayer1, domainPlayer2)
-
-        if (arePlayersTheSame) {
-            sendAction { NewMatchUiAction.ShowSamePlayersDialogue }
+        if (player2 != null) {
+            setState { state -> state.onEnableStartMatchButton() }
         } else {
-            createMatch(domainPlayer1, domainPlayer2)
+            setState { state -> state.onDisableStartMatchButton() }
         }
+    }
+
+    fun onPlayer2Selected(player2: UiPlayer) {
+        this.player2 = player2
+        setState { state -> state.onPlayer2Selected(player2) }
+
+        if (player1 != null) {
+            setState { state -> state.onEnableStartMatchButton() }
+        } else {
+            setState { state -> state.onDisableStartMatchButton() }
+        }
+    }
+
+    fun onStartMatchButtonClicked(numberOfFrames: Int) {
+        player1?.let { p1 ->
+            player2?.let { p2 ->
+                this.numberOfFrames = numberOfFrames
+
+                val domainPlayer1 = p1.toDomain()
+                val domainPlayer2 = p2.toDomain()
+
+                val arePlayersTheSame = arePlayersTheSameUseCase(domainPlayer1, domainPlayer2)
+
+                if (arePlayersTheSame) {
+                    sendAction { NewMatchUiAction.ShowSamePlayersDialogue }
+                } else {
+                    createMatch(domainPlayer1, domainPlayer2)
+                }
+            }
+        } ?: run { sendAction { NewMatchUiAction.ShowError } }
     }
 
     fun onHelpButtonClicked() {
         sendAction { NewMatchUiAction.ShowHelp }
-    }
-
-    fun getPlayers() {
-        viewModelScope.launch {
-            getPlayersUseCase().flowOn(dispatcher)
-                .onStart {
-                    sendAction { NewMatchUiAction.ShowLoading }
-                }.onCompletion {
-                    sendAction { NewMatchUiAction.HideLoading }
-                }.catch {
-                    sendAction { NewMatchUiAction.ShowError }
-                }.collect { players ->
-                    val uiPlayers = players.map { it.toUi() }
-                    setState { state -> state.onPlayersReceived(uiPlayers) }
-                }
-        }
     }
 
     private fun createMatch(player1: Player, player2: Player) {

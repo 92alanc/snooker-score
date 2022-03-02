@@ -22,13 +22,7 @@ import org.koin.dsl.module
 val uiModule = module {
     viewModel { MainViewModel(getRulesUrlUseCase = get()) }
     viewModel { MatchListViewModel(getMatchesUseCase = get()) }
-    viewModel {
-        NewMatchViewModel(
-            getPlayersUseCase = get(),
-            arePlayersTheSameUseCase = get(),
-            addMatchUseCase = get()
-        )
-    }
+    viewModel { NewMatchViewModel(arePlayersTheSameUseCase = get(), addMatchUseCase = get()) }
     viewModel { parameters ->
         FrameViewModel(
             frames = parameters.get(),

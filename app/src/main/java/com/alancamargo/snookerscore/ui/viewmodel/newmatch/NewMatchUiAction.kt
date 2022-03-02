@@ -17,4 +17,6 @@ sealed class NewMatchUiAction : UiAction {
 
     object ShowError : NewMatchUiAction()
 
+    object ShowPlayers : NewMatchUiAction()
+
 }

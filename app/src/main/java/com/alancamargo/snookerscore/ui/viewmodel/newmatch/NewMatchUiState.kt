@@ -4,11 +4,14 @@ import com.alancamargo.snookerscore.core.arch.viewmodel.UiState
 import com.alancamargo.snookerscore.ui.model.UiPlayer
 
 data class NewMatchUiState(
-    val players: List<UiPlayer> = emptyList(),
+    val player1: UiPlayer? = null,
+    val player2: UiPlayer? = null,
     val isStartMatchButtonEnabled: Boolean = false
 ) : UiState {
 
-    fun onPlayersReceived(players: List<UiPlayer>) = copy(players = players)
+    fun onPlayer1Selected(player1: UiPlayer) = copy(player1 = player1)
+
+    fun onPlayer2Selected(player2: UiPlayer) = copy(player2 = player2)
 
     fun onEnableStartMatchButton() = copy(isStartMatchButtonEnabled = true)
 

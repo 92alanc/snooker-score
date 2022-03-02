@@ -5,9 +5,7 @@ import androidx.lifecycle.Observer
 import com.alancamargo.snookerscore.domain.usecase.match.AddMatchUseCase
 import com.alancamargo.snookerscore.domain.usecase.player.ArePlayersTheSameUseCase
 import com.alancamargo.snookerscore.domain.usecase.player.GetPlayersUseCase
-import com.alancamargo.snookerscore.testtools.ERROR_MESSAGE
 import com.alancamargo.snookerscore.testtools.getPlayerList
-import com.alancamargo.snookerscore.ui.mapping.toUi
 import com.alancamargo.snookerscore.ui.model.UiGender
 import com.alancamargo.snookerscore.ui.model.UiPlayer
 import io.mockk.every
@@ -47,7 +45,6 @@ class NewMatchViewModelTest {
         Dispatchers.setMain(testCoroutineDispatcher)
 
         viewModel = NewMatchViewModel(
-            getPlayersUseCase = mockGetPlayersUseCase,
             arePlayersTheSameUseCase = mockArePlayersTheSameUseCase,
             addMatchUseCase = mockAddMatchUseCase,
             dispatcher = testCoroutineDispatcher
@@ -58,74 +55,12 @@ class NewMatchViewModelTest {
     }
 
     @Test
-    fun `when loading players getPlayers should send ShowLoading action`() {
-        every { mockGetPlayersUseCase.invoke() } returns flow { delay(timeMillis = 50) }
-
-        viewModel.getPlayers()
-
-        verify { mockActionObserver.onChanged(NewMatchUiAction.ShowLoading) }
-    }
-
-    @Test
-    fun `with successful response getPlayers should set state with players`() {
+    fun `onSelectPlayerButtonClicked should send ShowPlayers action`() {
         mockSuccessfulPlayersResponse()
 
-        viewModel.getPlayers()
+        viewModel.onSelectPlayerButtonClicked()
 
-        val expected = players.map { it.toUi() }
-        verify { mockStateObserver.onChanged(NewMatchUiState(expected)) }
-    }
-
-    @Test
-    fun `with error response getPlayers should send ShowError action`() {
-        every { mockGetPlayersUseCase.invoke() } returns flow { throw IOException(ERROR_MESSAGE) }
-
-        viewModel.getPlayers()
-
-        verify { mockActionObserver.onChanged(NewMatchUiAction.ShowError) }
-    }
-
-    @Test
-    fun `after loading players getPlayers should send HideLoading action`() {
-        mockSuccessfulPlayersResponse()
-
-        viewModel.getPlayers()
-
-        verify { mockActionObserver.onChanged(NewMatchUiAction.HideLoading) }
-    }
-
-    @Test
-    fun `onFieldErased should disable start match button`() {
-        mockSuccessfulPlayersResponse()
-        viewModel.getPlayers()
-
-        viewModel.onFieldErased()
-
-        verify {
-            mockStateObserver.onChanged(
-                NewMatchUiState(
-                    players = players.map { it.toUi() },
-                    isStartMatchButtonEnabled = false
-                )
-            )
-        }
-    }
-
-    @Test
-    fun `onAllFieldsFilled should enable start match button`() {
-        mockSuccessfulPlayersResponse()
-        viewModel.getPlayers()
-
-        viewModel.onAllFieldsFilled()
-
-        verify {
-            mockStateObserver.onChanged(
-                NewMatchUiState(
-                    players = players.map { it.toUi() },
-                    isStartMatchButtonEnabled = true
-                )
-            )
-        }
+        verify { mockActionObserver.onChanged(NewMatchUiAction.ShowPlayers) }
     }
 
     @Test
@@ -134,7 +69,10 @@ class NewMatchViewModelTest {
         every { mockArePlayersTheSameUseCase.invoke(player1 = any(), player2 = any()) } returns true
 
         val player = UiPlayer(name = "Judd Trump", gender = UiGender.MALE)
-        viewModel.onStartMatchButtonClicked(player, player, numberOfFrames = 3)
+        viewModel.onPlayer1Selected(player)
+        viewModel.onPlayer2Selected(player)
+
+        viewModel.onStartMatchButtonClicked(numberOfFrames = 3)
 
         verify { mockActionObserver.onChanged(NewMatchUiAction.ShowSamePlayersDialogue) }
     }
@@ -148,7 +86,10 @@ class NewMatchViewModelTest {
         every { mockAddMatchUseCase.invoke(match = any()) } returns flow { delay(timeMillis = 50) }
 
         val player = UiPlayer(name = "Judd Trump", gender = UiGender.MALE)
-        viewModel.onStartMatchButtonClicked(player, player, numberOfFrames = 3)
+        viewModel.onPlayer1Selected(player)
+        viewModel.onPlayer2Selected(player)
+
+        viewModel.onStartMatchButtonClicked(numberOfFrames = 3)
 
         verify { mockActionObserver.onChanged(NewMatchUiAction.ShowLoading) }
     }
@@ -162,7 +103,10 @@ class NewMatchViewModelTest {
         every { mockAddMatchUseCase.invoke(match = any()) } returns flow { emit(Unit) }
 
         val player = UiPlayer(name = "Judd Trump", gender = UiGender.MALE)
-        viewModel.onStartMatchButtonClicked(player, player, numberOfFrames = 3)
+        viewModel.onPlayer1Selected(player)
+        viewModel.onPlayer2Selected(player)
+
+        viewModel.onStartMatchButtonClicked(numberOfFrames = 3)
 
         verify { mockActionObserver.onChanged(any<NewMatchUiAction.StartMatch>()) }
     }
@@ -176,7 +120,10 @@ class NewMatchViewModelTest {
         every { mockAddMatchUseCase.invoke(match = any()) } returns flow { throw IOException() }
 
         val player = UiPlayer(name = "Judd Trump", gender = UiGender.MALE)
-        viewModel.onStartMatchButtonClicked(player, player, numberOfFrames = 3)
+        viewModel.onPlayer1Selected(player)
+        viewModel.onPlayer2Selected(player)
+
+        viewModel.onStartMatchButtonClicked(numberOfFrames = 3)
 
         verify { mockActionObserver.onChanged(NewMatchUiAction.ShowError) }
     }
@@ -190,7 +137,10 @@ class NewMatchViewModelTest {
         every { mockAddMatchUseCase.invoke(match = any()) } returns flow { emit(Unit) }
 
         val player = UiPlayer(name = "Judd Trump", gender = UiGender.MALE)
-        viewModel.onStartMatchButtonClicked(player, player, numberOfFrames = 3)
+        viewModel.onPlayer1Selected(player)
+        viewModel.onPlayer2Selected(player)
+
+        viewModel.onStartMatchButtonClicked(numberOfFrames = 3)
 
         verify { mockActionObserver.onChanged(NewMatchUiAction.HideLoading) }
     }
