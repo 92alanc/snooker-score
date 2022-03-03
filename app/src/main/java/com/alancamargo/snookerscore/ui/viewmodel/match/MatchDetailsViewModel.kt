@@ -2,6 +2,7 @@ package com.alancamargo.snookerscore.ui.viewmodel.match
 
 import androidx.lifecycle.viewModelScope
 import com.alancamargo.snookerscore.core.arch.viewmodel.ActionViewModel
+import com.alancamargo.snookerscore.core.log.Logger
 import com.alancamargo.snookerscore.domain.usecase.match.DeleteMatchUseCase
 import com.alancamargo.snookerscore.ui.mapping.toDomain
 import com.alancamargo.snookerscore.ui.model.UiMatch
@@ -16,6 +17,7 @@ import kotlinx.coroutines.launch
 
 class MatchDetailsViewModel(
     private val deleteMatchUseCase: DeleteMatchUseCase,
+    private val logger: Logger,
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : ActionViewModel<MatchDetailsUiAction>() {
 
@@ -26,7 +28,8 @@ class MatchDetailsViewModel(
                     sendAction { MatchDetailsUiAction.ShowLoading }
                 }.onCompletion {
                     sendAction { MatchDetailsUiAction.HideLoading }
-                }.catch {
+                }.catch { throwable ->
+                    logger.error(throwable)
                     sendAction { MatchDetailsUiAction.ShowError }
                 }.collect {
                     sendAction { MatchDetailsUiAction.Finish }

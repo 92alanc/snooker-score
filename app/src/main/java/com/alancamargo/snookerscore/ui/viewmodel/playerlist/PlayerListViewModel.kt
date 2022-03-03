@@ -2,6 +2,7 @@ package com.alancamargo.snookerscore.ui.viewmodel.playerlist
 
 import androidx.lifecycle.viewModelScope
 import com.alancamargo.snookerscore.core.arch.viewmodel.ViewModel
+import com.alancamargo.snookerscore.core.log.Logger
 import com.alancamargo.snookerscore.domain.model.Gender
 import com.alancamargo.snookerscore.domain.model.Player
 import com.alancamargo.snookerscore.domain.usecase.player.AddOrUpdatePlayerUseCase
@@ -25,6 +26,7 @@ class PlayerListViewModel(
     private val addOrUpdatePlayerUseCase: AddOrUpdatePlayerUseCase,
     private val addOrUpdatePlayerStatsUseCase: AddOrUpdatePlayerStatsUseCase,
     private val getPlayersUseCase: GetPlayersUseCase,
+    private val logger: Logger,
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : ViewModel<PlayerListUiState, PlayerListUiAction>(initialState = PlayerListUiState()) {
 
@@ -99,7 +101,8 @@ class PlayerListViewModel(
                 sendAction { PlayerListUiAction.ShowLoading }
             }.onCompletion {
                 sendAction { PlayerListUiAction.HideLoading }
-            }.catch {
+            }.catch { throwable ->
+                logger.error(throwable)
                 sendAction { PlayerListUiAction.ShowError }
             }.collect {
                 block(it)

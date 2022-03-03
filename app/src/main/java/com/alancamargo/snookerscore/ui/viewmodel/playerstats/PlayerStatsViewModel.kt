@@ -2,6 +2,7 @@ package com.alancamargo.snookerscore.ui.viewmodel.playerstats
 
 import androidx.lifecycle.viewModelScope
 import com.alancamargo.snookerscore.core.arch.viewmodel.ViewModel
+import com.alancamargo.snookerscore.core.log.Logger
 import com.alancamargo.snookerscore.domain.usecase.player.DeletePlayerUseCase
 import com.alancamargo.snookerscore.domain.usecase.playerstats.GetPlayerStatsUseCase
 import com.alancamargo.snookerscore.ui.mapping.toDomain
@@ -19,6 +20,7 @@ import kotlinx.coroutines.launch
 class PlayerStatsViewModel(
     private val getPlayerStatsUseCase: GetPlayerStatsUseCase,
     private val deletePlayerUseCase: DeletePlayerUseCase,
+    private val logger: Logger,
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : ViewModel<PlayerStatsUiState, PlayerStatsUiAction>(initialState = PlayerStatsUiState()) {
 
@@ -29,7 +31,8 @@ class PlayerStatsViewModel(
                     sendAction { PlayerStatsUiAction.ShowLoading }
                 }.onCompletion {
                     sendAction { PlayerStatsUiAction.HideLoading }
-                }.catch {
+                }.catch { throwable ->
+                    logger.error(throwable)
                     sendAction { PlayerStatsUiAction.ShowError }
                 }.collect {
                     val playerStats = it.toUi()
@@ -49,7 +52,8 @@ class PlayerStatsViewModel(
                     sendAction { PlayerStatsUiAction.ShowLoading }
                 }.onCompletion {
                     sendAction { PlayerStatsUiAction.HideLoading }
-                }.catch {
+                }.catch { throwable ->
+                    logger.error(throwable)
                     sendAction { PlayerStatsUiAction.ShowError }
                 }.collect {
                     sendAction { PlayerStatsUiAction.Finish }

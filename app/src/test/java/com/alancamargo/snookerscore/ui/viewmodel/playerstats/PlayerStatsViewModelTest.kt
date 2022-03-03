@@ -2,6 +2,7 @@ package com.alancamargo.snookerscore.ui.viewmodel.playerstats
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
+import com.alancamargo.snookerscore.core.log.Logger
 import com.alancamargo.snookerscore.domain.usecase.player.DeletePlayerUseCase
 import com.alancamargo.snookerscore.domain.usecase.playerstats.GetPlayerStatsUseCase
 import com.alancamargo.snookerscore.testtools.getPlayer
@@ -30,6 +31,7 @@ class PlayerStatsViewModelTest {
 
     private val mockGetPlayerStatsUseCase = mockk<GetPlayerStatsUseCase>()
     private val mockDeletePlayerUseCase = mockk<DeletePlayerUseCase>()
+    private val mockLogger = mockk<Logger>(relaxed = true)
     private val mockStateObserver = mockk<Observer<PlayerStatsUiState>>(relaxed = true)
     private val mockActionObserver = mockk<Observer<PlayerStatsUiAction>>(relaxed = true)
 
@@ -45,6 +47,7 @@ class PlayerStatsViewModelTest {
         viewModel = PlayerStatsViewModel(
             mockGetPlayerStatsUseCase,
             mockDeletePlayerUseCase,
+            mockLogger,
             testCoroutineDispatcher
         ).apply {
             state.observeForever(mockStateObserver)

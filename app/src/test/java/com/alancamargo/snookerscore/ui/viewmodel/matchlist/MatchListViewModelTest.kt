@@ -2,6 +2,7 @@ package com.alancamargo.snookerscore.ui.viewmodel.matchlist
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
+import com.alancamargo.snookerscore.core.log.Logger
 import com.alancamargo.snookerscore.domain.usecase.match.GetMatchesUseCase
 import com.alancamargo.snookerscore.testtools.ERROR_MESSAGE
 import com.alancamargo.snookerscore.testtools.getMatchList
@@ -30,6 +31,7 @@ class MatchListViewModelTest {
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
     private val mockGetMatchesUseCase = mockk<GetMatchesUseCase>()
+    private val mockLogger = mockk<Logger>(relaxed = true)
     private val mockStateObserver = mockk<Observer<MatchListUiState>>(relaxed = true)
     private val mockActionObserver = mockk<Observer<MatchListUiAction>>(relaxed = true)
 
@@ -44,6 +46,7 @@ class MatchListViewModelTest {
 
         viewModel = MatchListViewModel(
             getMatchesUseCase = mockGetMatchesUseCase,
+            logger = mockLogger,
             dispatcher = testCoroutineDispatcher
         ).apply {
             state.observeForever(mockStateObserver)

@@ -2,6 +2,7 @@ package com.alancamargo.snookerscore.ui.viewmodel.match
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
+import com.alancamargo.snookerscore.core.log.Logger
 import com.alancamargo.snookerscore.domain.usecase.match.DeleteMatchUseCase
 import com.alancamargo.snookerscore.testtools.getUiMatch
 import io.mockk.every
@@ -26,6 +27,7 @@ class MatchDetailsViewModelTest {
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
     private val mockDeleteMatchUseCase = mockk<DeleteMatchUseCase>()
+    private val mockLogger = mockk<Logger>(relaxed = true)
     private val mockActionObserver = mockk<Observer<MatchDetailsUiAction>>(relaxed = true)
 
     private lateinit var viewModel: MatchDetailsViewModel
@@ -35,7 +37,11 @@ class MatchDetailsViewModelTest {
         val testCoroutineDispatcher = TestCoroutineDispatcher()
         Dispatchers.setMain(testCoroutineDispatcher)
 
-        viewModel = MatchDetailsViewModel(mockDeleteMatchUseCase, testCoroutineDispatcher).apply {
+        viewModel = MatchDetailsViewModel(
+            mockDeleteMatchUseCase,
+            mockLogger,
+            testCoroutineDispatcher
+        ).apply {
             action.observeForever(mockActionObserver)
         }
     }

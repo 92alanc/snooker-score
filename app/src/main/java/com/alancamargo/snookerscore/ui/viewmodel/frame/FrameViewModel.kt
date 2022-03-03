@@ -2,6 +2,7 @@ package com.alancamargo.snookerscore.ui.viewmodel.frame
 
 import androidx.lifecycle.viewModelScope
 import com.alancamargo.snookerscore.core.arch.viewmodel.ViewModel
+import com.alancamargo.snookerscore.core.log.Logger
 import com.alancamargo.snookerscore.domain.model.Foul
 import com.alancamargo.snookerscore.domain.model.Player
 import com.alancamargo.snookerscore.domain.tools.BreakCalculator
@@ -32,6 +33,7 @@ class FrameViewModel(
     private val frames: List<UiFrame>,
     private val useCases: UseCases,
     private val breakCalculator: BreakCalculator,
+    private val logger: Logger,
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : ViewModel<FrameUiState, FrameUiAction>(initialState = FrameUiState()) {
 
@@ -203,7 +205,8 @@ class FrameViewModel(
                 sendAction { FrameUiAction.ShowLoading }
             }.onCompletion {
                 sendAction { FrameUiAction.HideLoading }
-            }.catch {
+            }.catch { throwable ->
+                logger.error(throwable)
                 sendAction { FrameUiAction.ShowError }
             }
     }

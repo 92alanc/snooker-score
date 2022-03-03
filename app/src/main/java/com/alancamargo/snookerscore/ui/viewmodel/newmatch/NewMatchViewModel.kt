@@ -2,6 +2,7 @@ package com.alancamargo.snookerscore.ui.viewmodel.newmatch
 
 import androidx.lifecycle.viewModelScope
 import com.alancamargo.snookerscore.core.arch.viewmodel.ViewModel
+import com.alancamargo.snookerscore.core.log.Logger
 import com.alancamargo.snookerscore.domain.model.Match
 import com.alancamargo.snookerscore.domain.model.Player
 import com.alancamargo.snookerscore.domain.usecase.match.AddMatchUseCase
@@ -24,6 +25,7 @@ private const val MAX_NUMBER_OF_FRAMES = 35
 class NewMatchViewModel(
     private val arePlayersTheSameUseCase: ArePlayersTheSameUseCase,
     private val addMatchUseCase: AddMatchUseCase,
+    private val logger: Logger,
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : ViewModel<NewMatchUiState, NewMatchUiAction>(
     initialState = NewMatchUiState(numberOfFrames = MIN_NUMBER_OF_FRAMES)
@@ -113,7 +115,8 @@ class NewMatchViewModel(
                     sendAction { NewMatchUiAction.ShowLoading }
                 }.onCompletion {
                     sendAction { NewMatchUiAction.HideLoading }
-                }.catch {
+                }.catch { throwable ->
+                    logger.error(throwable)
                     sendAction { NewMatchUiAction.ShowError }
                 }.collect {
                     val uiMatch = match.toUi()

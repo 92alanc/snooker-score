@@ -1,6 +1,8 @@
 package com.alancamargo.snookerscore.core.di
 
 import com.alancamargo.snookerscore.R
+import com.alancamargo.snookerscore.core.log.Logger
+import com.alancamargo.snookerscore.core.log.LoggerImpl
 import com.alancamargo.snookerscore.core.remoteconfig.RemoteConfigManager
 import com.alancamargo.snookerscore.core.remoteconfig.RemoteConfigManagerImpl
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
@@ -14,4 +16,5 @@ val coreModule = module {
         }
     }
     factory<RemoteConfigManager> { RemoteConfigManagerImpl(firebaseRemoteConfig = get()) }
+    factory<Logger> { LoggerImpl() }
 }

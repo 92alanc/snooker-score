@@ -2,6 +2,7 @@ package com.alancamargo.snookerscore.ui.viewmodel.frame
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
+import com.alancamargo.snookerscore.core.log.Logger
 import com.alancamargo.snookerscore.domain.model.Ball
 import com.alancamargo.snookerscore.domain.model.Foul
 import com.alancamargo.snookerscore.domain.tools.BreakCalculator
@@ -47,6 +48,7 @@ class FrameViewModelTest {
     private val mockAddOrUpdatePlayerStatsUseCase = mockk<AddOrUpdatePlayerStatsUseCase>()
     private val mockGetWinningPlayerUseCase = mockk<GetWinningPlayerUseCase>()
     private val mockUpdatePlayerStatsWithMatchResultUseCase = mockk<UpdatePlayerStatsWithMatchResultUseCase>()
+    private val mockLogger = mockk<Logger>(relaxed = true)
     private val mockStateObserver = mockk<Observer<FrameUiState>>(relaxed = true)
     private val mockActionObserver = mockk<Observer<FrameUiAction>>(relaxed = true)
 
@@ -79,6 +81,7 @@ class FrameViewModelTest {
                 deleteMatchUseCase = mockDeleteMatchUseCase
             ),
             breakCalculator = mockBreakCalculator,
+            logger = mockLogger,
             dispatcher = testCoroutineDispatcher
         ).apply {
             state.observeForever(mockStateObserver)

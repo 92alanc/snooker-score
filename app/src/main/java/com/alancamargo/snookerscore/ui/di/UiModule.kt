@@ -23,8 +23,10 @@ import org.koin.dsl.module
 
 val uiModule = module {
     viewModel { MainViewModel(getRulesUrlUseCase = get()) }
-    viewModel { MatchListViewModel(getMatchesUseCase = get()) }
-    viewModel { NewMatchViewModel(arePlayersTheSameUseCase = get(), addMatchUseCase = get()) }
+    viewModel { MatchListViewModel(getMatchesUseCase = get(), logger = get()) }
+    viewModel {
+        NewMatchViewModel(arePlayersTheSameUseCase = get(), addMatchUseCase = get(), logger = get())
+    }
     viewModel { parameters ->
         FrameViewModel(
             frames = parameters.get(),
@@ -43,21 +45,24 @@ val uiModule = module {
                 deleteMatchUseCase = get()
             ),
             breakCalculator = get(),
+            logger = get()
         )
     }
-    viewModel { MatchDetailsViewModel(deleteMatchUseCase = get()) }
+    viewModel { MatchDetailsViewModel(deleteMatchUseCase = get(), logger = get()) }
     viewModel { params ->
         PlayerListViewModel(
             isPickingPlayer = params.get(),
             addOrUpdatePlayerUseCase = get(),
             addOrUpdatePlayerStatsUseCase = get(),
-            getPlayersUseCase = get()
+            getPlayersUseCase = get(),
+            logger = get()
         )
     }
     viewModel {
         PlayerStatsViewModel(
             getPlayerStatsUseCase = get(),
-            deletePlayerUseCase = get()
+            deletePlayerUseCase = get(),
+            logger = get()
         )
     }
     factory<WebViewNavigation> { WebViewNavigationImpl() }
