@@ -1,9 +1,11 @@
 package com.alancamargo.snookerscore.ui.mapping
 
+import com.alancamargo.snookerscore.domain.model.Frame
 import com.alancamargo.snookerscore.domain.model.Gender
 import com.alancamargo.snookerscore.domain.model.Match
 import com.alancamargo.snookerscore.domain.model.Player
 import com.alancamargo.snookerscore.domain.model.PlayerStats
+import com.alancamargo.snookerscore.ui.model.UiFrame
 import com.alancamargo.snookerscore.ui.model.UiGender
 import com.alancamargo.snookerscore.ui.model.UiMatch
 import com.alancamargo.snookerscore.ui.model.UiPlayer
@@ -29,4 +31,14 @@ fun PlayerStats.toUi() = UiPlayerStats(
     matchesWon = matchesWon,
     highestScore = highestScore,
     highestBreak = highestBreak
+)
+
+fun Frame.toUi() = UiFrame(
+    id = id,
+    positionInMatch = positionInMatch,
+    match = match.toUi(),
+    player1Score = player1Score,
+    player2Score = player2Score,
+    player1HighestBreak = player1HighestBreak,
+    player2HighestBreak = player2HighestBreak
 )
