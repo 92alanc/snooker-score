@@ -24,7 +24,7 @@ class PlayerStatsLocalDataSourceImplTest {
     @Test
     fun `getPlayerStats should return player stats from database`() = runBlocking {
         val playerStats = getPlayerStats()
-        coEvery { mockDatabase.getPlayerStats(playerStats.player.name) } returns playerStats.toData()
+        coEvery { mockDatabase.getPlayerStats(playerStats.player.id) } returns playerStats.toData()
 
         val result = localDataSource.getPlayerStats(playerStats.player)
 
@@ -37,7 +37,7 @@ class PlayerStatsLocalDataSourceImplTest {
     @Test
     fun `when database throws exception getPlayerStats should return error`() = runBlocking {
         val player = getPlayer()
-        coEvery { mockDatabase.getPlayerStats(player.name) } throws IOException(ERROR_MESSAGE)
+        coEvery { mockDatabase.getPlayerStats(player.id) } throws IOException(ERROR_MESSAGE)
 
         val result = localDataSource.getPlayerStats(player)
 

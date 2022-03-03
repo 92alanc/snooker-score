@@ -12,13 +12,13 @@ interface PlayerDao {
     @Query("SELECT * FROM Players")
     suspend fun getPlayers(): List<DbPlayer>
 
-    @Query("SELECT * FROM Players WHERE name = :playerName LIMIT 1")
-    suspend fun getPlayer(playerName: String): DbPlayer
+    @Query("SELECT * FROM Players WHERE id = :playerId LIMIT 1")
+    suspend fun getPlayer(playerId: String): DbPlayer
 
     @Insert(entity = DbPlayer::class, onConflict = OnConflictStrategy.REPLACE)
     suspend fun addOrUpdatePlayer(player: DbPlayer)
 
-    @Query("DELETE FROM Players WHERE name = :playerName")
-    suspend fun deletePlayer(playerName: String)
+    @Query("DELETE FROM Players WHERE id = :playerId")
+    suspend fun deletePlayer(playerId: String)
 
 }

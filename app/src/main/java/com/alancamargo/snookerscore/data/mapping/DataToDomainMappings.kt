@@ -30,7 +30,7 @@ fun DbPlayer.toDomain(): Player {
         else -> throw IllegalArgumentException("Gender ID must be either 0 or 1")
     }
 
-    return Player(name, gender)
+    return Player(id, name, gender)
 }
 
 fun DbPlayerStats.toDomain(player: Player) = PlayerStats(

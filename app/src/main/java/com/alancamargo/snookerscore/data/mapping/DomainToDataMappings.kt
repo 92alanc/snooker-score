@@ -16,12 +16,12 @@ fun Player.toData(): DbPlayer {
         Gender.FEMALE -> GENDER_ID_FEMALE
     }
 
-    return DbPlayer(name, genderId)
+    return DbPlayer(id, name, genderId)
 }
 
 fun PlayerStats.toData() = DbPlayerStats(
     id = id,
-    playerName = player.name,
+    playerId = player.id,
     matchesWon = matchesWon,
     highestScore = highestScore,
     highestBreak = highestBreak
@@ -29,8 +29,8 @@ fun PlayerStats.toData() = DbPlayerStats(
 
 fun Match.toData() = DbMatch(
     dateTime = dateTime,
-    player1Name = player1.name,
-    player2Name = player2.name,
+    player1Id = player1.id,
+    player2Id = player2.id,
     numberOfFrames = numberOfFrames
 )
 

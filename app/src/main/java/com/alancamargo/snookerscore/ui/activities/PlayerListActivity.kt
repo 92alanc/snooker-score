@@ -41,7 +41,9 @@ class PlayerListActivity : AppCompatActivity() {
     private val binding get() = _binding!!
 
     private val args by args<Args>()
-    private val adapter by lazy { PlayerAdapter(viewModel::onPlayerClicked) }
+    private val adapter by lazy {
+        PlayerAdapter(viewModel::onPlayerClicked, viewModel::onPlayerLongClicked)
+    }
     private val viewModel by viewModel<PlayerListViewModel> { parametersOf(args.isPickingPlayer) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -83,6 +85,7 @@ class PlayerListActivity : AppCompatActivity() {
             is PlayerListUiAction.ShowNewPlayerDialogue -> showNewPlayerDialogue()
             is PlayerListUiAction.OpenPlayerStats -> showPlayerStats(action.player)
             is PlayerListUiAction.PickPlayer -> pickPlayer(action.player)
+            is PlayerListUiAction.EditPlayer -> editPlayer(action.player)
         }
     }
 
@@ -113,7 +116,7 @@ class PlayerListActivity : AppCompatActivity() {
             titleRes = R.string.add_player
             editText = editText {
                 hintRes = R.string.name
-                onSubmitText = viewModel::setNewPlayerName
+                onSubmitText = viewModel::setPlayerName
             }
             radioButtons = radioButtons {
                 radioButton {
@@ -124,7 +127,7 @@ class PlayerListActivity : AppCompatActivity() {
                     id = Gender.FEMALE.ordinal
                     textRes = R.string.female
                 }
-                onSubmitSelection = viewModel::setNewPlayerGenderOrdinal
+                onSubmitSelection = viewModel::setPlayerGenderOrdinal
             }
             primaryButton = button {
                 textRes = R.string.save
@@ -147,6 +150,37 @@ class PlayerListActivity : AppCompatActivity() {
 
         setResult(Activity.RESULT_OK, intent)
         finish()
+    }
+
+    private fun editPlayer(player: UiPlayer) {
+        makeDialogue {
+            titleRes = R.string.edit_player
+            editText = editText {
+                hintRes = R.string.name
+                text = player.name
+                onSubmitText = viewModel::setPlayerName
+            }
+            radioButtons = radioButtons {
+                radioButton {
+                    id = Gender.MALE.ordinal
+                    textRes = R.string.male
+                    isChecked = id == player.gender.ordinal
+                }
+                radioButton {
+                    id = Gender.FEMALE.ordinal
+                    textRes = R.string.female
+                    isChecked = id == player.gender.ordinal
+                }
+                onSubmitSelection = viewModel::setPlayerGenderOrdinal
+            }
+            primaryButton = button {
+                textRes = R.string.save
+                onClick = viewModel::onSavePlayerClicked
+            }
+            secondaryButton = button {
+                textRes = R.string.cancel
+            }
+        }.show(supportFragmentManager, DIALOGUE_TAG)
     }
 
     @Parcelize

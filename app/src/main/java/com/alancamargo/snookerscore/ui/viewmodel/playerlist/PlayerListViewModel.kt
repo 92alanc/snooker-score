@@ -18,6 +18,7 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
+import java.util.UUID
 
 class PlayerListViewModel(
     private val isPickingPlayer: Boolean,
@@ -27,10 +28,12 @@ class PlayerListViewModel(
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : ViewModel<PlayerListUiState, PlayerListUiAction>(initialState = PlayerListUiState()) {
 
-    private var newPlayerName = ""
-    private var newPlayerGenderOrdinal = -1
+    private var playerId = ""
+    private var playerName = ""
+    private var playerGenderOrdinal = -1
 
     fun onNewPlayerClicked() {
+        playerId = UUID.randomUUID().toString()
         sendAction { PlayerListUiAction.ShowNewPlayerDialogue }
     }
 
@@ -44,14 +47,19 @@ class PlayerListViewModel(
         sendAction { action }
     }
 
+    fun onPlayerLongClicked(player: UiPlayer) {
+        playerId = player.id
+        sendAction { PlayerListUiAction.EditPlayer(player) }
+    }
+
     fun onSavePlayerClicked() {
-        if (newPlayerName.isBlank() || newPlayerGenderOrdinal < 0) {
+        if (playerName.isBlank() || playerGenderOrdinal < 0) {
             sendAction { PlayerListUiAction.ShowError }
             return
         }
 
-        val newPlayerGender = Gender.values()[newPlayerGenderOrdinal]
-        val player = Player(newPlayerName, newPlayerGender)
+        val gender = Gender.values()[playerGenderOrdinal]
+        val player = Player(id = playerId, name = playerName, gender = gender)
 
         viewModelScope.launch {
             addOrUpdatePlayerUseCase(player).handleFlow {
@@ -68,12 +76,12 @@ class PlayerListViewModel(
         }
     }
 
-    fun setNewPlayerName(name: String) {
-        newPlayerName = name
+    fun setPlayerName(name: String) {
+        playerName = name
     }
 
-    fun setNewPlayerGenderOrdinal(ordinal: Int) {
-        newPlayerGenderOrdinal = ordinal
+    fun setPlayerGenderOrdinal(ordinal: Int) {
+        playerGenderOrdinal = ordinal
     }
 
     fun getPlayers() {

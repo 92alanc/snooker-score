@@ -9,7 +9,7 @@ import com.alancamargo.snookerscore.ui.model.UiMatch
 import com.alancamargo.snookerscore.ui.model.UiPlayer
 import com.alancamargo.snookerscore.ui.model.UiPlayerStats
 
-fun Player.toUi() = UiPlayer(name = name, gender = gender.toUi())
+fun Player.toUi() = UiPlayer(id = id, name = name, gender = gender.toUi())
 
 fun Gender.toUi() = when (this) {
     Gender.MALE -> UiGender.MALE

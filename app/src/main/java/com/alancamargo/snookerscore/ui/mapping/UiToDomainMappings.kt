@@ -11,7 +11,7 @@ import com.alancamargo.snookerscore.ui.model.UiGender
 import com.alancamargo.snookerscore.ui.model.UiMatch
 import com.alancamargo.snookerscore.ui.model.UiPlayer
 
-fun UiPlayer.toDomain() = Player(name = name, gender = gender.toDomain())
+fun UiPlayer.toDomain() = Player(id = id, name = name, gender = gender.toDomain())
 
 fun UiGender.toDomain() = when (this) {
     UiGender.MALE -> Gender.MALE

@@ -17,4 +17,6 @@ sealed class PlayerListUiAction : UiAction {
 
     data class PickPlayer(val player: UiPlayer) : PlayerListUiAction()
 
+    data class EditPlayer(val player: UiPlayer) : PlayerListUiAction()
+
 }

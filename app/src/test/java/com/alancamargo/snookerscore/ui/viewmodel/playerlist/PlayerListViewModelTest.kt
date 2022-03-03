@@ -119,8 +119,8 @@ class PlayerListViewModelTest {
 
         val player = getPlayer().toUi()
         with(viewModel) {
-            setNewPlayerName(player.name)
-            setNewPlayerGenderOrdinal(player.gender.ordinal)
+            setPlayerName(player.name)
+            setPlayerGenderOrdinal(player.gender.ordinal)
         }
         viewModel.onSavePlayerClicked()
 
@@ -138,8 +138,8 @@ class PlayerListViewModelTest {
 
         val player = getPlayer().toUi()
         with(viewModel) {
-            setNewPlayerName(player.name)
-            setNewPlayerGenderOrdinal(player.gender.ordinal)
+            setPlayerName(player.name)
+            setPlayerGenderOrdinal(player.gender.ordinal)
         }
         viewModel.onSavePlayerClicked()
 
@@ -155,8 +155,8 @@ class PlayerListViewModelTest {
 
         val player = getPlayer().toUi()
         with(viewModel) {
-            setNewPlayerName(player.name)
-            setNewPlayerGenderOrdinal(player.gender.ordinal)
+            setPlayerName(player.name)
+            setPlayerGenderOrdinal(player.gender.ordinal)
         }
         viewModel.onSavePlayerClicked()
 
@@ -172,12 +172,22 @@ class PlayerListViewModelTest {
 
         val player = getPlayer().toUi()
         with(viewModel) {
-            setNewPlayerName(player.name)
-            setNewPlayerGenderOrdinal(player.gender.ordinal)
+            setPlayerName(player.name)
+            setPlayerGenderOrdinal(player.gender.ordinal)
         }
         viewModel.onSavePlayerClicked()
 
         verify { mockActionObserver.onChanged(PlayerListUiAction.ShowError) }
+    }
+
+    @Test
+    fun `onPlayerLongClicked should send EditPlayer action`() {
+        createViewModel()
+
+        val player = getPlayer().toUi()
+        viewModel.onPlayerLongClicked(player)
+
+        verify { mockActionObserver.onChanged(PlayerListUiAction.EditPlayer(player)) }
     }
 
     private fun createViewModel(isPickingPlayer: Boolean = false) {

@@ -11,8 +11,8 @@ class ArePlayersTheSameUseCaseTest {
 
     @Test
     fun `when players are the same invoke should return true`() {
-        val player1 = Player(name = "Zé Oreia", gender = Gender.MALE)
-        val player2 = Player(name = "Zé Oreia", gender = Gender.MALE)
+        val player1 = Player(id = "12345", name = "Zé Oreia", gender = Gender.MALE)
+        val player2 = Player(id = "12345", name = "Zé Oreia", gender = Gender.MALE)
 
         val result = useCase.invoke(player1, player2)
 

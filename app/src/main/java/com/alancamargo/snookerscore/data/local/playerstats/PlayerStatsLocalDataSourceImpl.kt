@@ -12,7 +12,7 @@ class PlayerStatsLocalDataSourceImpl(
 ) : PlayerStatsLocalDataSource {
 
     override fun getPlayerStats(player: Player) = flow {
-        val playerStats = playerStatsDao.getPlayerStats(player.name).toDomain(player)
+        val playerStats = playerStatsDao.getPlayerStats(player.id).toDomain(player)
         emit(playerStats)
     }
 
