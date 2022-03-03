@@ -7,5 +7,6 @@
     <dimen name="radius_01">4dp</dimen>
     <dimen name="radius_02">12dp</dimen>
 
-    <dimen name="secondary_button_width">2dp</dimen>
+    <dimen name="width_secondary_button">2dp</dimen>
+    <dimen name="width_number_of_frames">70dp</dimen>
 </resources>

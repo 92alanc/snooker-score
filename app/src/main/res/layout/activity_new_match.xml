@@ -121,18 +121,21 @@
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/txtNumberOfFrames"
         style="@style/TextAppearance.Material3.HeadlineLarge"
-        android:layout_width="wrap_content"
+        android:layout_width="@dimen/width_number_of_frames"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/spacing_01"
         android:layout_marginStart="@dimen/spacing_02"
-        android:padding="@dimen/spacing_01"
+        android:gravity="center"
+        android:paddingTop="@dimen/spacing_01"
+        android:paddingHorizontal="@dimen/spacing_01"
+        android:paddingBottom="@dimen/spacing_02"
         android:background="@drawable/shape_outline"
         app:layout_constraintTop_toTopOf="@id/btUp"
         app:layout_constraintBottom_toBottomOf="@id/btDown"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/btUp"
         app:layout_constraintHorizontal_chainStyle="packed"
-        tools:text="3"/>
+        tools:text="11"/>
 
     <ImageButton
         android:id="@+id/btUp"

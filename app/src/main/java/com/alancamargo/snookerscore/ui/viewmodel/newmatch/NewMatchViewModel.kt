@@ -18,14 +18,15 @@ import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 
-private const val INITIAL_NUMBER_OF_FRAMES = 1
+private const val MIN_NUMBER_OF_FRAMES = 1
+private const val MAX_NUMBER_OF_FRAMES = 35
 
 class NewMatchViewModel(
     private val arePlayersTheSameUseCase: ArePlayersTheSameUseCase,
     private val addMatchUseCase: AddMatchUseCase,
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : ViewModel<NewMatchUiState, NewMatchUiAction>(
-    initialState = NewMatchUiState(numberOfFrames = INITIAL_NUMBER_OF_FRAMES)
+    initialState = NewMatchUiState(numberOfFrames = MIN_NUMBER_OF_FRAMES)
 ) {
 
     private var player1: UiPlayer? = null
@@ -69,12 +70,14 @@ class NewMatchViewModel(
     }
 
     fun onNumberOfFramesIncreased() {
-        numberOfFrames += 2
-        setState { state -> state.onNumberOfFramesChanged(numberOfFrames) }
+        if (numberOfFrames < MAX_NUMBER_OF_FRAMES) {
+            numberOfFrames += 2
+            setState { state -> state.onNumberOfFramesChanged(numberOfFrames) }
+        }
     }
 
     fun onNumberOfFramesDecreased() {
-        if (numberOfFrames > INITIAL_NUMBER_OF_FRAMES) {
+        if (numberOfFrames > MIN_NUMBER_OF_FRAMES) {
             numberOfFrames -= 2
             setState { state -> state.onNumberOfFramesChanged(numberOfFrames) }
         }

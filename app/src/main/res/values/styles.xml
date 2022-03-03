@@ -22,7 +22,7 @@
     </style>
     <style name="SnookerScore.Button.Secondary" parent="@style/Widget.Material3.Button.OutlinedButton">
         <item name="strokeColor">@color/green</item>
-        <item name="strokeWidth">@dimen/secondary_button_width</item>
+        <item name="strokeWidth">@dimen/width_secondary_button</item>
         <item name="android:textAppearance">@style/TextAppearance.Material3.BodyLarge</item>
         <item name="android:textColor">@color/green</item>
     </style>
