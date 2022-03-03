@@ -39,7 +39,10 @@ class MatchListActivity : AppCompatActivity() {
 
         observeState(viewModel, ::onStateChanged)
         observeAction(viewModel, ::onAction)
+    }
 
+    override fun onResume() {
+        super.onResume()
         viewModel.getMatches()
     }
 

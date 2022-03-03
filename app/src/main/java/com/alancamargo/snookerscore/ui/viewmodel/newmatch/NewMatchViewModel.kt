@@ -120,6 +120,7 @@ class NewMatchViewModel(
                     sendAction { NewMatchUiAction.ShowError }
                 }.collect {
                     val uiMatch = match.toUi()
+                    logger.debug("Match created: $match")
                     sendAction { NewMatchUiAction.StartMatch(uiMatch) }
                 }
         }
