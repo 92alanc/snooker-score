@@ -13,13 +13,13 @@ import kotlin.time.ExperimentalTime
 @ExperimentalTime
 class AddOrUpdatePlayerUseCaseTest {
 
-    private val mockPlayerRepository = mockk<PlayerRepository>()
-    private val useCase = AddOrUpdatePlayerUseCase(mockPlayerRepository)
+    private val mockRepository = mockk<PlayerRepository>()
+    private val useCase = AddOrUpdatePlayerUseCase(mockRepository)
 
     @Test
     fun `invoke should add or update player`() = runBlocking {
         val player = getPlayer()
-        every { mockPlayerRepository.addOrUpdatePlayer(player) } returns flow { emit(Unit) }
+        every { mockRepository.addOrUpdatePlayer(player) } returns flow { emit(Unit) }
 
         val result = useCase.invoke(player)
 

@@ -4,8 +4,8 @@ import com.alancamargo.snookerscore.domain.model.Player
 import com.alancamargo.snookerscore.domain.repository.PlayerRepository
 import kotlinx.coroutines.flow.Flow
 
-class AddOrUpdatePlayerUseCase(private val playerRepository: PlayerRepository) {
+class AddOrUpdatePlayerUseCase(private val repository: PlayerRepository) {
 
-    operator fun invoke(player: Player): Flow<Unit> = playerRepository.addOrUpdatePlayer(player)
+    operator fun invoke(player: Player): Flow<Unit> = repository.addOrUpdatePlayer(player)
 
 }
