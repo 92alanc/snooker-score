@@ -58,7 +58,7 @@ class MatchDetailsActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         recyclerView.adapter = adapter
-        btDeleteMatch.setOnClickListener { viewModel.onDeleteMatchConfirmed(args.match) }
+        btDeleteMatch.setOnClickListener { viewModel.onDeleteMatchClicked() }
     }
 
     private fun onStateChanged(state: MatchDetailsUiState) = with(state) {
@@ -102,7 +102,7 @@ class MatchDetailsActivity : AppCompatActivity() {
                 viewModel.getMatchDetails(args.match)
             }.show()
     }
-    
+
     private fun showDeleteMatchConfirmation() {
         makeDialogue {
             titleRes = R.string.delete_match
