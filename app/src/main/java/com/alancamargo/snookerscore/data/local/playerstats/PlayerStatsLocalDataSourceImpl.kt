@@ -12,12 +12,21 @@ class PlayerStatsLocalDataSourceImpl(
 ) : PlayerStatsLocalDataSource {
 
     override fun getPlayerStats(player: Player) = flow {
-        val playerStats = playerStatsDao.getPlayerStats(player.id).toDomain(player)
+        val playerStats = playerStatsDao.getPlayerStats(player.id)?.toDomain(player)
+            ?: throw IllegalStateException("Player stats not found")
+
         emit(playerStats)
     }
 
     override fun addOrUpdatePlayerStats(playerStats: PlayerStats) = flow {
-        val task = playerStatsDao.addOrUpdatePlayerStats(playerStats.toData())
+        val playerStatsExist = playerStatsDao.getPlayerStats(playerStats.player.id) != null
+
+        val task = if (playerStatsExist) {
+            playerStatsDao.updatePlayerStats(playerStats.toData())
+        } else {
+            playerStatsDao.addPlayerStats(playerStats.toData())
+        }
+
         emit(task)
     }
 

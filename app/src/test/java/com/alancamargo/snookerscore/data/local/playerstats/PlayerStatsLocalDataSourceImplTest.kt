@@ -49,8 +49,9 @@ class PlayerStatsLocalDataSourceImplTest {
     }
 
     @Test
-    fun `addOrUpdatePlayerStats should add or update player stats on database`() = runBlocking {
+    fun `when player stats do not exist addOrUpdatePlayerStats should add player stats to database`() = runBlocking {
         val playerStats = getPlayerStats()
+        coEvery { mockDatabase.getPlayerStats(playerStats.player.id) } returns null
 
         val result = localDataSource.addOrUpdatePlayerStats(playerStats)
 
@@ -59,14 +60,30 @@ class PlayerStatsLocalDataSourceImplTest {
             awaitComplete()
         }
 
-        coVerify { mockDatabase.addOrUpdatePlayerStats(playerStats.toData()) }
+        coVerify { mockDatabase.addPlayerStats(playerStats.toData()) }
+    }
+
+    @Test
+    fun `when player stats exist addOrUpdatePlayerStats should update player stats on database`() = runBlocking {
+        val playerStats = getPlayerStats()
+        coEvery { mockDatabase.getPlayerStats(playerStats.player.id) } returns playerStats.toData()
+
+        val result = localDataSource.addOrUpdatePlayerStats(playerStats)
+
+        result.test {
+            awaitItem()
+            awaitComplete()
+        }
+
+        coVerify { mockDatabase.updatePlayerStats(playerStats.toData()) }
     }
 
     @Test
     fun `when database throws exception addOrUpdatePlayerStats should return error`() = runBlocking {
         val playerStats = getPlayerStats()
+        coEvery { mockDatabase.getPlayerStats(playerStats.player.id) } returns null
         coEvery {
-            mockDatabase.addOrUpdatePlayerStats(playerStats.toData())
+            mockDatabase.addPlayerStats(playerStats.toData())
         } throws IOException(ERROR_MESSAGE)
 
         val result = localDataSource.addOrUpdatePlayerStats(playerStats)
