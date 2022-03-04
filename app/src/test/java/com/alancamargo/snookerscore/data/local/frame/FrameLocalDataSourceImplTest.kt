@@ -23,8 +23,9 @@ class FrameLocalDataSourceImplTest {
     private val localDataSource = FrameLocalDataSourceImpl(mockDatabase)
 
     @Test
-    fun `addOrUpdateFrame should add or update frame to database`() = runBlocking {
+    fun `when frame does not exist addOrUpdateFrame should add frame to database`() = runBlocking {
         val frame = getFrame()
+        coEvery { mockDatabase.getFrame(frame.id) } returns null
 
         val result = localDataSource.addOrUpdateFrame(frame)
 
@@ -33,15 +34,31 @@ class FrameLocalDataSourceImplTest {
             awaitComplete()
         }
 
-        coVerify { mockDatabase.addOrUpdateFrame(frame.toData()) }
+        coVerify { mockDatabase.addFrame(frame.toData()) }
+    }
+
+    @Test
+    fun `when frame exists addOrUpdateFrame should update frame on database`() = runBlocking {
+        val frame = getFrame()
+        coEvery { mockDatabase.getFrame(frame.id) } returns frame.toData()
+
+        val result = localDataSource.addOrUpdateFrame(frame)
+
+        result.test {
+            awaitItem()
+            awaitComplete()
+        }
+
+        coVerify { mockDatabase.updateFrame(frame.toData()) }
     }
 
     @Test
     fun `when database throws exception addOrUpdateScore should return error`() = runBlocking {
-        val score = getFrame()
-        coEvery { mockDatabase.addOrUpdateFrame(score.toData()) } throws IOException(ERROR_MESSAGE)
+        val frame = getFrame()
+        coEvery { mockDatabase.getFrame(frame.id) } returns null
+        coEvery { mockDatabase.addFrame(frame.toData()) } throws IOException(ERROR_MESSAGE)
 
-        val result = localDataSource.addOrUpdateFrame(score)
+        val result = localDataSource.addOrUpdateFrame(frame)
 
         result.test {
             val error = awaitError()

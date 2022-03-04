@@ -11,7 +11,14 @@ import kotlinx.coroutines.flow.flow
 class FrameLocalDataSourceImpl(private val frameDao: FrameDao) : FrameLocalDataSource {
 
     override fun addOrUpdateFrame(frame: Frame) = flow {
-        val task = frameDao.addOrUpdateFrame(frame.toData())
+        val frameExists = frameDao.getFrame(frame.id) != null
+
+        val task = if (frameExists) {
+            frameDao.updateFrame(frame.toData())
+        } else {
+            frameDao.addFrame(frame.toData())
+        }
+
         emit(task)
     }
 
