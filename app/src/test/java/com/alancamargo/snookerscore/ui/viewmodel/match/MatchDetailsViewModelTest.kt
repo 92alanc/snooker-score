@@ -104,39 +104,46 @@ class MatchDetailsViewModelTest {
     }
 
     @Test
-    fun `onDeleteMatchClicked should send ShowLoading action`() {
+    fun `onDeleteMatchClicked should send ShowDeleteMatchConfirmation`() {
+        viewModel.onDeleteMatchClicked()
+
+        verify { mockActionObserver.onChanged(MatchDetailsUiAction.ShowDeleteMatchConfirmation) }
+    }
+
+    @Test
+    fun `onDeleteMatchConfirmed should send ShowLoading action`() {
         every {
             mockDeleteMatchUseCase.invoke(match = any())
         } returns flow { delay(timeMillis = 50) }
 
-        viewModel.onDeleteMatchClicked(getUiMatch())
+        viewModel.onDeleteMatchConfirmed(getUiMatch())
 
         verify { mockActionObserver.onChanged(MatchDetailsUiAction.ShowLoading) }
     }
 
     @Test
-    fun `onDeleteMatchClicked should send Finish action`() {
+    fun `onDeleteMatchConfirmed should send Finish action`() {
         every { mockDeleteMatchUseCase.invoke(match = any()) } returns flow { emit(Unit) }
 
-        viewModel.onDeleteMatchClicked(getUiMatch())
+        viewModel.onDeleteMatchConfirmed(getUiMatch())
 
         verify { mockActionObserver.onChanged(MatchDetailsUiAction.Finish) }
     }
 
     @Test
-    fun `onDeleteMatchClicked should send HideLoading action`() {
+    fun `onDeleteMatchConfirmed should send HideLoading action`() {
         every { mockDeleteMatchUseCase.invoke(match = any()) } returns flow { emit(Unit) }
 
-        viewModel.onDeleteMatchClicked(getUiMatch())
+        viewModel.onDeleteMatchConfirmed(getUiMatch())
 
         verify { mockActionObserver.onChanged(MatchDetailsUiAction.HideLoading) }
     }
 
     @Test
-    fun `with error onDeleteMatchClicked should send ShowErrorAction`() {
+    fun `with error onDeleteMatchConfirmed should send ShowErrorAction`() {
         every { mockDeleteMatchUseCase.invoke(match = any()) } returns flow { throw IOException() }
 
-        viewModel.onDeleteMatchClicked(getUiMatch())
+        viewModel.onDeleteMatchConfirmed(getUiMatch())
 
         verify { mockActionObserver.onChanged(MatchDetailsUiAction.ShowError) }
     }

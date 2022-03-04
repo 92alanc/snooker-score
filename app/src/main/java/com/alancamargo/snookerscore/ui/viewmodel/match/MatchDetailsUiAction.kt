@@ -12,4 +12,6 @@ sealed class MatchDetailsUiAction : UiAction {
 
     object Finish : MatchDetailsUiAction()
 
+    object ShowDeleteMatchConfirmation : MatchDetailsUiAction()
+
 }

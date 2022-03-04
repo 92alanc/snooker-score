@@ -46,7 +46,11 @@ class MatchDetailsViewModel(
         }
     }
 
-    fun onDeleteMatchClicked(match: UiMatch) {
+    fun onDeleteMatchClicked() {
+        sendAction { MatchDetailsUiAction.ShowDeleteMatchConfirmation }
+    }
+
+    fun onDeleteMatchConfirmed(match: UiMatch) {
         viewModelScope.launch {
             deleteMatchUseCase(match.toDomain()).flowOn(dispatcher)
                 .onStart {

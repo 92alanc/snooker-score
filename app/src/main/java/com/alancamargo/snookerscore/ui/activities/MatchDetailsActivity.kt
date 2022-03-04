@@ -12,6 +12,8 @@ import com.alancamargo.snookerscore.core.arch.extensions.createIntent
 import com.alancamargo.snookerscore.core.arch.extensions.observeAction
 import com.alancamargo.snookerscore.core.arch.extensions.observeState
 import com.alancamargo.snookerscore.core.arch.extensions.putArguments
+import com.alancamargo.snookerscore.core.ui.button
+import com.alancamargo.snookerscore.core.ui.makeDialogue
 import com.alancamargo.snookerscore.databinding.ActivityMatchDetailsBinding
 import com.alancamargo.snookerscore.ui.adapter.frame.FrameAdapter
 import com.alancamargo.snookerscore.ui.model.UiMatch
@@ -21,6 +23,8 @@ import com.alancamargo.snookerscore.ui.viewmodel.match.MatchDetailsViewModel
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.parcelize.Parcelize
 import org.koin.androidx.viewmodel.ext.android.viewModel
+
+private const val DIALOGUE_TAG = "DialogueTag"
 
 class MatchDetailsActivity : AppCompatActivity() {
 
@@ -54,7 +58,7 @@ class MatchDetailsActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         recyclerView.adapter = adapter
-        btDeleteMatch.setOnClickListener { viewModel.onDeleteMatchClicked(args.match) }
+        btDeleteMatch.setOnClickListener { viewModel.onDeleteMatchConfirmed(args.match) }
     }
 
     private fun onStateChanged(state: MatchDetailsUiState) = with(state) {
@@ -68,6 +72,7 @@ class MatchDetailsActivity : AppCompatActivity() {
             MatchDetailsUiAction.HideLoading -> hideLoading()
             MatchDetailsUiAction.ShowError -> showError()
             MatchDetailsUiAction.Finish -> finish()
+            MatchDetailsUiAction.ShowDeleteMatchConfirmation -> showDeleteMatchConfirmation()
         }
     }
 
@@ -96,6 +101,21 @@ class MatchDetailsActivity : AppCompatActivity() {
             .setAction(R.string.retry) {
                 viewModel.getMatchDetails(args.match)
             }.show()
+    }
+    
+    private fun showDeleteMatchConfirmation() {
+        makeDialogue {
+            titleRes = R.string.delete_match
+            messageRes = R.string.delete_match_confirmation
+            illustrationRes = R.drawable.ic_warning
+            primaryButton = button {
+                textRes = R.string.cancel
+            }
+            secondaryButton = button {
+                textRes = R.string.yes
+                onClick = { viewModel.onDeleteMatchConfirmed(args.match) }
+            }
+        }.show(supportFragmentManager, DIALOGUE_TAG)
     }
 
     @Parcelize
