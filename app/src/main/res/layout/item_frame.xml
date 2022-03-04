@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root"
+    style="@style/SnookerScore.CardView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/txtTitle"
+            style="@style/TextAppearance.Material3.TitleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:text="Frame 1"/>
+
+        <LinearLayout
+            android:id="@+id/player1Container"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_02"
+            android:layout_marginEnd="@dimen/spacing_01"
+            android:orientation="vertical"
+            android:padding="@dimen/spacing_01"
+            android:background="@drawable/shape_outline_green"
+            app:layout_constraintTop_toBottomOf="@id/txtTitle"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/player2Container">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/txtPlayer1"
+                style="@style/TextAppearance.Material3.TitleMedium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Judd Trump"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/txtPlayer1Score"
+                style="@style/TextAppearance.Material3.BodyMedium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_01"
+                tools:text="Score: 100"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/txtPlayer1HighestBreak"
+                style="@style/TextAppearance.Material3.BodyMedium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_01"
+                tools:text="Highest break: 100"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/player2Container"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_02"
+            android:layout_marginStart="@dimen/spacing_01"
+            android:orientation="vertical"
+            android:padding="@dimen/spacing_01"
+            android:background="@drawable/shape_outline_green"
+            app:layout_constraintTop_toBottomOf="@id/txtTitle"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/player1Container"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/txtPlayer2"
+                style="@style/TextAppearance.Material3.TitleMedium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Mark Selby"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/txtPlayer2Score"
+                style="@style/TextAppearance.Material3.BodyMedium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_01"
+                tools:text="Score: 36"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/txtPlayer2HighestBreak"
+                style="@style/TextAppearance.Material3.BodyMedium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_01"
+                tools:text="Highest break: 27"/>
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>
