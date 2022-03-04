@@ -9,7 +9,7 @@ data class MatchDetailsUiState(
     val frames: List<UiFrame>? = null
 ) : UiState {
 
-    fun onWinnerSet(winner: UiPlayer) = copy(winner = winner)
+    fun onWinnerSet(winner: UiPlayer?) = copy(winner = winner)
 
     fun onFramesReceived(frames: List<UiFrame>) = copy(frames = frames)
 

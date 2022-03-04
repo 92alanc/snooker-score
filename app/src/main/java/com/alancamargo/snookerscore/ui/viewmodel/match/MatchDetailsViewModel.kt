@@ -41,7 +41,7 @@ class MatchDetailsViewModel(
                     setState { state -> state.onFramesReceived(frames) }
 
                     val winner = getWinningPlayerUseCase(result)
-                    setState { state -> state.onWinnerSet(winner.toUi()) }
+                    setState { state -> state.onWinnerSet(winner?.toUi()) }
                 }
         }
     }

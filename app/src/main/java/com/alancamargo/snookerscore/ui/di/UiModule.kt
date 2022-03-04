@@ -1,10 +1,12 @@
 package com.alancamargo.snookerscore.ui.di
 
+import com.alancamargo.snookerscore.navigation.MatchDetailsNavigation
 import com.alancamargo.snookerscore.navigation.MatchListNavigation
 import com.alancamargo.snookerscore.navigation.NewMatchNavigation
 import com.alancamargo.snookerscore.navigation.PlayerListNavigation
 import com.alancamargo.snookerscore.navigation.PlayerStatsNavigation
 import com.alancamargo.snookerscore.navigation.WebViewNavigation
+import com.alancamargo.snookerscore.ui.navigation.MatchDetailsNavigationImpl
 import com.alancamargo.snookerscore.ui.navigation.MatchListNavigationImpl
 import com.alancamargo.snookerscore.ui.navigation.NewMatchNavigationImpl
 import com.alancamargo.snookerscore.ui.navigation.PlayerListNavigationImpl
@@ -25,7 +27,12 @@ val uiModule = module {
     viewModel { MainViewModel(getRulesUrlUseCase = get()) }
     viewModel { MatchListViewModel(getMatchesUseCase = get(), logger = get()) }
     viewModel {
-        NewMatchViewModel(arePlayersTheSameUseCase = get(), addMatchUseCase = get(), logger = get())
+        NewMatchViewModel(
+            arePlayersTheSameUseCase = get(),
+            addMatchUseCase = get(),
+            addOrUpdateFrameUseCase = get(),
+            logger = get()
+        )
     }
     viewModel { parameters ->
         FrameViewModel(
@@ -78,4 +85,5 @@ val uiModule = module {
     factory<PlayerStatsNavigation> { PlayerStatsNavigationImpl() }
     factory<MatchListNavigation> { MatchListNavigationImpl() }
     factory<NewMatchNavigation> { NewMatchNavigationImpl() }
+    factory<MatchDetailsNavigation> { MatchDetailsNavigationImpl() }
 }

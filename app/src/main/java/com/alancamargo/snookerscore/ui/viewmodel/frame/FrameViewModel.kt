@@ -178,16 +178,19 @@ class FrameViewModel(
 
     private fun endMatch() {
         val domainFrames = frames.map { it.toDomain() }
-        val winningPlayer = useCases.playerUseCases.getWinningPlayerUseCase(domainFrames)
 
-        viewModelScope.launch {
-            useCases.playerStatsUseCases.getPlayerStatsUseCase(winningPlayer).handleDefaultActions()
-                .collect { currentWinnerStats ->
-                    useCases.playerStatsUseCases.updatePlayerStatsWithMatchResultUseCase(
-                        currentWinnerStats
-                    ).handleDefaultActions()
-                        .collect()
-                }
+        useCases.playerUseCases.getWinningPlayerUseCase(domainFrames)?.let { winner ->
+            viewModelScope.launch {
+                useCases.playerStatsUseCases.getPlayerStatsUseCase(winner).handleDefaultActions()
+                    .collect { currentWinnerStats ->
+                        useCases.playerStatsUseCases.updatePlayerStatsWithMatchResultUseCase(
+                            currentWinnerStats
+                        ).handleDefaultActions()
+                            .collect()
+                    }
+            }
+        } ?: run {
+            sendAction { FrameUiAction.ShowError }
         }
     }
 

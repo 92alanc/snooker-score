@@ -3,8 +3,10 @@ package com.alancamargo.snookerscore.ui.viewmodel.newmatch
 import androidx.lifecycle.viewModelScope
 import com.alancamargo.snookerscore.core.arch.viewmodel.ViewModel
 import com.alancamargo.snookerscore.core.log.Logger
+import com.alancamargo.snookerscore.domain.model.Frame
 import com.alancamargo.snookerscore.domain.model.Match
 import com.alancamargo.snookerscore.domain.model.Player
+import com.alancamargo.snookerscore.domain.usecase.frame.AddOrUpdateFrameUseCase
 import com.alancamargo.snookerscore.domain.usecase.match.AddMatchUseCase
 import com.alancamargo.snookerscore.domain.usecase.player.ArePlayersTheSameUseCase
 import com.alancamargo.snookerscore.ui.mapping.toDomain
@@ -12,6 +14,7 @@ import com.alancamargo.snookerscore.ui.mapping.toUi
 import com.alancamargo.snookerscore.ui.model.UiPlayer
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flowOn
@@ -25,6 +28,7 @@ private const val MAX_NUMBER_OF_FRAMES = 35
 class NewMatchViewModel(
     private val arePlayersTheSameUseCase: ArePlayersTheSameUseCase,
     private val addMatchUseCase: AddMatchUseCase,
+    private val addOrUpdateFrameUseCase: AddOrUpdateFrameUseCase,
     private val logger: Logger,
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : ViewModel<NewMatchUiState, NewMatchUiAction>(
@@ -110,19 +114,40 @@ class NewMatchViewModel(
     private fun createMatch(player1: Player, player2: Player) {
         viewModelScope.launch {
             val match = Match(player1 = player1, player2 = player2, numberOfFrames = numberOfFrames)
-            addMatchUseCase(match).flowOn(dispatcher)
-                .onStart {
-                    sendAction { NewMatchUiAction.ShowLoading }
-                }.onCompletion {
-                    sendAction { NewMatchUiAction.HideLoading }
-                }.catch { throwable ->
-                    logger.error(throwable)
-                    sendAction { NewMatchUiAction.ShowError }
-                }.collect {
-                    val uiMatch = match.toUi()
-                    logger.debug("Match created: $match")
-                    sendAction { NewMatchUiAction.StartMatch(uiMatch) }
+            addMatchUseCase(match).handleFlow {
+                logger.debug("Match created: $match")
+                createFrames(match)
+                sendAction { NewMatchUiAction.StartMatch(match.toUi()) }
+            }
+        }
+    }
+
+    private suspend fun <T> Flow<T>.handleFlow(onCollect: () -> Unit) {
+        return flowOn(dispatcher)
+            .onStart {
+                sendAction { NewMatchUiAction.ShowLoading }
+            }.onCompletion {
+                sendAction { NewMatchUiAction.HideLoading }
+            }.catch { throwable ->
+                logger.error(throwable)
+                sendAction { NewMatchUiAction.ShowError }
+            }.collect {
+                onCollect()
+            }
+    }
+
+    private fun createFrames(match: Match) {
+        repeat(match.numberOfFrames) { index ->
+            val frame = Frame(
+                positionInMatch = index + 1,
+                match = match
+            )
+
+            viewModelScope.launch {
+                addOrUpdateFrameUseCase(frame).handleFlow {
+                    logger.debug("Frame created: $frame")
                 }
+            }
         }
     }
 

@@ -122,14 +122,18 @@ class NewMatchActivity : AppCompatActivity() {
         binding.btStartMatch.isEnabled = isStartMatchButtonEnabled
     }
 
-    private fun showLoading() {
-        // TODO
-        Toast.makeText(this, "Loading...", Toast.LENGTH_SHORT).show()
+    private fun showLoading() = with(binding) {
+        btUp.isEnabled = false
+        btDown.isEnabled = false
+        btStartMatch.isEnabled = false
+        progressBar.isVisible = true
     }
 
-    private fun hideLoading() {
-        // TODO
-        Toast.makeText(this, "Done loading", Toast.LENGTH_SHORT).show()
+    private fun hideLoading() = with(binding) {
+        progressBar.isVisible = false
+        btUp.isEnabled = true
+        btDown.isEnabled = true
+        btStartMatch.isEnabled = true
     }
 
     private fun showError() {
