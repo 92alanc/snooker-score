@@ -24,8 +24,10 @@ class MatchLocalDataSourceImpl(
 
     override fun getMatches() = flow {
         val matches = matchDao.getMatches().map { dbMatch ->
-            val player1 = playerDao.getPlayer(dbMatch.player1Id).toDomain()
-            val player2 = playerDao.getPlayer(dbMatch.player2Id).toDomain()
+            val player1 = playerDao.getPlayer(dbMatch.player1Id)?.toDomain()
+                ?: throw IllegalStateException("Player 1 not found")
+            val player2 = playerDao.getPlayer(dbMatch.player2Id)?.toDomain()
+                ?: throw IllegalStateException("Player 2 not found")
 
             dbMatch.toDomain(player1, player2)
         }

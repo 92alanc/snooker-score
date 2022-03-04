@@ -50,8 +50,9 @@ class PlayerLocalDataSourceImplTest {
     }
 
     @Test
-    fun `addOrUpdatePlayer should add or update player on database`() = runBlocking {
+    fun `when player does not exist addOrUpdatePlayer should add player to database`() = runBlocking {
         val player = getPlayer()
+        coEvery { mockDatabase.getPlayer(player.id) } returns null
 
         val result = localDataSource.addOrUpdatePlayer(player)
 
@@ -60,14 +61,30 @@ class PlayerLocalDataSourceImplTest {
             awaitComplete()
         }
 
-        coVerify { mockDatabase.addOrUpdatePlayer(player.toData()) }
+        coVerify { mockDatabase.addPlayer(player.toData()) }
+    }
+
+    @Test
+    fun `when player exists addOrUpdatePlayer should update player on database`() = runBlocking {
+        val player = getPlayer()
+        coEvery { mockDatabase.getPlayer(player.id) } returns getPlayer().toData()
+
+        val result = localDataSource.addOrUpdatePlayer(player)
+
+        result.test {
+            awaitItem()
+            awaitComplete()
+        }
+
+        coVerify { mockDatabase.updatePlayer(player.toData()) }
     }
 
     @Test
     fun `when database throws exception addOrUpdatePlayer should return error`() = runBlocking {
         val player = getPlayer()
+        coEvery { mockDatabase.getPlayer(player.id) } returns null
         coEvery {
-            mockDatabase.addOrUpdatePlayer(player.toData())
+            mockDatabase.addPlayer(player.toData())
         } throws IOException(ERROR_MESSAGE)
 
         val result = localDataSource.addOrUpdatePlayer(player)

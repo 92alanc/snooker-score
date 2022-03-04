@@ -14,7 +14,14 @@ class PlayerLocalDataSourceImpl(private val playerDao: PlayerDao) : PlayerLocalD
     }
 
     override fun addOrUpdatePlayer(player: Player) = flow {
-        val task = playerDao.addOrUpdatePlayer(player.toData())
+        val playerExists = playerDao.getPlayer(player.id) != null
+
+        val task = if (playerExists) {
+            playerDao.updatePlayer(player.toData())
+        } else {
+            playerDao.addPlayer(player.toData())
+        }
+
         emit(task)
     }
 
