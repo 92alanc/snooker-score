@@ -5,6 +5,7 @@ import androidx.lifecycle.Observer
 import com.alancamargo.snookerscore.core.log.Logger
 import com.alancamargo.snookerscore.domain.usecase.frame.GetFramesUseCase
 import com.alancamargo.snookerscore.domain.usecase.match.DeleteMatchUseCase
+import com.alancamargo.snookerscore.domain.usecase.player.GetWinningPlayerUseCase
 import com.alancamargo.snookerscore.testtools.getFrameList
 import com.alancamargo.snookerscore.testtools.getUiMatch
 import com.alancamargo.snookerscore.ui.mapping.toUi
@@ -31,6 +32,7 @@ class MatchDetailsViewModelTest {
 
     private val mockGetFramesUseCase = mockk<GetFramesUseCase>()
     private val mockDeleteMatchUseCase = mockk<DeleteMatchUseCase>()
+    private val mockGetWinningPlayerUseCase = mockk<GetWinningPlayerUseCase>()
     private val mockLogger = mockk<Logger>(relaxed = true)
     private val mockStateObserver = mockk<Observer<MatchDetailsUiState>>(relaxed = true)
     private val mockActionObserver = mockk<Observer<MatchDetailsUiAction>>(relaxed = true)
@@ -45,6 +47,7 @@ class MatchDetailsViewModelTest {
         viewModel = MatchDetailsViewModel(
             mockGetFramesUseCase,
             mockDeleteMatchUseCase,
+            mockGetWinningPlayerUseCase,
             mockLogger,
             testCoroutineDispatcher
         ).apply {
@@ -65,14 +68,21 @@ class MatchDetailsViewModelTest {
     }
 
     @Test
-    fun `getMatchDetails should set state with frames`() {
+    fun `getMatchDetails should set state with frames and winner`() {
         val expected = getFrameList()
+        val winner = expected.first().match.player1
         every { mockGetFramesUseCase.invoke(match = any()) } returns flow { emit(expected) }
+        every { mockGetWinningPlayerUseCase.invoke(frames = any()) } returns winner
 
         viewModel.getMatchDetails(getUiMatch())
 
         val frames = expected.map { it.toUi() }
-        verify { mockStateObserver.onChanged(MatchDetailsUiState(frames)) }
+        verify { mockStateObserver.onChanged(MatchDetailsUiState(winner = null, frames = frames)) }
+        verify {
+            mockStateObserver.onChanged(
+                MatchDetailsUiState(winner = winner.toUi(), frames = frames)
+            )
+        }
     }
 
     @Test

@@ -40,4 +40,5 @@
     <string name="highest_break_format">Highest break: %d</string>
     <string name="delete_match">Delete match</string>
     <string name="delete_match_confirmation">Are you sure you want to delete this match? This action cannot be undone!</string>
+    <string name="match">Match</string>
 </resources>

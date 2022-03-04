@@ -1,0 +1,31 @@
+{
+  "data": [
+    {
+      "title": "Frame 1",
+      "player_1": "Judd Trump",
+      "player_1_score": "Score: 100",
+      "player_1_highest_break": "Highest break: 100",
+      "player2": "Mark Selby",
+      "player_2_score": "Score: 36",
+      "player_2_highest_break": "Highest break: 27"
+    },
+    {
+      "title": "Frame 2",
+      "player_1": "Judd Trump",
+      "player_1_score": "Score: 53",
+      "player_1_highest_break": "Highest break: 16",
+      "player2": "Mark Selby",
+      "player_2_score": "Score: 86",
+      "player_2_highest_break": "Highest break: 45"
+    },
+    {
+      "title": "Frame 3",
+      "player_1": "Judd Trump",
+      "player_1_score": "Score: 92",
+      "player_1_highest_break": "Highest break: 60",
+      "player2": "Mark Selby",
+      "player_2_score": "Score: 66",
+      "player_2_highest_break": "Highest break: 48"
+    }
+  ]
+}

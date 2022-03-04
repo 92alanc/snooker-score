@@ -12,7 +12,7 @@ interface FrameDao {
     @Insert(entity = DbFrame::class, onConflict = OnConflictStrategy.REPLACE)
     suspend fun addOrUpdateFrame(frame: DbFrame)
 
-    @Query("SELECT * FROM Frames WHERE matchDateTime = :matchDateTime")
+    @Query("SELECT * FROM Frames WHERE matchDateTime = :matchDateTime ORDER BY positionInMatch")
     suspend fun getFrames(matchDateTime: Long): List<DbFrame>
 
 }

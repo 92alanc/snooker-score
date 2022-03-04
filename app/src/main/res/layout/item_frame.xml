@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            tools:text="Frame 1"/>
+            tools:text="@sample/frames.json/data/title"/>
 
         <LinearLayout
             android:id="@+id/player1Container"
@@ -39,7 +39,7 @@
                 style="@style/TextAppearance.Material3.TitleMedium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                tools:text="Judd Trump"/>
+                tools:text="@sample/frames.json/data/player_1"/>
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/txtPlayer1Score"
@@ -47,7 +47,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/spacing_01"
-                tools:text="Score: 100"/>
+                tools:text="@sample/frames.json/data/player_1_score"/>
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/txtPlayer1HighestBreak"
@@ -55,7 +55,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/spacing_01"
-                tools:text="Highest break: 100"/>
+                tools:text="@sample/frames.json/data/player_1_highest_break"/>
 
         </LinearLayout>
 
@@ -78,7 +78,7 @@
                 style="@style/TextAppearance.Material3.TitleMedium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                tools:text="Mark Selby"/>
+                tools:text="@sample/frames.json/data/player2"/>
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/txtPlayer2Score"
@@ -86,7 +86,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/spacing_01"
-                tools:text="Score: 36"/>
+                tools:text="@sample/frames.json/data/player_2_score"/>
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/txtPlayer2HighestBreak"
@@ -94,7 +94,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/spacing_01"
-                tools:text="Highest break: 27"/>
+                tools:text="@sample/frames.json/data/player_2_highest_break"/>
 
         </LinearLayout>
 
