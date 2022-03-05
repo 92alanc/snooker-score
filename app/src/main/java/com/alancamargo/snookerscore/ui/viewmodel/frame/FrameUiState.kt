@@ -8,6 +8,7 @@ data class FrameUiState(
     val currentFrame: UiFrame? = null,
     val currentPlayer: UiPlayer? = null,
     val isUndoLastPottedBallButtonEnabled: Boolean = false,
+    val isUndoLastFoulButtonEnabled: Boolean = false,
     val breakValue: Int = 0,
     val player1Score: Int = 0,
     val player2Score: Int = 0
@@ -17,9 +18,13 @@ data class FrameUiState(
 
     fun setCurrentPlayer(currentPlayer: UiPlayer) = copy(currentPlayer = currentPlayer)
 
-    fun onEnableLastPottedBallButton() = copy(isUndoLastPottedBallButtonEnabled = true)
+    fun onEnableUndoLastPottedBallButton() = copy(isUndoLastPottedBallButtonEnabled = true)
 
-    fun onDisableLastPottedBallButton() = copy(isUndoLastPottedBallButtonEnabled = false)
+    fun onDisableUndoLastPottedBallButton() = copy(isUndoLastPottedBallButtonEnabled = false)
+
+    fun onEnableUndoLastFoulButton() = copy(isUndoLastFoulButtonEnabled = true)
+
+    fun onDisableUndoLastFoulButton() = copy(isUndoLastFoulButtonEnabled = false)
 
     fun onBreakUpdated(breakValue: Int) = copy(breakValue = breakValue)
 

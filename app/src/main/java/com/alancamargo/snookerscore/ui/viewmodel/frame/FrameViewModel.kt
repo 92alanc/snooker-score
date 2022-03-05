@@ -42,6 +42,7 @@ class FrameViewModel(
     private var currentPlayer: UiPlayer? = null
     private var player1: Player? = null
     private var player2: Player? = null
+    private var lastFoul: Foul? = null
 
     init {
         frames.first().let { firstFrame ->
@@ -73,7 +74,7 @@ class FrameViewModel(
                 setState { state -> state.onPlayer2ScoreUpdated(frame.player2Score) }
             }
 
-            setState { state -> state.onEnableLastPottedBallButton() }
+            setState { state -> state.onEnableUndoLastPottedBallButton() }
 
             val breakValue = breakCalculator.getPoints()
             setState { state -> state.onBreakUpdated(breakValue) }
@@ -94,11 +95,13 @@ class FrameViewModel(
 
             val breakValue = breakCalculator.getPoints()
             setState { state -> state.onBreakUpdated(breakValue) }
+            setState { state -> state.onDisableUndoLastPottedBallButton() }
         }
     }
 
     fun onFoul(foul: Foul) {
         takeFrameAndPlayerIfNotNull { frame, player ->
+            lastFoul = foul
             val penaltyValue = useCases.getPenaltyValueUseCase(foul)
 
             if (player == frame.match.player1) {
@@ -107,6 +110,27 @@ class FrameViewModel(
             } else if (player == frame.match.player2) {
                 frame.player1Score += penaltyValue
                 setState { state -> state.onPlayer1ScoreUpdated(frame.player1Score) }
+            }
+
+            setState { state -> state.onEnableUndoLastFoulButton() }
+        }
+    }
+
+    fun onUndoLastFoulClicked() {
+        lastFoul?.let { foul ->
+            takeFrameAndPlayerIfNotNull { frame, player ->
+                val penaltyValue = useCases.getPenaltyValueUseCase(foul)
+
+                if (player == frame.match.player1) {
+                    frame.player2Score -= penaltyValue
+                    setState { state -> state.onPlayer2ScoreUpdated(frame.player2Score) }
+                } else if (player == frame.match.player2) {
+                    frame.player1Score -= penaltyValue
+                    setState { state -> state.onPlayer1ScoreUpdated(frame.player1Score) }
+                }
+
+                lastFoul = null
+                setState { state -> state.onDisableUndoLastFoulButton() }
             }
         }
     }
@@ -125,7 +149,7 @@ class FrameViewModel(
             }
 
             breakCalculator.clear()
-            setState { state -> state.onDisableLastPottedBallButton() }
+            lastFoul = null
         }
     }
 

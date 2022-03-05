@@ -136,7 +136,7 @@ class FrameViewModelTest {
     fun `onUndoLastPottedBallClicked should update UI state`() {
         viewModel.onUndoLastPottedBallClicked()
 
-        verify(exactly = 3) { mockStateObserver.onChanged(any()) }
+        verify(exactly = 4) { mockStateObserver.onChanged(any()) }
     }
 
     @Test
@@ -144,6 +144,13 @@ class FrameViewModelTest {
         viewModel.onFoul(Foul.Other)
 
         verify { mockGetPenaltyValueUseCase.invoke(Foul.Other) }
+    }
+
+    @Test
+    fun `onUndoLastFoulClicked should update UI state`() {
+        viewModel.onUndoLastFoulClicked()
+
+        verify { mockStateObserver.onChanged(any()) }
     }
 
     @Test
