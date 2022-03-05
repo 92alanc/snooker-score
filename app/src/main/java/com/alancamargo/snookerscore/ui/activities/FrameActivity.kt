@@ -12,6 +12,7 @@ import com.alancamargo.snookerscore.core.arch.extensions.observeState
 import com.alancamargo.snookerscore.core.arch.extensions.putArguments
 import com.alancamargo.snookerscore.databinding.ActivityFrameBinding
 import com.alancamargo.snookerscore.domain.model.Ball
+import com.alancamargo.snookerscore.domain.model.Foul
 import com.alancamargo.snookerscore.ui.model.UiFrame
 import com.alancamargo.snookerscore.ui.viewmodel.frame.FrameUiAction
 import com.alancamargo.snookerscore.ui.viewmodel.frame.FrameUiState
@@ -47,7 +48,7 @@ class FrameActivity : AppCompatActivity() {
 
     private fun setUpUi() {
         setUpToolbar()
-        setUpBallButtons()
+        setUpButtons()
     }
 
     private fun onStateChanged(state: FrameUiState) = with(state) {
@@ -63,7 +64,7 @@ class FrameActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
-    private fun setUpBallButtons() = with(binding) {
+    private fun setUpButtons() = with(binding) {
         bindButtonToBall(btRed, Ball.RED)
         bindButtonToBall(btYellow, Ball.YELLOW)
         bindButtonToBall(btGreen, Ball.GREEN)
@@ -71,6 +72,13 @@ class FrameActivity : AppCompatActivity() {
         bindButtonToBall(btBlue, Ball.BLUE)
         bindButtonToBall(btPink, Ball.PINK)
         bindButtonToBall(btBlack, Ball.BLACK)
+
+        btUndoPottedBall.setOnClickListener { viewModel.onUndoLastPottedBallClicked() }
+        btUndoFoul.setOnClickListener { viewModel.onUndoLastFoulClicked() }
+        btEndTurn.setOnClickListener { viewModel.onEndTurnClicked() }
+        btEndFrame.setOnClickListener { viewModel.onEndFrameConfirmed() }
+        btWithObjectBall.setOnClickListener { viewModel.onObjectBallFoulClicked() }
+        btOthers.setOnClickListener { viewModel.onFoul(Foul.Other) }
     }
 
     private fun bindButtonToBall(button: MaterialButton, ball: Ball) {

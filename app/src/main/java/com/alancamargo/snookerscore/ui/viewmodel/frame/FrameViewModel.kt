@@ -99,6 +99,10 @@ class FrameViewModel(
         }
     }
 
+    fun onObjectBallFoulClicked() {
+        // TODO
+    }
+
     fun onFoul(foul: Foul) {
         takeFrameAndPlayerIfNotNull { frame, player ->
             lastFoul = foul
