@@ -7,6 +7,7 @@ import com.alancamargo.snookerscore.navigation.NewMatchNavigation
 import com.alancamargo.snookerscore.navigation.PlayerListNavigation
 import com.alancamargo.snookerscore.navigation.PlayerStatsNavigation
 import com.alancamargo.snookerscore.navigation.WebViewNavigation
+import com.alancamargo.snookerscore.ui.model.UiFrame
 import com.alancamargo.snookerscore.ui.navigation.FrameNavigationImpl
 import com.alancamargo.snookerscore.ui.navigation.MatchDetailsNavigationImpl
 import com.alancamargo.snookerscore.ui.navigation.MatchListNavigationImpl
@@ -32,13 +33,12 @@ val uiModule = module {
         NewMatchViewModel(
             arePlayersTheSameUseCase = get(),
             addMatchUseCase = get(),
-            addOrUpdateFrameUseCase = get(),
             logger = get()
         )
     }
-    viewModel { parameters ->
+    viewModel { (frames: List<UiFrame>) ->
         FrameViewModel(
-            frames = parameters.get(),
+            frames = frames,
             useCases = FrameViewModel.UseCases(
                 playerUseCases = FrameViewModel.PlayerUseCases(
                     drawPlayerUseCase = get(),

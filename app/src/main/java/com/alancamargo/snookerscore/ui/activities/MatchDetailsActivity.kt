@@ -15,13 +15,16 @@ import com.alancamargo.snookerscore.core.arch.extensions.putArguments
 import com.alancamargo.snookerscore.core.ui.button
 import com.alancamargo.snookerscore.core.ui.makeDialogue
 import com.alancamargo.snookerscore.databinding.ActivityMatchDetailsBinding
+import com.alancamargo.snookerscore.navigation.FrameNavigation
 import com.alancamargo.snookerscore.ui.adapter.frame.FrameAdapter
+import com.alancamargo.snookerscore.ui.model.UiFrame
 import com.alancamargo.snookerscore.ui.model.UiMatch
 import com.alancamargo.snookerscore.ui.viewmodel.match.MatchDetailsUiAction
 import com.alancamargo.snookerscore.ui.viewmodel.match.MatchDetailsUiState
 import com.alancamargo.snookerscore.ui.viewmodel.match.MatchDetailsViewModel
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.parcelize.Parcelize
+import org.koin.android.ext.android.get
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 private const val DIALOGUE_TAG = "DialogueTag"
@@ -45,7 +48,10 @@ class MatchDetailsActivity : AppCompatActivity() {
 
         observeState(viewModel, ::onStateChanged)
         observeAction(viewModel, ::onAction)
+    }
 
+    override fun onResume() {
+        super.onResume()
         viewModel.getMatchDetails(args.match)
     }
 
@@ -59,20 +65,23 @@ class MatchDetailsActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         recyclerView.adapter = adapter
         btDeleteMatch.setOnClickListener { viewModel.onDeleteMatchClicked() }
+        btResumeMatch.setOnClickListener { viewModel.onResumeMatchClicked() }
     }
 
     private fun onStateChanged(state: MatchDetailsUiState) = with(state) {
         handleFrames()
         handleWinner()
+        handleResumeMatchButton()
     }
 
     private fun onAction(action: MatchDetailsUiAction) {
         when (action) {
-            MatchDetailsUiAction.ShowLoading -> showLoading()
-            MatchDetailsUiAction.HideLoading -> hideLoading()
-            MatchDetailsUiAction.ShowError -> showError()
-            MatchDetailsUiAction.Finish -> finish()
-            MatchDetailsUiAction.ShowDeleteMatchConfirmation -> showDeleteMatchConfirmation()
+            is MatchDetailsUiAction.ShowLoading -> showLoading()
+            is MatchDetailsUiAction.HideLoading -> hideLoading()
+            is MatchDetailsUiAction.ShowError -> showError()
+            is MatchDetailsUiAction.Finish -> finish()
+            is MatchDetailsUiAction.ShowDeleteMatchConfirmation -> showDeleteMatchConfirmation()
+            is MatchDetailsUiAction.ResumeMatch -> resumeMatch(action.frames)
         }
     }
 
@@ -84,6 +93,10 @@ class MatchDetailsActivity : AppCompatActivity() {
         binding.txtWinner.text = winner?.let { winner ->
             getString(R.string.winner_format, winner.name)
         } ?: getString(R.string.unfinished_match)
+    }
+
+    private fun MatchDetailsUiState.handleResumeMatchButton() {
+        binding.btResumeMatch.isVisible = isResumeMatchButtonEnabled
     }
 
     private fun showLoading() = with(binding) {
@@ -116,6 +129,11 @@ class MatchDetailsActivity : AppCompatActivity() {
                 onClick = { viewModel.onDeleteMatchConfirmed(args.match) }
             }
         }.show(supportFragmentManager, DIALOGUE_TAG)
+    }
+
+    private fun resumeMatch(frames: List<UiFrame>) {
+        val navigation = get<FrameNavigation>()
+        navigation.startActivity(context = this, frames = frames)
     }
 
     @Parcelize

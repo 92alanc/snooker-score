@@ -3,11 +3,13 @@ package com.alancamargo.snookerscore.ui.viewmodel.match
 import androidx.lifecycle.viewModelScope
 import com.alancamargo.snookerscore.core.arch.viewmodel.ViewModel
 import com.alancamargo.snookerscore.core.log.Logger
+import com.alancamargo.snookerscore.domain.model.Frame
 import com.alancamargo.snookerscore.domain.usecase.frame.GetFramesUseCase
 import com.alancamargo.snookerscore.domain.usecase.match.DeleteMatchUseCase
 import com.alancamargo.snookerscore.domain.usecase.player.GetWinningPlayerUseCase
 import com.alancamargo.snookerscore.ui.mapping.toDomain
 import com.alancamargo.snookerscore.ui.mapping.toUi
+import com.alancamargo.snookerscore.ui.model.UiFrame
 import com.alancamargo.snookerscore.ui.model.UiMatch
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -26,7 +28,12 @@ class MatchDetailsViewModel(
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : ViewModel<MatchDetailsUiState, MatchDetailsUiAction>(initialState = MatchDetailsUiState()) {
 
+    private var match: UiMatch? = null
+    private var frames = mutableListOf<UiFrame>()
+
     fun getMatchDetails(match: UiMatch) {
+        this.match = match
+
         viewModelScope.launch {
             getFramesUseCase(match.toDomain()).flowOn(dispatcher)
                 .onStart {
@@ -37,12 +44,35 @@ class MatchDetailsViewModel(
                     logger.error(throwable)
                     sendAction { MatchDetailsUiAction.ShowError }
                 }.collect { result ->
-                    val frames = result.map { it.toUi() }
-                    setState { state -> state.onFramesReceived(frames) }
+                    frames = result.map { it.toUi() }.toMutableList()
+                    if (frames.isNotEmpty()) {
+                        setState { state -> state.onFramesReceived(frames) }
+                    }
 
                     val winner = getWinningPlayerUseCase(result)
                     setState { state -> state.onWinnerSet(winner?.toUi()) }
+
+                    if (winner == null) {
+                        setState { state -> state.onEnableResumeMatchButton() }
+                    }
                 }
+        }
+    }
+
+    fun onResumeMatchClicked() {
+        match?.let {
+            if (frames.isEmpty()) {
+                repeat(it.numberOfFrames) { index ->
+                    val frame = Frame(
+                        positionInMatch = index + 1,
+                        match = it.toDomain()
+                    ).toUi()
+
+                    frames.add(frame)
+                }
+            }
+
+            sendAction { MatchDetailsUiAction.ResumeMatch(frames) }
         }
     }
 

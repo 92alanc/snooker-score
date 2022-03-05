@@ -3,7 +3,6 @@ package com.alancamargo.snookerscore.ui.viewmodel.newmatch
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import com.alancamargo.snookerscore.core.log.Logger
-import com.alancamargo.snookerscore.domain.usecase.frame.AddOrUpdateFrameUseCase
 import com.alancamargo.snookerscore.domain.usecase.match.AddMatchUseCase
 import com.alancamargo.snookerscore.domain.usecase.player.ArePlayersTheSameUseCase
 import com.alancamargo.snookerscore.domain.usecase.player.GetPlayersUseCase
@@ -30,7 +29,6 @@ class NewMatchViewModelTest {
     private val mockGetPlayersUseCase = mockk<GetPlayersUseCase>()
     private val mockArePlayersTheSameUseCase = mockk<ArePlayersTheSameUseCase>()
     private val mockAddMatchUseCase = mockk<AddMatchUseCase>()
-    private val mockAddOrUpdateFrameUseCase = mockk<AddOrUpdateFrameUseCase>()
     private val mockLogger = mockk<Logger>(relaxed = true)
     private val mockStateObserver = mockk<Observer<NewMatchUiState>>(relaxed = true)
     private val mockActionObserver = mockk<Observer<NewMatchUiAction>>(relaxed = true)
@@ -47,7 +45,6 @@ class NewMatchViewModelTest {
         viewModel = NewMatchViewModel(
             arePlayersTheSameUseCase = mockArePlayersTheSameUseCase,
             addMatchUseCase = mockAddMatchUseCase,
-            addOrUpdateFrameUseCase = mockAddOrUpdateFrameUseCase,
             logger = mockLogger,
             dispatcher = testCoroutineDispatcher
         ).apply {

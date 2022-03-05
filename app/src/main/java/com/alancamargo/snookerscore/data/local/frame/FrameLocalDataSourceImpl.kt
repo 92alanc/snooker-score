@@ -24,7 +24,7 @@ class FrameLocalDataSourceImpl(private val frameDao: FrameDao) : FrameLocalDataS
 
     override fun getFrames(match: Match): Flow<List<Frame>> = flow {
         val dbFrames = frameDao.getFrames(match.dateTime)
-        val frames = dbFrames.map { it.toDomain(match) }
+        val frames = dbFrames?.map { it.toDomain(match) } ?: emptyList()
         emit(frames)
     }
 

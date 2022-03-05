@@ -19,6 +19,6 @@ interface FrameDao {
     suspend fun updateFrame(frame: DbFrame)
 
     @Query("SELECT * FROM Frames WHERE matchDateTime = :matchDateTime ORDER BY positionInMatch")
-    suspend fun getFrames(matchDateTime: Long): List<DbFrame>
+    suspend fun getFrames(matchDateTime: Long): List<DbFrame>?
 
 }

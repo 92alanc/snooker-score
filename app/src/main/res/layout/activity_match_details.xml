@@ -40,11 +40,25 @@
         android:padding="@dimen/spacing_01"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintTop_toBottomOf="@id/txtWinner"
-        app:layout_constraintBottom_toTopOf="@+id/btDeleteMatch"
+        app:layout_constraintBottom_toTopOf="@+id/btResumeMatch"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         tools:listitem="@layout/item_frame"
         tools:itemCount="3"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btResumeMatch"
+        style="@style/SnookerScore.Button.Primary"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_03"
+        android:layout_marginBottom="@dimen/spacing_01"
+        android:layout_marginHorizontal="@dimen/spacing_02"
+        android:text="@string/resume_match"
+        app:layout_constraintBottom_toTopOf="@+id/btDeleteMatch"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btDeleteMatch"

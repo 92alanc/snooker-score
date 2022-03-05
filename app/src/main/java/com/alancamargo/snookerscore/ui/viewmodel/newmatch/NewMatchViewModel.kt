@@ -6,7 +6,6 @@ import com.alancamargo.snookerscore.core.log.Logger
 import com.alancamargo.snookerscore.domain.model.Frame
 import com.alancamargo.snookerscore.domain.model.Match
 import com.alancamargo.snookerscore.domain.model.Player
-import com.alancamargo.snookerscore.domain.usecase.frame.AddOrUpdateFrameUseCase
 import com.alancamargo.snookerscore.domain.usecase.match.AddMatchUseCase
 import com.alancamargo.snookerscore.domain.usecase.player.ArePlayersTheSameUseCase
 import com.alancamargo.snookerscore.ui.mapping.toDomain
@@ -29,7 +28,6 @@ private const val MAX_NUMBER_OF_FRAMES = 35
 class NewMatchViewModel(
     private val arePlayersTheSameUseCase: ArePlayersTheSameUseCase,
     private val addMatchUseCase: AddMatchUseCase,
-    private val addOrUpdateFrameUseCase: AddOrUpdateFrameUseCase,
     private val logger: Logger,
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : ViewModel<NewMatchUiState, NewMatchUiAction>(
@@ -120,10 +118,7 @@ class NewMatchViewModel(
             addMatchUseCase(match).handleFlow {
                 logger.debug("Match created: $match")
                 createFrames(match)
-
-                if (frames.size == match.numberOfFrames) {
-                    sendAction { NewMatchUiAction.StartMatch(frames) }
-                }
+                sendAction { NewMatchUiAction.StartMatch(frames) }
             }
         }
     }
@@ -149,12 +144,7 @@ class NewMatchViewModel(
                 match = match
             )
 
-            viewModelScope.launch {
-                addOrUpdateFrameUseCase(frame).handleFlow {
-                    logger.debug("Frame created: $frame")
-                    frames.add(frame.toUi())
-                }
-            }
+            frames.add(frame.toUi())
         }
     }
 
