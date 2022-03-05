@@ -1,0 +1,325 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        style="@style/SnookerScore.Toolbar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:navigationIcon="@drawable/ic_close"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:title="Frame 1/3"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/containerPotBall"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_02"
+        android:layout_marginHorizontal="@dimen/spacing_02"
+        android:padding="@dimen/spacing_01"
+        android:background="@drawable/shape_outline"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        app:layout_constraintBottom_toTopOf="@+id/containerFoul"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintVertical_bias="0"
+        app:layout_constraintVertical_chainStyle="packed">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/txtPotBall"
+            style="@style/SnookerScore.MediumTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/spacing_01"
+            android:text="@string/pot_ball"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/btUndoPottedBall"/>
+
+        <ImageButton
+            android:id="@+id/btUndoPottedBall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/undo"
+            android:src="@drawable/ic_undo"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/barrierPotBall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:barrierDirection="bottom"
+            app:constraint_referenced_ids="txtPotBall, btUndoPottedBall"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btRed"
+            android:layout_width="@dimen/size_ball"
+            android:layout_height="@dimen/size_ball"
+            android:layout_marginTop="@dimen/spacing_02"
+            android:background="@drawable/shape_ball"
+            android:contentDescription="@string/red"
+            app:backgroundTint="@color/ball_red"
+            app:layout_constraintTop_toBottomOf="@id/barrierPotBall"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/btYellow"
+            app:layout_constraintVertical_bias="0"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btYellow"
+            android:layout_width="@dimen/size_ball"
+            android:layout_height="@dimen/size_ball"
+            android:background="@drawable/shape_ball"
+            android:contentDescription="@string/yellow"
+            app:backgroundTint="@color/ball_yellow"
+            app:layout_constraintTop_toTopOf="@id/btRed"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/btRed"
+            app:layout_constraintEnd_toStartOf="@id/btGreen"
+            app:layout_constraintVertical_bias="0"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btGreen"
+            android:layout_width="@dimen/size_ball"
+            android:layout_height="@dimen/size_ball"
+            android:background="@drawable/shape_ball"
+            android:contentDescription="@string/green"
+            app:backgroundTint="@color/ball_green"
+            app:layout_constraintTop_toTopOf="@id/btRed"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/btYellow"
+            app:layout_constraintEnd_toStartOf="@+id/btBrown"
+            app:layout_constraintVertical_bias="0"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btBrown"
+            android:layout_width="@dimen/size_ball"
+            android:layout_height="@dimen/size_ball"
+            android:background="@drawable/shape_ball"
+            android:contentDescription="@string/brown"
+            app:backgroundTint="@color/ball_brown"
+            app:layout_constraintTop_toTopOf="@id/btRed"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/btGreen"
+            app:layout_constraintEnd_toStartOf="@+id/btBlue"
+            app:layout_constraintVertical_bias="0"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btBlue"
+            android:layout_width="@dimen/size_ball"
+            android:layout_height="@dimen/size_ball"
+            android:background="@drawable/shape_ball"
+            android:contentDescription="@string/blue"
+            app:backgroundTint="@color/ball_blue"
+            app:layout_constraintTop_toTopOf="@id/btRed"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/btBrown"
+            app:layout_constraintEnd_toStartOf="@+id/btPink"
+            app:layout_constraintVertical_bias="0"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btPink"
+            android:layout_width="@dimen/size_ball"
+            android:layout_height="@dimen/size_ball"
+            android:background="@drawable/shape_ball"
+            android:contentDescription="@string/pink"
+            app:backgroundTint="@color/ball_pink"
+            app:layout_constraintTop_toTopOf="@id/btRed"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/btBlue"
+            app:layout_constraintEnd_toStartOf="@+id/btBlack"
+            app:layout_constraintVertical_bias="0"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btBlack"
+            android:layout_width="@dimen/size_ball"
+            android:layout_height="@dimen/size_ball"
+            android:background="@drawable/shape_ball"
+            android:contentDescription="@string/black"
+            app:backgroundTint="@color/ball_black"
+            app:layout_constraintTop_toTopOf="@id/btRed"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/btPink"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintVertical_bias="0"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/containerFoul"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_01"
+        android:layout_marginHorizontal="@dimen/spacing_02"
+        android:padding="@dimen/spacing_01"
+        android:background="@drawable/shape_outline"
+        app:layout_constraintTop_toBottomOf="@id/containerPotBall"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/txtFoul"
+            style="@style/SnookerScore.MediumTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/spacing_01"
+            android:text="@string/foul"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/btUndoFoul"/>
+
+        <ImageButton
+            android:id="@+id/btUndoFoul"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/undo"
+            android:src="@drawable/ic_undo"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/barrierFoul"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:barrierDirection="bottom"
+            app:constraint_referenced_ids="txtFoul, btUndoFoul"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btWithObjectBall"
+            style="@style/SnookerScore.Button.Secondary.LightGrey"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_01"
+            android:layout_marginEnd="@dimen/spacing_01"
+            android:text="@string/with_object_ball"
+            app:layout_constraintTop_toBottomOf="@id/barrierFoul"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/btOthers"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btOthers"
+            style="@style/SnookerScore.Button.Secondary.LightGrey"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_01"
+            android:text="@string/others"
+            app:layout_constraintTop_toTopOf="@id/btWithObjectBall"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/btWithObjectBall"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintVertical_bias="0"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btEndTurn"
+        style="@style/SnookerScore.Button.Primary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_04"
+        android:layout_marginStart="@dimen/spacing_02"
+        android:layout_marginEnd="@dimen/spacing_01"
+        android:text="@string/end_turn"
+        app:layout_constraintTop_toBottomOf="@id/containerFoul"
+        app:layout_constraintBottom_toTopOf="@+id/txtBreak"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btEndFrame"
+        app:layout_constraintVertical_chainStyle="spread_inside"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btEndFrame"
+        style="@style/SnookerScore.Button.Primary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_01"
+        android:layout_marginEnd="@dimen/spacing_02"
+        android:text="@string/end_frame"
+        app:layout_constraintTop_toTopOf="@id/btEndTurn"
+        app:layout_constraintBottom_toBottomOf="@id/btEndTurn"
+        app:layout_constraintStart_toEndOf="@id/btEndTurn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1"/>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/txtBreak"
+        style="@style/SnookerScore.LargeTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_03"
+        android:layout_marginBottom="@dimen/spacing_01"
+        android:layout_marginHorizontal="@dimen/spacing_02"
+        app:layout_constraintTop_toBottomOf="@id/btEndTurn"
+        app:layout_constraintBottom_toTopOf="@+id/txtPlayer1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintVertical_bias="1"
+        tools:text="Break: 23"/>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/txtPlayer1"
+        style="@style/SnookerScore.LargeTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_outline_rectangular"
+        android:padding="@dimen/spacing_01"
+        android:gravity="start"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/txtPlayer1Score"
+        tools:text="Alan"/>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/txtPlayer1Score"
+        style="@style/SnookerScore.LargeTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_outline_rectangular"
+        android:padding="@dimen/spacing_01"
+        android:gravity="center_horizontal"
+        app:layout_constraintWidth_min="@dimen/min_width_player_score"
+        app:layout_constraintTop_toTopOf="@id/txtPlayer1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/txtPlayer1"
+        app:layout_constraintEnd_toStartOf="@+id/txtPlayer2Score"
+        tools:text="30"/>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/txtPlayer2Score"
+        style="@style/SnookerScore.LargeTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_outline_rectangular"
+        android:padding="@dimen/spacing_01"
+        android:gravity="center_horizontal"
+        app:layout_constraintWidth_min="@dimen/min_width_player_score"
+        app:layout_constraintTop_toTopOf="@id/txtPlayer1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/txtPlayer1Score"
+        app:layout_constraintEnd_toStartOf="@+id/txtPlayer2"
+        tools:text="8"/>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/txtPlayer2"
+        style="@style/SnookerScore.LargeTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_outline_rectangular"
+        android:padding="@dimen/spacing_01"
+        android:gravity="end"
+        app:layout_constraintTop_toTopOf="@id/txtPlayer1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/txtPlayer2Score"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:text="Carina"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

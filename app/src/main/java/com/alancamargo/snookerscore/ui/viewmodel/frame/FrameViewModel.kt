@@ -3,6 +3,7 @@ package com.alancamargo.snookerscore.ui.viewmodel.frame
 import androidx.lifecycle.viewModelScope
 import com.alancamargo.snookerscore.core.arch.viewmodel.ViewModel
 import com.alancamargo.snookerscore.core.log.Logger
+import com.alancamargo.snookerscore.domain.model.Ball
 import com.alancamargo.snookerscore.domain.model.Foul
 import com.alancamargo.snookerscore.domain.model.Player
 import com.alancamargo.snookerscore.domain.tools.BreakCalculator
@@ -16,7 +17,6 @@ import com.alancamargo.snookerscore.domain.usecase.playerstats.GetPlayerStatsUse
 import com.alancamargo.snookerscore.domain.usecase.playerstats.UpdatePlayerStatsWithMatchResultUseCase
 import com.alancamargo.snookerscore.ui.mapping.toDomain
 import com.alancamargo.snookerscore.ui.mapping.toUi
-import com.alancamargo.snookerscore.ui.model.UiBall
 import com.alancamargo.snookerscore.ui.model.UiFrame
 import com.alancamargo.snookerscore.ui.model.UiPlayer
 import kotlinx.coroutines.CoroutineDispatcher
@@ -61,16 +61,15 @@ class FrameViewModel(
         }
     }
 
-    fun onBallPotted(ball: UiBall) {
+    fun onBallPotted(ball: Ball) {
         takeFrameAndPlayerIfNotNull { frame, player ->
-            val domainBall = ball.toDomain()
-            breakCalculator.potBall(domainBall)
+            breakCalculator.potBall(ball)
 
             if (player == frame.match.player1) {
-                frame.player1Score += domainBall.value
+                frame.player1Score += ball.value
                 setState { state -> state.onPlayer1ScoreUpdated(frame.player1Score) }
             } else if (player == frame.match.player2) {
-                frame.player2Score += domainBall.value
+                frame.player2Score += ball.value
                 setState { state -> state.onPlayer2ScoreUpdated(frame.player2Score) }
             }
 
@@ -109,12 +108,10 @@ class FrameViewModel(
                 frame.player1Score += penaltyValue
                 setState { state -> state.onPlayer1ScoreUpdated(frame.player1Score) }
             }
-
-            onEndTurnClicked()
         }
     }
 
-    fun onEndTurnClicked() {
+    fun onEndTurnConfirmed() {
         takeFrameAndPlayerIfNotNull { frame, player ->
             if (player == frame.match.player1) {
                 setState { state -> state.setCurrentPlayer(frame.match.player2) }
@@ -132,9 +129,9 @@ class FrameViewModel(
         }
     }
 
-    fun onEndFrameClicked() {
+    fun onEndFrameConfirmed() {
         takeFrameAndPlayerIfNotNull { frame, _ ->
-            onEndTurnClicked()
+            onEndTurnConfirmed()
 
             currentFrameIndex = frames.indexOf(frame) + 1
 

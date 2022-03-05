@@ -43,4 +43,19 @@
     <string name="match">Match</string>
     <string name="winner_format">Winner: %s</string>
     <string name="unfinished_match">Unfinished match</string>
+    <string name="pot_ball">Pot ball</string>
+    <string name="undo">Undo</string>
+    <string name="red">Red</string>
+    <string name="yellow">Yellow</string>
+    <string name="green">Green</string>
+    <string name="brown">Brown</string>
+    <string name="blue">Blue</string>
+    <string name="pink">Pink</string>
+    <string name="black">Black</string>
+    <string name="foul">Foul</string>
+    <string name="with_object_ball">With object ball</string>
+    <string name="others">Others</string>
+    <string name="end_turn">End turn</string>
+    <string name="end_frame">End frame</string>
+    <string name="break_format">Break: %d</string>
 </resources>

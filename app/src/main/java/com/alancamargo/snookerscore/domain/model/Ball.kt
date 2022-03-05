@@ -2,7 +2,6 @@ package com.alancamargo.snookerscore.domain.model
 
 enum class Ball(val value: Int) {
 
-    CUE_BALL(value = 0),
     RED(value = 1),
     YELLOW(value = 2),
     GREEN(value = 3),

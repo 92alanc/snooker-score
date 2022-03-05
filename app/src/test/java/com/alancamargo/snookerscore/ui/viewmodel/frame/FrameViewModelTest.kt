@@ -17,7 +17,6 @@ import com.alancamargo.snookerscore.domain.usecase.playerstats.UpdatePlayerStats
 import com.alancamargo.snookerscore.testtools.getPlayerStats
 import com.alancamargo.snookerscore.testtools.getUiFrameList
 import com.alancamargo.snookerscore.ui.mapping.toDomain
-import com.alancamargo.snookerscore.ui.model.UiBall
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
@@ -105,14 +104,14 @@ class FrameViewModelTest {
 
     @Test
     fun `onBallPotted should enableUndoLastPottedBall button`() {
-        viewModel.onBallPotted(UiBall.BROWN)
+        viewModel.onBallPotted(Ball.BROWN)
 
         verify { mockStateObserver.onChanged(any()) }
     }
 
     @Test
     fun `onBallPotted should register potted ball on calculator`() {
-        viewModel.onBallPotted(UiBall.RED)
+        viewModel.onBallPotted(Ball.RED)
 
         verify { mockBreakCalculator.potBall(Ball.RED) }
     }
@@ -121,7 +120,7 @@ class FrameViewModelTest {
     fun `onBallPotted should update UI state`() {
         mockSuccessfulResponse()
 
-        viewModel.onBallPotted(UiBall.BLUE)
+        viewModel.onBallPotted(Ball.BLUE)
 
         verify(exactly = 4) { mockStateObserver.onChanged(any()) }
     }
@@ -142,26 +141,16 @@ class FrameViewModelTest {
 
     @Test
     fun `onFoul should calculate penalty value`() {
-        viewModel.onFoul(Foul.HitNothing)
+        viewModel.onFoul(Foul.Other)
 
-        verify { mockGetPenaltyValueUseCase.invoke(Foul.HitNothing) }
-    }
-
-    @Test
-    fun `onFoul should add or update frame`() {
-        mockSuccessfulResponse()
-
-        val foul = Foul.BallPotted(Ball.CUE_BALL)
-        viewModel.onFoul(foul)
-
-        verify { mockAddOrUpdateFrameUseCase.invoke(any()) }
+        verify { mockGetPenaltyValueUseCase.invoke(Foul.Other) }
     }
 
     @Test
     fun `onEndTurnClicked should disable undo last potted ball button`() {
         mockSuccessfulResponse()
 
-        viewModel.onEndTurnClicked()
+        viewModel.onEndTurnConfirmed()
 
         verify { mockStateObserver.onChanged(any()) }
     }
@@ -170,7 +159,7 @@ class FrameViewModelTest {
     fun `onEndTurnClicked should swap current player`() {
         mockSuccessfulResponse()
 
-        viewModel.onEndTurnClicked()
+        viewModel.onEndTurnConfirmed()
 
         verify { mockStateObserver.onChanged(any()) }
     }
@@ -179,7 +168,7 @@ class FrameViewModelTest {
     fun `onEndTurnClicked should update frame`() {
         mockSuccessfulResponse()
 
-        viewModel.onEndTurnClicked()
+        viewModel.onEndTurnConfirmed()
 
         verify { mockAddOrUpdateFrameUseCase.invoke(any()) }
     }
@@ -188,7 +177,7 @@ class FrameViewModelTest {
     fun `onEndTurnClicked should clear break calculator`() {
         mockSuccessfulResponse()
 
-        viewModel.onEndTurnClicked()
+        viewModel.onEndTurnConfirmed()
 
         verify { mockBreakCalculator.clear() }
     }
@@ -197,7 +186,7 @@ class FrameViewModelTest {
     fun `onEndFrameClicked should swap current player`() {
         mockSuccessfulResponse()
 
-        viewModel.onEndFrameClicked()
+        viewModel.onEndFrameConfirmed()
 
         verify { mockStateObserver.onChanged(any()) }
     }
@@ -206,7 +195,7 @@ class FrameViewModelTest {
     fun `onEndFrameClicked should update frame and swap current`() {
         mockSuccessfulResponse()
 
-        viewModel.onEndFrameClicked()
+        viewModel.onEndFrameConfirmed()
 
         verify { mockAddOrUpdateFrameUseCase.invoke(any()) }
     }
@@ -215,7 +204,7 @@ class FrameViewModelTest {
     fun `onEndFrameClicked should clear break calculator`() {
         mockSuccessfulResponse()
 
-        viewModel.onEndFrameClicked()
+        viewModel.onEndFrameConfirmed()
 
         verify { mockBreakCalculator.clear() }
     }
@@ -224,7 +213,7 @@ class FrameViewModelTest {
     fun `when not on last frame onEndFrameClicked should change current frame`() {
         mockSuccessfulResponse()
 
-        viewModel.onEndFrameClicked()
+        viewModel.onEndFrameConfirmed()
 
         verify { mockStateObserver.onChanged(any()) }
     }
@@ -234,7 +223,7 @@ class FrameViewModelTest {
         mockSuccessfulResponse()
 
         repeat(3) {
-            viewModel.onEndFrameClicked()
+            viewModel.onEndFrameConfirmed()
         }
 
         verify { mockGetWinningPlayerUseCase.invoke(frames = any()) }
@@ -245,7 +234,7 @@ class FrameViewModelTest {
         mockSuccessfulResponse()
 
         repeat(3) {
-            viewModel.onEndFrameClicked()
+            viewModel.onEndFrameConfirmed()
         }
 
         verify { mockUpdatePlayerStatsWithMatchResultUseCase.invoke(winnerCurrentStats = any()) }
@@ -256,7 +245,7 @@ class FrameViewModelTest {
         mockSuccessfulResponse()
 
         repeat(3) {
-            viewModel.onEndFrameClicked()
+            viewModel.onEndFrameConfirmed()
         }
 
         verify { mockActionObserver.onChanged(FrameUiAction.OpenMatchSummary(match)) }
