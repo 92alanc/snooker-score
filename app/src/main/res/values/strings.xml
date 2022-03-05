@@ -58,4 +58,5 @@
     <string name="end_turn">End turn</string>
     <string name="end_frame">End frame</string>
     <string name="break_format">Break: %d</string>
+    <string name="frame_x_y_format">Frame %1$d/%2$d</string>
 </resources>

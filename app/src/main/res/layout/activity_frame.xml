@@ -277,6 +277,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/txtPlayer1Score"
+        tools:background="@color/red"
         tools:text="Alan"/>
 
     <com.google.android.material.textview.MaterialTextView

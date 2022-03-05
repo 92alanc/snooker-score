@@ -5,6 +5,9 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Parcelable
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
+import com.alancamargo.snookerscore.R
 import com.alancamargo.snookerscore.core.arch.extensions.args
 import com.alancamargo.snookerscore.core.arch.extensions.createIntent
 import com.alancamargo.snookerscore.core.arch.extensions.observeAction
@@ -52,7 +55,10 @@ class FrameActivity : AppCompatActivity() {
     }
 
     private fun onStateChanged(state: FrameUiState) = with(state) {
-
+        handleFrame()
+        handleCurrentPlayer()
+        handleUndoButtons()
+        handleBreakAndScores()
     }
 
     private fun onAction(action: FrameUiAction) {
@@ -79,6 +85,49 @@ class FrameActivity : AppCompatActivity() {
         btEndFrame.setOnClickListener { viewModel.onEndFrameConfirmed() }
         btWithObjectBall.setOnClickListener { viewModel.onObjectBallFoulClicked() }
         btOthers.setOnClickListener { viewModel.onFoul(Foul.Other) }
+    }
+
+    private fun FrameUiState.handleFrame() {
+        currentFrame?.let { frame ->
+            binding.toolbar.title = getString(
+                R.string.frame_x_y_format,
+                frame.positionInMatch,
+                frame.match.numberOfFrames
+            )
+
+            binding.txtPlayer1.text = frame.match.player1.name
+            binding.txtPlayer2.text = frame.match.player2.name
+        }
+    }
+
+    private fun FrameUiState.handleCurrentPlayer() {
+        currentPlayer?.let { player ->
+            currentFrame?.let { frame ->
+                val currentPlayerBackgroundColour = ContextCompat.getColor(
+                    this@FrameActivity,
+                    R.color.red
+                )
+
+                if (player == frame.match.player1) {
+                    binding.txtPlayer1.setBackgroundColor(currentPlayerBackgroundColour)
+                    binding.txtPlayer2.setBackgroundResource(R.drawable.shape_outline_rectangular)
+                } else {
+                    binding.txtPlayer2.setBackgroundColor(currentPlayerBackgroundColour)
+                    binding.txtPlayer1.setBackgroundResource(R.drawable.shape_outline_rectangular)
+                }
+            }
+        }
+    }
+
+    private fun FrameUiState.handleUndoButtons() {
+        binding.btUndoPottedBall.isVisible = isUndoLastPottedBallButtonEnabled
+        binding.btUndoFoul.isVisible = isUndoLastFoulButtonEnabled
+    }
+
+    private fun FrameUiState.handleBreakAndScores() {
+        binding.txtBreak.text = getString(R.string.break_format, breakValue)
+        binding.txtPlayer1Score.text = player1Score.toString()
+        binding.txtPlayer2Score.text = player2Score.toString()
     }
 
     private fun bindButtonToBall(button: MaterialButton, ball: Ball) {
