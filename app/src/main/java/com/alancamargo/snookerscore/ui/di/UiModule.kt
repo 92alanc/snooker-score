@@ -1,6 +1,7 @@
 package com.alancamargo.snookerscore.ui.di
 
 import com.alancamargo.snookerscore.navigation.FrameNavigation
+import com.alancamargo.snookerscore.navigation.MainNavigation
 import com.alancamargo.snookerscore.navigation.MatchDetailsNavigation
 import com.alancamargo.snookerscore.navigation.MatchListNavigation
 import com.alancamargo.snookerscore.navigation.NewMatchNavigation
@@ -9,6 +10,7 @@ import com.alancamargo.snookerscore.navigation.PlayerStatsNavigation
 import com.alancamargo.snookerscore.navigation.WebViewNavigation
 import com.alancamargo.snookerscore.ui.model.UiFrame
 import com.alancamargo.snookerscore.ui.navigation.FrameNavigationImpl
+import com.alancamargo.snookerscore.ui.navigation.MainNavigationImpl
 import com.alancamargo.snookerscore.ui.navigation.MatchDetailsNavigationImpl
 import com.alancamargo.snookerscore.ui.navigation.MatchListNavigationImpl
 import com.alancamargo.snookerscore.ui.navigation.NewMatchNavigationImpl
@@ -89,4 +91,5 @@ val uiModule = module {
     factory<NewMatchNavigation> { NewMatchNavigationImpl() }
     factory<MatchDetailsNavigation> { MatchDetailsNavigationImpl() }
     factory<FrameNavigation> { FrameNavigationImpl() }
+    factory<MainNavigation> { MainNavigationImpl() }
 }

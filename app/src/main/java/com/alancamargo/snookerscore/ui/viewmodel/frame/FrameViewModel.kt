@@ -145,9 +145,21 @@ class FrameViewModel(
 
     fun onEndTurnConfirmed() {
         takeFrameAndPlayerIfNotNull { frame, player ->
+            val breakPoints = breakCalculator.getPoints()
+
             if (player == frame.match.player1) {
+                if (breakPoints > frame.player1HighestBreak) {
+                    frame.player1HighestBreak = breakPoints
+                }
+
+                currentPlayer = frame.match.player2
                 setState { state -> state.setCurrentPlayer(frame.match.player2) }
             } else {
+                if (breakPoints > frame.player2HighestBreak) {
+                    frame.player2HighestBreak = breakPoints
+                }
+
+                currentPlayer = frame.match.player1
                 setState { state -> state.setCurrentPlayer(frame.match.player1) }
             }
 
@@ -157,6 +169,7 @@ class FrameViewModel(
             }
 
             breakCalculator.clear()
+            setState { state -> state.onBreakUpdated(breakCalculator.getPoints()) }
             lastFoul = null
         }
     }

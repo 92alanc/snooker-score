@@ -13,17 +13,27 @@ import com.alancamargo.snookerscore.core.arch.extensions.createIntent
 import com.alancamargo.snookerscore.core.arch.extensions.observeAction
 import com.alancamargo.snookerscore.core.arch.extensions.observeState
 import com.alancamargo.snookerscore.core.arch.extensions.putArguments
+import com.alancamargo.snookerscore.core.ui.button
+import com.alancamargo.snookerscore.core.ui.makeDialogue
+import com.alancamargo.snookerscore.core.ui.radioButton
+import com.alancamargo.snookerscore.core.ui.radioButtons
 import com.alancamargo.snookerscore.databinding.ActivityFrameBinding
 import com.alancamargo.snookerscore.domain.model.Ball
 import com.alancamargo.snookerscore.domain.model.Foul
+import com.alancamargo.snookerscore.navigation.MainNavigation
 import com.alancamargo.snookerscore.ui.model.UiFrame
+import com.alancamargo.snookerscore.ui.model.UiMatch
 import com.alancamargo.snookerscore.ui.viewmodel.frame.FrameUiAction
 import com.alancamargo.snookerscore.ui.viewmodel.frame.FrameUiState
 import com.alancamargo.snookerscore.ui.viewmodel.frame.FrameViewModel
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.parcelize.Parcelize
+import org.koin.android.ext.android.get
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
+
+private const val DIALOGUE_TAG = "DialogueTag"
 
 class FrameActivity : AppCompatActivity() {
 
@@ -62,7 +72,17 @@ class FrameActivity : AppCompatActivity() {
     }
 
     private fun onAction(action: FrameUiAction) {
-
+        when (action) {
+            is FrameUiAction.ShowLoading -> showLoading()
+            is FrameUiAction.HideLoading -> hideLoading()
+            is FrameUiAction.ShowError -> showError()
+            is FrameUiAction.ShowObjectBalls -> showObjectBalls()
+            is FrameUiAction.OpenMain -> openMain()
+            is FrameUiAction.ShowEndTurnConfirmation -> showEndTurnConfirmation()
+            is FrameUiAction.ShowEndFrameConfirmation -> showEndFrameConfirmation()
+            is FrameUiAction.ShowForfeitMatchConfirmation -> showForfeitMatchConfirmation()
+            is FrameUiAction.OpenMatchSummary -> openMatchSummary(action.match)
+        }
     }
 
     private fun setUpToolbar() {
@@ -71,18 +91,18 @@ class FrameActivity : AppCompatActivity() {
     }
 
     private fun setUpButtons() = with(binding) {
-        bindButtonToBall(btRed, Ball.RED)
-        bindButtonToBall(btYellow, Ball.YELLOW)
-        bindButtonToBall(btGreen, Ball.GREEN)
-        bindButtonToBall(btBrown, Ball.BROWN)
-        bindButtonToBall(btBlue, Ball.BLUE)
-        bindButtonToBall(btPink, Ball.PINK)
-        bindButtonToBall(btBlack, Ball.BLACK)
+        btRed.bindToBall(Ball.RED)
+        btYellow.bindToBall(Ball.YELLOW)
+        btGreen.bindToBall(Ball.GREEN)
+        btBrown.bindToBall(Ball.BROWN)
+        btBlue.bindToBall(Ball.BLUE)
+        btPink.bindToBall(Ball.PINK)
+        btBlack.bindToBall(Ball.BLACK)
 
         btUndoPottedBall.setOnClickListener { viewModel.onUndoLastPottedBallClicked() }
         btUndoFoul.setOnClickListener { viewModel.onUndoLastFoulClicked() }
         btEndTurn.setOnClickListener { viewModel.onEndTurnClicked() }
-        btEndFrame.setOnClickListener { viewModel.onEndFrameConfirmed() }
+        btEndFrame.setOnClickListener { viewModel.onEndFrameClicked() }
         btWithObjectBall.setOnClickListener { viewModel.onObjectBallFoulClicked() }
         btOthers.setOnClickListener { viewModel.onFoul(Foul.Other) }
     }
@@ -130,8 +150,116 @@ class FrameActivity : AppCompatActivity() {
         binding.txtPlayer2Score.text = player2Score.toString()
     }
 
-    private fun bindButtonToBall(button: MaterialButton, ball: Ball) {
-        button.setOnClickListener { viewModel.onBallPotted(ball) }
+    private fun MaterialButton.bindToBall(ball: Ball) {
+        setOnClickListener { viewModel.onBallPotted(ball) }
+    }
+
+    private fun showLoading() = with(binding) {
+        groupContent.isVisible = false
+        progressBar.isVisible = true
+    }
+
+    private fun hideLoading() = with(binding) {
+        progressBar.isVisible = false
+        groupContent.isVisible = true
+    }
+
+    private fun showError() {
+        Snackbar.make(binding.root, R.string.error_message, Snackbar.LENGTH_LONG).show()
+    }
+
+    private fun showObjectBalls() {
+        makeDialogue {
+            titleRes = R.string.select_ball
+            radioButtons {
+                radioButton {
+                    id = Ball.RED.ordinal
+                    textRes = R.string.red
+                }
+                radioButton {
+                    id = Ball.YELLOW.ordinal
+                    textRes = R.string.yellow
+                }
+                radioButton {
+                    id = Ball.GREEN.ordinal
+                    textRes = R.string.green
+                }
+                radioButton {
+                    id = Ball.BROWN.ordinal
+                    textRes = R.string.brown
+                }
+                radioButton {
+                    id = Ball.BLUE.ordinal
+                    textRes = R.string.blue
+                }
+                radioButton {
+                    id = Ball.PINK.ordinal
+                    textRes = R.string.pink
+                }
+                radioButton {
+                    id = Ball.BLACK.ordinal
+                    textRes = R.string.black
+                }
+
+                onSubmitSelection = { ballOrdinal ->
+                    val ball = Ball.values()[ballOrdinal]
+                    viewModel.onFoul(Foul.WithObjectBall(ball))
+                }
+            }
+        }.show(supportFragmentManager, DIALOGUE_TAG)
+    }
+
+    private fun openMain() {
+        val navigation = get<MainNavigation>()
+        navigation.startActivity(context = this)
+
+        finish()
+    }
+
+    private fun showEndTurnConfirmation() {
+        makeDialogue {
+            titleRes = R.string.end_turn
+            messageRes = R.string.end_turn_confirmation
+            primaryButton = button {
+                textRes = R.string.yes
+                onClick = viewModel::onEndTurnConfirmed
+            }
+            secondaryButton = button {
+                textRes = R.string.cancel
+            }
+        }.show(supportFragmentManager, DIALOGUE_TAG)
+    }
+
+    private fun showEndFrameConfirmation() {
+        makeDialogue {
+            titleRes = R.string.end_frame
+            messageRes = R.string.end_frame_confirmation
+            primaryButton = button {
+                textRes = R.string.yes
+                onClick = viewModel::onEndFrameConfirmed
+            }
+            secondaryButton = button {
+                textRes = R.string.cancel
+            }
+        }.show(supportFragmentManager, DIALOGUE_TAG)
+    }
+
+    private fun showForfeitMatchConfirmation() {
+        makeDialogue {
+            titleRes = R.string.forfeit_match
+            messageRes = R.string.forfeit_match_confirmation
+            primaryButton = button {
+                textRes = R.string.yes
+                onClick = viewModel::onForfeitMatchConfirmed
+            }
+            secondaryButton = button {
+                textRes = R.string.cancel
+            }
+        }.show(supportFragmentManager, DIALOGUE_TAG)
+    }
+
+    private fun openMatchSummary(match: UiMatch) {
+
     }
 
     @Parcelize

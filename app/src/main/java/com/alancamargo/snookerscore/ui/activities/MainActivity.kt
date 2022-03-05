@@ -1,10 +1,13 @@
 package com.alancamargo.snookerscore.ui.activities
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import com.alancamargo.snookerscore.R
+import com.alancamargo.snookerscore.core.arch.extensions.createIntent
 import com.alancamargo.snookerscore.core.arch.extensions.observeAction
 import com.alancamargo.snookerscore.core.ui.button
 import com.alancamargo.snookerscore.core.ui.makeDialogue
@@ -99,6 +102,10 @@ class MainActivity : AppCompatActivity() {
                 textRes = R.string.ok
             }
         }.show(supportFragmentManager, DIALOGUE_TAG)
+    }
+
+    companion object {
+        fun getIntent(context: Context): Intent = context.createIntent<MainActivity>()
     }
 
 }

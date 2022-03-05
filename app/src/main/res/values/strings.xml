@@ -62,4 +62,9 @@
     <string name="error">Error</string>
     <string name="message_same_player">Players must not be the same</string>
     <string name="resume_match">Resume match</string>
+    <string name="end_turn_confirmation">Pass turn to other player?</string>
+    <string name="end_frame_confirmation">Are you sure you want to end this frame?</string>
+    <string name="forfeit_match">Forfeit match</string>
+    <string name="forfeit_match_confirmation">Are you sure you want to forfeit this match?</string>
+    <string name="select_ball">Select ball</string>
 </resources>

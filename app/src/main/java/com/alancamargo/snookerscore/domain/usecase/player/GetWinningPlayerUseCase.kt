@@ -10,10 +10,15 @@ class GetWinningPlayerUseCase {
             return null
         }
 
+        val match = frames.first().match
+
+        if (frames.size < match.numberOfFrames) {
+            return null
+        }
+
         val player1HasWon = frames.count { it.player1Score > it.player2Score } > frames.size / 2
         val player2HasWon = frames.count { it.player2Score > it.player1Score } > frames.size / 2
 
-        val match = frames.first().match
         val player1 = match.player1
         val player2 = match.player2
 
