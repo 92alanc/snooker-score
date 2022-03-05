@@ -11,6 +11,7 @@ import com.alancamargo.snookerscore.domain.usecase.match.AddMatchUseCase
 import com.alancamargo.snookerscore.domain.usecase.player.ArePlayersTheSameUseCase
 import com.alancamargo.snookerscore.ui.mapping.toDomain
 import com.alancamargo.snookerscore.ui.mapping.toUi
+import com.alancamargo.snookerscore.ui.model.UiFrame
 import com.alancamargo.snookerscore.ui.model.UiPlayer
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -34,6 +35,8 @@ class NewMatchViewModel(
 ) : ViewModel<NewMatchUiState, NewMatchUiAction>(
     initialState = NewMatchUiState(numberOfFrames = MIN_NUMBER_OF_FRAMES)
 ) {
+
+    private val frames = mutableListOf<UiFrame>()
 
     private var player1: UiPlayer? = null
     private var player2: UiPlayer? = null
@@ -117,7 +120,10 @@ class NewMatchViewModel(
             addMatchUseCase(match).handleFlow {
                 logger.debug("Match created: $match")
                 createFrames(match)
-                sendAction { NewMatchUiAction.StartMatch(match.toUi()) }
+
+                if (frames.size == match.numberOfFrames) {
+                    sendAction { NewMatchUiAction.StartMatch(frames) }
+                }
             }
         }
     }
@@ -146,6 +152,7 @@ class NewMatchViewModel(
             viewModelScope.launch {
                 addOrUpdateFrameUseCase(frame).handleFlow {
                     logger.debug("Frame created: $frame")
+                    frames.add(frame.toUi())
                 }
             }
         }

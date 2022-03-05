@@ -3,7 +3,6 @@ package com.alancamargo.snookerscore.ui.activities
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -13,15 +12,20 @@ import com.alancamargo.snookerscore.core.arch.extensions.createIntent
 import com.alancamargo.snookerscore.core.arch.extensions.getResponse
 import com.alancamargo.snookerscore.core.arch.extensions.observeAction
 import com.alancamargo.snookerscore.core.arch.extensions.observeState
+import com.alancamargo.snookerscore.core.ui.button
+import com.alancamargo.snookerscore.core.ui.makeDialogue
 import com.alancamargo.snookerscore.databinding.ActivityNewMatchBinding
+import com.alancamargo.snookerscore.navigation.FrameNavigation
 import com.alancamargo.snookerscore.navigation.PlayerListNavigation
-import com.alancamargo.snookerscore.ui.model.UiMatch
+import com.alancamargo.snookerscore.ui.model.UiFrame
 import com.alancamargo.snookerscore.ui.viewmodel.newmatch.NewMatchUiAction
 import com.alancamargo.snookerscore.ui.viewmodel.newmatch.NewMatchUiState
 import com.alancamargo.snookerscore.ui.viewmodel.newmatch.NewMatchViewModel
 import com.google.android.material.snackbar.Snackbar
 import org.koin.android.ext.android.get
 import org.koin.androidx.viewmodel.ext.android.viewModel
+
+private const val DIALOGUE_TAG = "DialogueTag"
 
 class NewMatchActivity : AppCompatActivity() {
 
@@ -87,7 +91,7 @@ class NewMatchActivity : AppCompatActivity() {
             is NewMatchUiAction.HideLoading -> hideLoading()
             is NewMatchUiAction.ShowError -> showError()
             is NewMatchUiAction.PickPlayer -> pickPlayer()
-            is NewMatchUiAction.StartMatch -> startMatch(action.match)
+            is NewMatchUiAction.StartMatch -> startMatch(action.frames)
             is NewMatchUiAction.ShowSamePlayersDialogue -> showSamePlayersDialogue()
         }
     }
@@ -149,14 +153,19 @@ class NewMatchActivity : AppCompatActivity() {
         activityResultLauncher?.launch(intent)
     }
 
-    private fun startMatch(match: UiMatch) {
-        // TODO()
-        Toast.makeText(this, "Start match", Toast.LENGTH_SHORT).show()
+    private fun startMatch(frames: List<UiFrame>) {
+        val navigation = get<FrameNavigation>()
+        navigation.startActivity(context = this, frames = frames)
     }
 
     private fun showSamePlayersDialogue() {
-        // TODO
-        Toast.makeText(this, "Players are the same", Toast.LENGTH_SHORT).show()
+        makeDialogue {
+            titleRes = R.string.error
+            messageRes = R.string.message_same_player
+            primaryButton = button {
+                textRes = R.string.ok
+            }
+        }.show(supportFragmentManager, DIALOGUE_TAG)
     }
 
     companion object {
