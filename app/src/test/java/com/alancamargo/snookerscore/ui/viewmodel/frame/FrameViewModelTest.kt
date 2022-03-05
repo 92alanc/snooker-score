@@ -140,6 +140,13 @@ class FrameViewModelTest {
     }
 
     @Test
+    fun `onObjectBallFoulClicked should send ShowObjectBalls action`() {
+        viewModel.onObjectBallFoulClicked()
+
+        verify { mockActionObserver.onChanged(FrameUiAction.ShowObjectBalls) }
+    }
+
+    @Test
     fun `onFoul should calculate penalty value`() {
         viewModel.onFoul(Foul.Other)
 

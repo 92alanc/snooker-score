@@ -100,7 +100,7 @@ class FrameViewModel(
     }
 
     fun onObjectBallFoulClicked() {
-        // TODO
+        sendAction { FrameUiAction.ShowObjectBalls }
     }
 
     fun onFoul(foul: Foul) {

@@ -21,4 +21,6 @@ sealed class FrameUiAction : UiAction {
 
     object ShowForfeitMatchConfirmation : FrameUiAction()
 
+    object ShowObjectBalls : FrameUiAction()
+
 }
