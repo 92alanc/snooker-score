@@ -135,6 +135,10 @@ class FrameViewModel(
         }
     }
 
+    fun onEndTurnClicked() {
+        sendAction { FrameUiAction.ShowEndTurnConfirmation }
+    }
+
     fun onEndTurnConfirmed() {
         takeFrameAndPlayerIfNotNull { frame, player ->
             if (player == frame.match.player1) {
@@ -151,6 +155,10 @@ class FrameViewModel(
             breakCalculator.clear()
             lastFoul = null
         }
+    }
+
+    fun onEndFrameClicked() {
+        sendAction { FrameUiAction.ShowEndFrameConfirmation }
     }
 
     fun onEndFrameConfirmed() {
@@ -170,6 +178,10 @@ class FrameViewModel(
     }
 
     fun onForfeitMatchClicked() {
+        sendAction { FrameUiAction.ShowForfeitMatchConfirmation }
+    }
+
+    fun onForfeitMatchConfirmed() {
         takeFrameAndPlayerIfNotNull { frame, _ ->
             viewModelScope.launch {
                 useCases.deleteMatchUseCase(frame.match.toDomain()).handleDefaultActions()

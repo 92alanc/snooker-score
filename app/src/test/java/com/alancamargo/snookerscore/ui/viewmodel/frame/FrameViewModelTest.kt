@@ -154,7 +154,14 @@ class FrameViewModelTest {
     }
 
     @Test
-    fun `onEndTurnClicked should disable undo last potted ball button`() {
+    fun `onEndTurnClicked should send ShowEndTurnConfirmation`() {
+        viewModel.onEndTurnClicked()
+
+        verify { mockActionObserver.onChanged(FrameUiAction.ShowEndTurnConfirmation) }
+    }
+
+    @Test
+    fun `onEndTurnConfirmed should disable undo last potted ball button`() {
         mockSuccessfulResponse()
 
         viewModel.onEndTurnConfirmed()
@@ -163,7 +170,7 @@ class FrameViewModelTest {
     }
 
     @Test
-    fun `onEndTurnClicked should swap current player`() {
+    fun `onEndTurnConfirmed should swap current player`() {
         mockSuccessfulResponse()
 
         viewModel.onEndTurnConfirmed()
@@ -172,7 +179,7 @@ class FrameViewModelTest {
     }
 
     @Test
-    fun `onEndTurnClicked should update frame`() {
+    fun `onEndTurnConfirmed should update frame`() {
         mockSuccessfulResponse()
 
         viewModel.onEndTurnConfirmed()
@@ -181,7 +188,7 @@ class FrameViewModelTest {
     }
 
     @Test
-    fun `onEndTurnClicked should clear break calculator`() {
+    fun `onEndTurnConfirmed should clear break calculator`() {
         mockSuccessfulResponse()
 
         viewModel.onEndTurnConfirmed()
@@ -190,7 +197,14 @@ class FrameViewModelTest {
     }
 
     @Test
-    fun `onEndFrameClicked should swap current player`() {
+    fun `onEndFrameClicked should send ShowEndTurnConfirmation`() {
+        viewModel.onEndFrameClicked()
+
+        verify { mockActionObserver.onChanged(FrameUiAction.ShowEndFrameConfirmation) }
+    }
+
+    @Test
+    fun `onEndFrameConfirmed should swap current player`() {
         mockSuccessfulResponse()
 
         viewModel.onEndFrameConfirmed()
@@ -199,7 +213,7 @@ class FrameViewModelTest {
     }
 
     @Test
-    fun `onEndFrameClicked should update frame and swap current`() {
+    fun `onEndFrameConfirmed should update frame and swap current`() {
         mockSuccessfulResponse()
 
         viewModel.onEndFrameConfirmed()
@@ -208,7 +222,7 @@ class FrameViewModelTest {
     }
 
     @Test
-    fun `onEndFrameClicked should clear break calculator`() {
+    fun `onEndFrameConfirmed should clear break calculator`() {
         mockSuccessfulResponse()
 
         viewModel.onEndFrameConfirmed()
@@ -217,7 +231,7 @@ class FrameViewModelTest {
     }
 
     @Test
-    fun `when not on last frame onEndFrameClicked should change current frame`() {
+    fun `when not on last frame onEndFrameConfirmed should change current frame`() {
         mockSuccessfulResponse()
 
         viewModel.onEndFrameConfirmed()
@@ -226,7 +240,7 @@ class FrameViewModelTest {
     }
 
     @Test
-    fun `when on last frame onEndFrameClicked should get winning player`() {
+    fun `when on last frame onEndFrameConfirmed should get winning player`() {
         mockSuccessfulResponse()
 
         repeat(3) {
@@ -237,7 +251,7 @@ class FrameViewModelTest {
     }
 
     @Test
-    fun `when on last frame onEndFrameClicked should update winning player stats`() {
+    fun `when on last frame onEndFrameConfirmed should update winning player stats`() {
         mockSuccessfulResponse()
 
         repeat(3) {
@@ -248,7 +262,7 @@ class FrameViewModelTest {
     }
 
     @Test
-    fun `when on last frame onEndFrameClicked should send OpenMatchSummary action`() {
+    fun `when on last frame onEndFrameConfirmed should send OpenMatchSummary action`() {
         mockSuccessfulResponse()
 
         repeat(3) {
@@ -259,37 +273,44 @@ class FrameViewModelTest {
     }
 
     @Test
-    fun `onForfeitMatchClicked should send ShowLoading action`() {
+    fun `onForfeitMatchClicked should send ShowForfeitMatchConfirmation`() {
+        viewModel.onForfeitMatchClicked()
+
+        verify { mockActionObserver.onChanged(FrameUiAction.ShowForfeitMatchConfirmation) }
+    }
+
+    @Test
+    fun `onForfeitMatchConfirmed should send ShowLoading action`() {
         every { mockDeleteMatchUseCase.invoke(any()) } returns flow { delay(timeMillis = 50) }
 
-        viewModel.onForfeitMatchClicked()
+        viewModel.onForfeitMatchConfirmed()
 
         verify { mockActionObserver.onChanged(FrameUiAction.ShowLoading) }
     }
 
     @Test
-    fun `with successful response onForfeitMatchClicked should send OpenMain action`() {
+    fun `with successful response onForfeitMatchConfirmed should send OpenMain action`() {
         every { mockDeleteMatchUseCase.invoke(any()) } returns flow { emit(Unit) }
 
-        viewModel.onForfeitMatchClicked()
+        viewModel.onForfeitMatchConfirmed()
 
         verify { mockActionObserver.onChanged(FrameUiAction.OpenMain) }
     }
 
     @Test
-    fun `with error response onForfeitMatchClicked should send ShowError action`() {
+    fun `with error response onForfeitMatchConfirmed should send ShowError action`() {
         every { mockDeleteMatchUseCase.invoke(any()) } returns flow { throw IOException() }
 
-        viewModel.onForfeitMatchClicked()
+        viewModel.onForfeitMatchConfirmed()
 
         verify { mockActionObserver.onChanged(FrameUiAction.ShowError) }
     }
 
     @Test
-    fun `onForfeitMatchClicked should send HideLoading action`() {
+    fun `onForfeitMatchConfirmed should send HideLoading action`() {
         every { mockDeleteMatchUseCase.invoke(any()) } returns flow { emit(Unit) }
 
-        viewModel.onForfeitMatchClicked()
+        viewModel.onForfeitMatchConfirmed()
 
         verify { mockActionObserver.onChanged(FrameUiAction.HideLoading) }
     }
