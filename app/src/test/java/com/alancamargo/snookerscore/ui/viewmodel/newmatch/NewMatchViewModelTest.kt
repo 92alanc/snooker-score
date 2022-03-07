@@ -12,12 +12,15 @@ import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.setMain
 import org.junit.Before
+import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
+import java.io.IOException
 
 @ExperimentalCoroutinesApi
 class NewMatchViewModelTest {
@@ -53,33 +56,35 @@ class NewMatchViewModelTest {
         }
     }
 
-    // TODO
-    /*@Test
+    @Test
+    @Ignore("Re-write")
     fun `onSelectPlayer1ButtonClicked should send PickPlayer1 action`() {
         mockSuccessfulPlayersResponse()
 
         viewModel.onSelectPlayer1ButtonClicked()
 
-        verify { mockActionObserver.onChanged(NewMatchUiAction.PickPlayer1) }
+        //verify { mockActionObserver.onChanged(NewMatchUiAction.PickPlayer1) }
     }
 
     @Test
+    @Ignore("Re-write")
     fun `onSelectPlayer2ButtonClicked should send PickPlayer2 action`() {
         mockSuccessfulPlayersResponse()
 
         viewModel.onSelectPlayer2ButtonClicked()
 
-        verify { mockActionObserver.onChanged(NewMatchUiAction.PickPlayer2) }
+        //verify { mockActionObserver.onChanged(NewMatchUiAction.PickPlayer2) }
     }
 
     @Test
+    @Ignore("Re-write")
     fun `when players are the same onStartMatchButtonClicked should send ShowSamePlayersDialogue action`() {
         mockSuccessfulPlayersResponse()
         every { mockArePlayersTheSameUseCase.invoke(player1 = any(), player2 = any()) } returns true
 
-        val player = UiPlayer(name = "Judd Trump", gender = UiGender.MALE)
+        /*val player = UiPlayer(name = "Judd Trump", gender = UiGender.MALE)
         viewModel.onPlayer1Selected(player)
-        viewModel.onPlayer2Selected(player)
+        viewModel.onPlayer2Selected(player)*/
 
         viewModel.onStartMatchButtonClicked()
 
@@ -87,6 +92,7 @@ class NewMatchViewModelTest {
     }
 
     @Test
+    @Ignore("Re-write")
     fun `when creating match onStartMatchButtonClicked should send ShowLoading action`() {
         mockSuccessfulPlayersResponse()
         every {
@@ -94,9 +100,9 @@ class NewMatchViewModelTest {
         } returns false
         every { mockAddMatchUseCase.invoke(match = any()) } returns flow { delay(timeMillis = 50) }
 
-        val player = UiPlayer(name = "Judd Trump", gender = UiGender.MALE)
+        /*val player = UiPlayer(name = "Judd Trump", gender = UiGender.MALE)
         viewModel.onPlayer1Selected(player)
-        viewModel.onPlayer2Selected(player)
+        viewModel.onPlayer2Selected(player)*/
 
         viewModel.onStartMatchButtonClicked()
 
@@ -104,6 +110,7 @@ class NewMatchViewModelTest {
     }
 
     @Test
+    @Ignore("Re-write")
     fun `when match is successfully added onStartMatchButtonClicked should send StartMatch action`() {
         mockSuccessfulPlayersResponse()
         every {
@@ -111,9 +118,9 @@ class NewMatchViewModelTest {
         } returns false
         every { mockAddMatchUseCase.invoke(match = any()) } returns flow { emit(Unit) }
 
-        val player = UiPlayer(name = "Judd Trump", gender = UiGender.MALE)
+        /*val player = UiPlayer(name = "Judd Trump", gender = UiGender.MALE)
         viewModel.onPlayer1Selected(player)
-        viewModel.onPlayer2Selected(player)
+        viewModel.onPlayer2Selected(player)*/
 
         viewModel.onStartMatchButtonClicked()
 
@@ -121,6 +128,7 @@ class NewMatchViewModelTest {
     }
 
     @Test
+    @Ignore("Re-write")
     fun `with error response onStartMatchButtonClicked should send ShowError action`() {
         mockSuccessfulPlayersResponse()
         every {
@@ -128,9 +136,9 @@ class NewMatchViewModelTest {
         } returns false
         every { mockAddMatchUseCase.invoke(match = any()) } returns flow { throw IOException() }
 
-        val player = UiPlayer(name = "Judd Trump", gender = UiGender.MALE)
+        /*val player = UiPlayer(name = "Judd Trump", gender = UiGender.MALE)
         viewModel.onPlayer1Selected(player)
-        viewModel.onPlayer2Selected(player)
+        viewModel.onPlayer2Selected(player)*/
 
         viewModel.onStartMatchButtonClicked()
 
@@ -138,6 +146,7 @@ class NewMatchViewModelTest {
     }
 
     @Test
+    @Ignore("Re-write")
     fun `after creating match onStartMatchButtonClicked should send HideLoading action`() {
         mockSuccessfulPlayersResponse()
         every {
@@ -145,14 +154,14 @@ class NewMatchViewModelTest {
         } returns false
         every { mockAddMatchUseCase.invoke(match = any()) } returns flow { emit(Unit) }
 
-        val player = UiPlayer(name = "Judd Trump", gender = UiGender.MALE)
+        /*val player = UiPlayer(name = "Judd Trump", gender = UiGender.MALE)
         viewModel.onPlayer1Selected(player)
-        viewModel.onPlayer2Selected(player)
+        viewModel.onPlayer2Selected(player)*/
 
         viewModel.onStartMatchButtonClicked()
 
         verify { mockActionObserver.onChanged(NewMatchUiAction.HideLoading) }
-    }*/
+    }
 
     @Test
     fun `onNumberOfFramesIncreased should increase number of frames`() {
