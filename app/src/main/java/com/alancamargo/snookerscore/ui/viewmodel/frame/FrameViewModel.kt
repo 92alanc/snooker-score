@@ -240,9 +240,7 @@ class FrameViewModel(
     }
 
     private suspend fun addOrUpdateFrame(frame: UiFrame) {
-        useCases.addOrUpdateFrameUseCase(frame.toDomain()).handleDefaultActions().collect {
-            setState { state -> state.setCurrentFrame(frame) }
-        }
+        useCases.addOrUpdateFrameUseCase(frame.toDomain()).handleDefaultActions().collect()
     }
 
     private fun endMatch() {
