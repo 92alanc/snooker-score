@@ -10,13 +10,11 @@ import com.alancamargo.snookerscore.domain.tools.BreakCalculator
 import com.alancamargo.snookerscore.domain.usecase.foul.GetPenaltyValueUseCase
 import com.alancamargo.snookerscore.domain.usecase.frame.AddOrUpdateFrameUseCase
 import com.alancamargo.snookerscore.domain.usecase.match.DeleteMatchUseCase
-import com.alancamargo.snookerscore.domain.usecase.player.DrawPlayerUseCase
 import com.alancamargo.snookerscore.domain.usecase.player.GetWinningPlayerUseCase
 import com.alancamargo.snookerscore.domain.usecase.playerstats.AddOrUpdatePlayerStatsUseCase
 import com.alancamargo.snookerscore.domain.usecase.playerstats.GetPlayerStatsUseCase
 import com.alancamargo.snookerscore.domain.usecase.playerstats.UpdatePlayerStatsWithMatchResultUseCase
 import com.alancamargo.snookerscore.ui.mapping.toDomain
-import com.alancamargo.snookerscore.ui.mapping.toUi
 import com.alancamargo.snookerscore.ui.model.UiFrame
 import com.alancamargo.snookerscore.ui.model.UiPlayer
 import kotlinx.coroutines.CoroutineDispatcher
@@ -45,19 +43,28 @@ class FrameViewModel(
     private var lastFoul: Foul? = null
 
     init {
-        frames.first().let { firstFrame ->
-            currentFrame = firstFrame
-            setState { state -> state.setCurrentFrame(firstFrame) }
+        val firstFrame = frames.first()
+        val match = firstFrame.match
+        setState { state -> state.setCurrentFrame(firstFrame) }
 
-            firstFrame.match.player1.toDomain().let { p1 ->
-                firstFrame.match.player2.toDomain().let { p2 ->
-                    player1 = p1
-                    player2 = p2
+        sendAction {
+            FrameUiAction.ShowStartingPlayerPrompt(
+                player1 = match.player1,
+                player2 = match.player2
+            )
+        }
+    }
 
-                    val playerDrawn = useCases.playerUseCases.drawPlayerUseCase(p1, p2).toUi()
-                    currentPlayer = playerDrawn
-                    setState { state -> state.setCurrentPlayer(playerDrawn) }
-                }
+    fun onStartingPlayerSelected(player: UiPlayer) {
+        val frame = currentFrame ?: frames.first().also { currentFrame = it }
+
+        frame.match.player1.toDomain().let { p1 ->
+            frame.match.player2.toDomain().let { p2 ->
+                player1 = p1
+                player2 = p2
+
+                currentPlayer = player
+                setState { state -> state.setCurrentPlayer(player) }
             }
         }
     }
@@ -229,7 +236,7 @@ class FrameViewModel(
     private fun endMatch() {
         val domainFrames = frames.map { it.toDomain() }
 
-        useCases.playerUseCases.getWinningPlayerUseCase(domainFrames)?.let { winner ->
+        useCases.getWinningPlayerUseCase(domainFrames)?.let { winner ->
             viewModelScope.launch {
                 useCases.playerStatsUseCases.getPlayerStatsUseCase(winner).handleDefaultActions()
                     .collect { currentWinnerStats ->
@@ -265,16 +272,11 @@ class FrameViewModel(
     }
 
     class UseCases(
-        val playerUseCases: PlayerUseCases,
+        val getWinningPlayerUseCase: GetWinningPlayerUseCase,
         val playerStatsUseCases: PlayerStatsUseCases,
         val addOrUpdateFrameUseCase: AddOrUpdateFrameUseCase,
         val getPenaltyValueUseCase: GetPenaltyValueUseCase,
         val deleteMatchUseCase: DeleteMatchUseCase
-    )
-
-    class PlayerUseCases(
-        val drawPlayerUseCase: DrawPlayerUseCase,
-        val getWinningPlayerUseCase: GetWinningPlayerUseCase
     )
 
     class PlayerStatsUseCases(

@@ -42,10 +42,7 @@ val uiModule = module {
         FrameViewModel(
             frames = frames,
             useCases = FrameViewModel.UseCases(
-                playerUseCases = FrameViewModel.PlayerUseCases(
-                    drawPlayerUseCase = get(),
-                    getWinningPlayerUseCase = get()
-                ),
+                getWinningPlayerUseCase = get(),
                 playerStatsUseCases = FrameViewModel.PlayerStatsUseCases(
                     getPlayerStatsUseCase = get(),
                     addOrUpdatePlayerStatsUseCase = get(),

@@ -23,6 +23,7 @@ import com.alancamargo.snookerscore.domain.model.Foul
 import com.alancamargo.snookerscore.navigation.MainNavigation
 import com.alancamargo.snookerscore.ui.model.UiFrame
 import com.alancamargo.snookerscore.ui.model.UiMatch
+import com.alancamargo.snookerscore.ui.model.UiPlayer
 import com.alancamargo.snookerscore.ui.viewmodel.frame.FrameUiAction
 import com.alancamargo.snookerscore.ui.viewmodel.frame.FrameUiState
 import com.alancamargo.snookerscore.ui.viewmodel.frame.FrameViewModel
@@ -73,6 +74,10 @@ class FrameActivity : AppCompatActivity() {
 
     private fun onAction(action: FrameUiAction) {
         when (action) {
+            is FrameUiAction.ShowStartingPlayerPrompt -> showStartingPlayerPrompt(
+                action.player1,
+                action.player2
+            )
             is FrameUiAction.ShowLoading -> showLoading()
             is FrameUiAction.HideLoading -> hideLoading()
             is FrameUiAction.ShowError -> showError()
@@ -154,6 +159,36 @@ class FrameActivity : AppCompatActivity() {
         setOnClickListener { viewModel.onBallPotted(ball) }
     }
 
+    private fun showStartingPlayerPrompt(player1: UiPlayer, player2: UiPlayer) {
+        makeDialogue {
+            titleRes = R.string.title_select_player
+            messageRes = R.string.message_select_player
+            radioButtons = radioButtons {
+                radioButton {
+                    id = player1.hashCode()
+                    text = player1.name
+                }
+                radioButton {
+                    id = player2.hashCode()
+                    text = player2.name
+                }
+                onSubmitSelection = {
+                    val player = if (it == player1.hashCode()) {
+                        player1
+                    } else {
+                        player2
+                    }
+
+                    viewModel.onStartingPlayerSelected(player)
+                }
+            }
+
+            primaryButton = button {
+                textRes = R.string.ok
+            }
+        }.show(supportFragmentManager, DIALOGUE_TAG)
+    }
+
     private fun showLoading() = with(binding) {
         groupContent.isVisible = false
         progressBar.isVisible = true
@@ -171,7 +206,7 @@ class FrameActivity : AppCompatActivity() {
     private fun showObjectBalls() {
         makeDialogue {
             titleRes = R.string.select_ball
-            radioButtons {
+            radioButtons = radioButtons {
                 radioButton {
                     id = Ball.RED.ordinal
                     textRes = R.string.red
@@ -204,6 +239,14 @@ class FrameActivity : AppCompatActivity() {
                 onSubmitSelection = { ballOrdinal ->
                     val ball = Ball.values()[ballOrdinal]
                     viewModel.onFoul(Foul.WithObjectBall(ball))
+                }
+
+                primaryButton = button {
+                    textRes = R.string.ok
+                }
+
+                secondaryButton = button {
+                    textRes = R.string.cancel
                 }
             }
         }.show(supportFragmentManager, DIALOGUE_TAG)
@@ -259,7 +302,7 @@ class FrameActivity : AppCompatActivity() {
     }
 
     private fun openMatchSummary(match: UiMatch) {
-
+        // TODO
     }
 
     @Parcelize

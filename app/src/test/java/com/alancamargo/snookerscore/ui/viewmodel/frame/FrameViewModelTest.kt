@@ -14,9 +14,11 @@ import com.alancamargo.snookerscore.domain.usecase.player.GetWinningPlayerUseCas
 import com.alancamargo.snookerscore.domain.usecase.playerstats.AddOrUpdatePlayerStatsUseCase
 import com.alancamargo.snookerscore.domain.usecase.playerstats.GetPlayerStatsUseCase
 import com.alancamargo.snookerscore.domain.usecase.playerstats.UpdatePlayerStatsWithMatchResultUseCase
+import com.alancamargo.snookerscore.testtools.getPlayer
 import com.alancamargo.snookerscore.testtools.getPlayerStats
 import com.alancamargo.snookerscore.testtools.getUiFrameList
 import com.alancamargo.snookerscore.ui.mapping.toDomain
+import com.alancamargo.snookerscore.ui.mapping.toUi
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
@@ -66,10 +68,7 @@ class FrameViewModelTest {
         viewModel = FrameViewModel(
             frames = frames,
             useCases = FrameViewModel.UseCases(
-                playerUseCases = FrameViewModel.PlayerUseCases(
-                    drawPlayerUseCase = mockDrawPlayerUseCase,
-                    getWinningPlayerUseCase = mockGetWinningPlayerUseCase
-                ),
+                getWinningPlayerUseCase = mockGetWinningPlayerUseCase,
                 playerStatsUseCases = FrameViewModel.PlayerStatsUseCases(
                     getPlayerStatsUseCase = mockGetPlayerStatsUseCase,
                     addOrUpdatePlayerStatsUseCase = mockAddOrUpdatePlayerStatsUseCase,
@@ -89,7 +88,14 @@ class FrameViewModelTest {
     }
 
     @Test
-    fun `at startup should set current frame and player and undo last potted ball button should be disabled`() {
+    fun `at startup should send ShowStartingPlayerPrompt`() {
+        verify { mockActionObserver.onChanged(FrameUiAction.ShowStartingPlayerPrompt) }
+    }
+
+    @Test
+    fun `onStartingPlayerSelected should set current frame and player and undo last potted ball button should be disabled`() {
+        viewModel.onStartingPlayerSelected(getPlayer().toUi())
+
         val firstFrame = frames.first()
         verify {
             mockStateObserver.onChanged(

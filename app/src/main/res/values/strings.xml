@@ -67,4 +67,6 @@
     <string name="forfeit_match">Forfeit match</string>
     <string name="forfeit_match_confirmation">Are you sure you want to forfeit this match?</string>
     <string name="select_ball">Select ball</string>
+    <string name="title_select_player">Select player</string>
+    <string name="message_select_player">Who\'s starting this frame?</string>
 </resources>

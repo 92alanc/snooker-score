@@ -74,7 +74,11 @@ class Dialogue : DialogFragment() {
             it.radioButtons.forEach { radioButtonData ->
                 val radioButton = RadioButton(requireContext()).also { rb ->
                     rb.id = radioButtonData.id
-                    rb.setText(radioButtonData.textRes)
+                    if (radioButtonData.text.isBlank()) {
+                        rb.setText(radioButtonData.textRes)
+                    } else {
+                        rb.text = radioButtonData.text
+                    }
                     rb.isChecked = radioButtonData.isChecked
                     val colour = ContextCompat.getColor(radioGroup.context, R.color.green)
                     rb.buttonTintList = ColorStateList.valueOf(colour)
@@ -139,6 +143,7 @@ class Dialogue : DialogFragment() {
     data class RadioButtonData(
         var id: Int = 0,
         @StringRes var textRes: Int = R.string.empty,
+        var text: String = "",
         var isChecked: Boolean = false
     )
 
