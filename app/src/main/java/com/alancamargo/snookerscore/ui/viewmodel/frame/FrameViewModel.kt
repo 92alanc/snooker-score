@@ -26,6 +26,7 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
+import java.util.Stack
 
 class FrameViewModel(
     private val frames: List<UiFrame>,
@@ -35,12 +36,14 @@ class FrameViewModel(
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : ViewModel<FrameUiState, FrameUiAction>(initialState = FrameUiState()) {
 
+    private val pottedBalls = Stack<Ball>()
+    private val fouls = Stack<Foul>()
+
     private var currentFrameIndex = 0
     private var currentFrame: UiFrame? = null
     private var currentPlayer: UiPlayer? = null
     private var player1: Player? = null
     private var player2: Player? = null
-    private var lastFoul: Foul? = null
 
     init {
         val firstFrame = frames.first()
@@ -81,6 +84,7 @@ class FrameViewModel(
                 setState { state -> state.onPlayer2ScoreUpdated(frame.player2Score) }
             }
 
+            pottedBalls.push(ball)
             setState { state -> state.onEnableUndoLastPottedBallButton() }
 
             val breakValue = breakCalculator.getPoints()
@@ -100,9 +104,13 @@ class FrameViewModel(
                 setState { state -> state.onPlayer2ScoreUpdated(frame.player2Score) }
             }
 
+            pottedBalls.pop()
             val breakValue = breakCalculator.getPoints()
             setState { state -> state.onBreakUpdated(breakValue) }
-            setState { state -> state.onDisableUndoLastPottedBallButton() }
+
+            if (pottedBalls.isEmpty()) {
+                setState { state -> state.onDisableUndoLastPottedBallButton() }
+            }
         }
     }
 
@@ -112,7 +120,7 @@ class FrameViewModel(
 
     fun onFoul(foul: Foul) {
         takeFrameAndPlayerIfNotNull { frame, player ->
-            lastFoul = foul
+            fouls.push(foul)
             val penaltyValue = useCases.getPenaltyValueUseCase(foul)
 
             if (player == frame.match.player1) {
@@ -128,7 +136,7 @@ class FrameViewModel(
     }
 
     fun onUndoLastFoulClicked() {
-        lastFoul?.let { foul ->
+        fouls.pop().let { foul ->
             takeFrameAndPlayerIfNotNull { frame, player ->
                 val penaltyValue = useCases.getPenaltyValueUseCase(foul)
 
@@ -140,8 +148,9 @@ class FrameViewModel(
                     setState { state -> state.onPlayer1ScoreUpdated(frame.player1Score) }
                 }
 
-                lastFoul = null
-                setState { state -> state.onDisableUndoLastFoulButton() }
+                if (fouls.isEmpty()) {
+                    setState { state -> state.onDisableUndoLastFoulButton() }
+                }
             }
         }
     }
@@ -176,8 +185,9 @@ class FrameViewModel(
             }
 
             breakCalculator.clear()
+            pottedBalls.clear()
+            fouls.clear()
             setState { state -> state.onBreakUpdated(breakCalculator.getPoints()) }
-            lastFoul = null
         }
     }
 
