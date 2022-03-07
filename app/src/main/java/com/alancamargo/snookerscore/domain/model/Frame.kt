@@ -9,5 +9,6 @@ data class Frame(
     val player1Score: Int = 0,
     val player2Score: Int = 0,
     val player1HighestBreak: Int = 0,
-    val player2HighestBreak: Int = 0
+    val player2HighestBreak: Int = 0,
+    val isFinished: Boolean = false
 )

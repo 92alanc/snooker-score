@@ -12,5 +12,6 @@ data class UiFrame(
     var player1Score: Int,
     var player2Score: Int,
     var player1HighestBreak: Int,
-    var player2HighestBreak: Int
+    var player2HighestBreak: Int,
+    var isFinished: Boolean
 ) : Parcelable

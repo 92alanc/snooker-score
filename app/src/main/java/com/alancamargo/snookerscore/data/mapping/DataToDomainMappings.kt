@@ -20,7 +20,8 @@ fun DbFrame.toDomain(match: Match) = Frame(
     player1Score = player1Score,
     player2Score = player2Score,
     player1HighestBreak = player1HighestBreak,
-    player2HighestBreak = player2HighestBreak
+    player2HighestBreak = player2HighestBreak,
+    isFinished = isFinished
 )
 
 fun DbPlayer.toDomain(): Player {

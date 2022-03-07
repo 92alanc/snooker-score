@@ -46,9 +46,9 @@ class FrameViewModel(
     private var player2: Player? = null
 
     init {
-        val firstFrame = frames.first()
-        val match = firstFrame.match
-        setState { state -> state.setCurrentFrame(firstFrame) }
+        val frame = frames.first { !it.isFinished }
+        val match = frame.match
+        setState { state -> state.setCurrentFrame(frame) }
 
         sendAction {
             FrameUiAction.ShowStartingPlayerPrompt(
@@ -59,7 +59,7 @@ class FrameViewModel(
     }
 
     fun onStartingPlayerSelected(player: UiPlayer) {
-        val frame = currentFrame ?: frames.first().also { currentFrame = it }
+        val frame = currentFrame ?: frames.first { !it.isFinished }.also { currentFrame = it }
 
         frame.match.player1.toDomain().let { p1 ->
             frame.match.player2.toDomain().let { p2 ->
@@ -159,7 +159,7 @@ class FrameViewModel(
         sendAction { FrameUiAction.ShowEndTurnConfirmation }
     }
 
-    fun onEndTurnConfirmed() {
+    fun onEndTurnConfirmed(isEndingFrame: Boolean = false) {
         takeFrameAndPlayerIfNotNull { frame, player ->
             val breakPoints = breakCalculator.getPoints()
 
@@ -181,7 +181,7 @@ class FrameViewModel(
 
             viewModelScope.launch {
                 addOrUpdatePlayerStats(frame, player)
-                addOrUpdateFrame(frame)
+                addOrUpdateFrame(frame, isEndingFrame)
             }
 
             breakCalculator.clear()
@@ -199,7 +199,7 @@ class FrameViewModel(
 
     fun onEndFrameConfirmed() {
         takeFrameAndPlayerIfNotNull { frame, _ ->
-            onEndTurnConfirmed()
+            onEndTurnConfirmed(isEndingFrame = true)
 
             currentFrameIndex = frames.indexOf(frame) + 1
 
@@ -239,7 +239,10 @@ class FrameViewModel(
             }
     }
 
-    private suspend fun addOrUpdateFrame(frame: UiFrame) {
+    private suspend fun addOrUpdateFrame(frame: UiFrame, isEndingFrame: Boolean) {
+        if (isEndingFrame) {
+            frame.isFinished = true
+        }
         useCases.addOrUpdateFrameUseCase(frame.toDomain()).handleDefaultActions().collect()
     }
 

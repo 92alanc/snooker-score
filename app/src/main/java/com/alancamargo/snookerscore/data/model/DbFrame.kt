@@ -23,5 +23,6 @@ data class DbFrame(
     val player1Score: Int,
     val player2Score: Int,
     val player1HighestBreak: Int,
-    val player2HighestBreak: Int
+    val player2HighestBreak: Int,
+    val isFinished: Boolean
 )

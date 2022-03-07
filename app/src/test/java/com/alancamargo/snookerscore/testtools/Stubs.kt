@@ -89,7 +89,8 @@ fun getUiFrame(player1Id: String, player2Id: String, positionInMatch: Int) = UiF
     player1Score = 0,
     player2Score = 0,
     player1HighestBreak = 0,
-    player2HighestBreak = 0
+    player2HighestBreak = 0,
+    isFinished = false
 )
 
 fun getUiFrameList(

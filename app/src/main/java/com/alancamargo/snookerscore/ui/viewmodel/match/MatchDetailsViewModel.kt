@@ -52,7 +52,7 @@ class MatchDetailsViewModel(
                     val winner = getWinningPlayerUseCase(result)
                     setState { state -> state.onWinnerSet(winner?.toUi()) }
 
-                    if (winner == null) {
+                    if (frames.any { !it.isFinished }) {
                         setState { state -> state.onEnableResumeMatchButton() }
                     }
                 }

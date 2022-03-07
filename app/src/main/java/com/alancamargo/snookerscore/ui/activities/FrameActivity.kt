@@ -265,7 +265,7 @@ class FrameActivity : AppCompatActivity() {
             messageRes = R.string.end_turn_confirmation
             primaryButton = button {
                 textRes = R.string.yes
-                onClick = viewModel::onEndTurnConfirmed
+                onClick = { viewModel.onEndTurnConfirmed() }
             }
             secondaryButton = button {
                 textRes = R.string.cancel
