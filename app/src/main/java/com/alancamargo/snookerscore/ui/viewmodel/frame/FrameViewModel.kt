@@ -187,6 +187,8 @@ class FrameViewModel(
             breakCalculator.clear()
             pottedBalls.clear()
             fouls.clear()
+            setState { state -> state.onDisableUndoLastPottedBallButton() }
+            setState { state -> state.onDisableUndoLastFoulButton() }
             setState { state -> state.onBreakUpdated(breakCalculator.getPoints()) }
         }
     }
