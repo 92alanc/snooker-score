@@ -55,6 +55,11 @@ class FrameActivity : AppCompatActivity() {
         observeAction(viewModel, ::onAction)
     }
 
+    override fun onBackPressed() {
+        viewModel.saveFrame()
+        super.onBackPressed()
+    }
+
     override fun onSupportNavigateUp(): Boolean {
         viewModel.onForfeitMatchClicked()
         return true

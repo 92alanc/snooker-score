@@ -39,7 +39,7 @@ class FrameViewModel(
     private val pottedBalls = Stack<Ball>()
     private val fouls = Stack<Foul>()
 
-    private var currentFrameIndex = 0
+    private var frameIndex = 0
     private var currentFrame: UiFrame? = null
     private var currentPlayer: UiPlayer? = null
     private var player1: Player? = null
@@ -181,7 +181,7 @@ class FrameViewModel(
 
             viewModelScope.launch {
                 addOrUpdatePlayerStats(frame, player)
-                addOrUpdateFrame(frame, isEndingFrame)
+                addOrUpdateFrame(isEndingFrame)
             }
 
             breakCalculator.clear()
@@ -201,11 +201,15 @@ class FrameViewModel(
         takeFrameAndPlayerIfNotNull { frame, _ ->
             onEndTurnConfirmed(isEndingFrame = true)
 
-            currentFrameIndex = frames.indexOf(frame) + 1
-
-            if (currentFrameIndex <= frames.lastIndex) {
-                currentFrame = frames[currentFrameIndex]
-                setState { state -> state.setCurrentFrame(frames[currentFrameIndex]) }
+            if (frameIndex <= frames.lastIndex - 1) {
+                frameIndex++
+                setState { state -> state.setCurrentFrame(frames[frameIndex]) }
+                sendAction {
+                    FrameUiAction.ShowStartingPlayerPrompt(
+                        frame.match.player1,
+                        frame.match.player2
+                    )
+                }
             } else {
                 endMatch()
                 sendAction { FrameUiAction.OpenMatchSummary(frame.match) }
@@ -228,6 +232,12 @@ class FrameViewModel(
         }
     }
 
+    fun saveFrame() {
+        viewModelScope.launch {
+            addOrUpdateFrame(isEndingFrame = false)
+        }
+    }
+
     private suspend fun addOrUpdatePlayerStats(frame: UiFrame, player: UiPlayer) {
         useCases.playerStatsUseCases.getPlayerStatsUseCase(player.toDomain()).handleDefaultActions()
             .collect { currentPlayerStats ->
@@ -239,11 +249,15 @@ class FrameViewModel(
             }
     }
 
-    private suspend fun addOrUpdateFrame(frame: UiFrame, isEndingFrame: Boolean) {
+    private suspend fun addOrUpdateFrame(isEndingFrame: Boolean) {
         if (isEndingFrame) {
-            frame.isFinished = true
+            frames.find { it == currentFrame }?.isFinished = true
+            currentFrame = frames[frameIndex]
         }
-        useCases.addOrUpdateFrameUseCase(frame.toDomain()).handleDefaultActions().collect()
+
+        frames.forEach { frame ->
+            useCases.addOrUpdateFrameUseCase(frame.toDomain()).handleDefaultActions().collect()
+        }
     }
 
     private fun endMatch() {

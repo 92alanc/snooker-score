@@ -14,7 +14,11 @@ data class FrameUiState(
     val player2Score: Int = 0
 ) : UiState {
 
-    fun setCurrentFrame(currentFrame: UiFrame) = copy(currentFrame = currentFrame)
+    fun setCurrentFrame(currentFrame: UiFrame) = copy(
+        currentFrame = currentFrame,
+        player1Score = currentFrame.player1Score,
+        player2Score = currentFrame.player2Score
+    )
 
     fun setCurrentPlayer(currentPlayer: UiPlayer) = copy(currentPlayer = currentPlayer)
 

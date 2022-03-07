@@ -156,6 +156,8 @@ class NewMatchActivity : AppCompatActivity() {
     private fun startMatch(frames: List<UiFrame>) {
         val navigation = get<FrameNavigation>()
         navigation.startActivity(context = this, frames = frames)
+
+        finish()
     }
 
     private fun showSamePlayersDialogue() {
