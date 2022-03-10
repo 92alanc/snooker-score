@@ -14,6 +14,7 @@ import com.alancamargo.snookerscore.core.arch.extensions.createIntent
 import com.alancamargo.snookerscore.core.arch.extensions.observeAction
 import com.alancamargo.snookerscore.core.arch.extensions.observeState
 import com.alancamargo.snookerscore.core.arch.extensions.putArguments
+import com.alancamargo.snookerscore.core.arch.extensions.vibrate
 import com.alancamargo.snookerscore.core.ui.button
 import com.alancamargo.snookerscore.core.ui.makeDialogue
 import com.alancamargo.snookerscore.core.ui.radioButton
@@ -108,8 +109,14 @@ class FrameActivity : AppCompatActivity() {
         btPink.bindToBall(Ball.PINK)
         btBlack.bindToBall(Ball.BLACK)
 
-        btUndoPottedBall.setOnClickListener { viewModel.onUndoLastPottedBallClicked() }
-        btUndoFoul.setOnClickListener { viewModel.onUndoLastFoulClicked() }
+        btUndoPottedBall.setOnClickListener {
+            vibrate()
+            viewModel.onUndoLastPottedBallClicked()
+        }
+        btUndoFoul.setOnClickListener {
+            vibrate()
+            viewModel.onUndoLastFoulClicked()
+        }
         btEndTurn.setOnClickListener { viewModel.onEndTurnClicked() }
         btEndFrame.setOnClickListener { viewModel.onEndFrameClicked() }
         btWithObjectBall.setOnClickListener { viewModel.onObjectBallFoulClicked() }
@@ -160,7 +167,10 @@ class FrameActivity : AppCompatActivity() {
     }
 
     private fun MaterialButton.bindToBall(ball: Ball) {
-        setOnClickListener { viewModel.onBallPotted(ball) }
+        setOnClickListener {
+            vibrate()
+            viewModel.onBallPotted(ball)
+        }
     }
 
     private fun showStartingPlayerPrompt(player1: UiPlayer, player2: UiPlayer) {
