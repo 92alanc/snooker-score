@@ -1,2 +1,2 @@
-This app only collects and processes anonymous usage data in order to monitor its performance.
+This app collects and processes anonymous usage data in order to monitor its performance. It also collects the approximate location (country level) for ad serving.
 No personal data is collected or processed.
