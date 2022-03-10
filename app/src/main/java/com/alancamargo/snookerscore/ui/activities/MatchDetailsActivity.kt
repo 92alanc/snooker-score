@@ -15,7 +15,7 @@ import com.alancamargo.snookerscore.core.arch.extensions.putArguments
 import com.alancamargo.snookerscore.core.ui.button
 import com.alancamargo.snookerscore.core.ui.makeDialogue
 import com.alancamargo.snookerscore.databinding.ActivityMatchDetailsBinding
-import com.alancamargo.snookerscore.navigation.FrameNavigation
+import com.alancamargo.snookerscore.navigation.MatchSummaryNavigation
 import com.alancamargo.snookerscore.ui.adapter.frame.FrameAdapter
 import com.alancamargo.snookerscore.ui.model.UiFrame
 import com.alancamargo.snookerscore.ui.model.UiMatch
@@ -65,13 +65,12 @@ class MatchDetailsActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         recyclerView.adapter = adapter
         btDeleteMatch.setOnClickListener { viewModel.onDeleteMatchClicked() }
-        btResumeMatch.setOnClickListener { viewModel.onResumeMatchClicked() }
+        btViewSummary.setOnClickListener { viewModel.onViewSummaryClicked() }
     }
 
     private fun onStateChanged(state: MatchDetailsUiState) = with(state) {
         handleFrames()
         handleWinner()
-        handleResumeMatchButton()
     }
 
     private fun onAction(action: MatchDetailsUiAction) {
@@ -81,7 +80,7 @@ class MatchDetailsActivity : AppCompatActivity() {
             is MatchDetailsUiAction.ShowError -> showError()
             is MatchDetailsUiAction.Finish -> finish()
             is MatchDetailsUiAction.ShowDeleteMatchConfirmation -> showDeleteMatchConfirmation()
-            is MatchDetailsUiAction.ResumeMatch -> resumeMatch(action.frames)
+            is MatchDetailsUiAction.ViewSummary -> viewSummary(action.frames)
         }
     }
 
@@ -93,10 +92,6 @@ class MatchDetailsActivity : AppCompatActivity() {
         binding.txtWinner.text = winner?.let { winner ->
             getString(R.string.winner_format, winner.name)
         }
-    }
-
-    private fun MatchDetailsUiState.handleResumeMatchButton() {
-        binding.btResumeMatch.isVisible = isResumeMatchButtonEnabled
     }
 
     private fun showLoading() = with(binding) {
@@ -131,8 +126,8 @@ class MatchDetailsActivity : AppCompatActivity() {
         }.show(supportFragmentManager, DIALOGUE_TAG)
     }
 
-    private fun resumeMatch(frames: List<UiFrame>) {
-        val navigation = get<FrameNavigation>()
+    private fun viewSummary(frames: List<UiFrame>) {
+        val navigation = get<MatchSummaryNavigation>()
         navigation.startActivity(context = this, frames = frames)
     }
 

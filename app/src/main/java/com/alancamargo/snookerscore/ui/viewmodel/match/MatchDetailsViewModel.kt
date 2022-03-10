@@ -3,7 +3,6 @@ package com.alancamargo.snookerscore.ui.viewmodel.match
 import androidx.lifecycle.viewModelScope
 import com.alancamargo.snookerscore.core.arch.viewmodel.ViewModel
 import com.alancamargo.snookerscore.core.log.Logger
-import com.alancamargo.snookerscore.domain.model.Frame
 import com.alancamargo.snookerscore.domain.usecase.frame.GetFramesUseCase
 import com.alancamargo.snookerscore.domain.usecase.match.DeleteMatchUseCase
 import com.alancamargo.snookerscore.domain.usecase.match.GetMatchSummaryUseCase
@@ -51,29 +50,12 @@ class MatchDetailsViewModel(
 
                     val winner = getMatchSummaryUseCase(result).winner
                     setState { state -> state.onWinnerSet(winner.toUi()) }
-
-                    if (frames.any { !it.isFinished }) {
-                        setState { state -> state.onEnableResumeMatchButton() }
-                    }
                 }
         }
     }
 
-    fun onResumeMatchClicked() {
-        match?.let {
-            if (frames.isEmpty()) {
-                repeat(it.numberOfFrames) { index ->
-                    val frame = Frame(
-                        positionInMatch = index + 1,
-                        match = it.toDomain()
-                    ).toUi()
-
-                    frames.add(frame)
-                }
-            }
-
-            sendAction { MatchDetailsUiAction.ResumeMatch(frames) }
-        }
+    fun onViewSummaryClicked() {
+        sendAction { MatchDetailsUiAction.ViewSummary(frames) }
     }
 
     fun onDeleteMatchClicked() {

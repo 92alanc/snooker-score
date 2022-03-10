@@ -15,6 +15,6 @@ sealed class MatchDetailsUiAction : UiAction {
 
     object ShowDeleteMatchConfirmation : MatchDetailsUiAction()
 
-    data class ResumeMatch(val frames: List<UiFrame>) : MatchDetailsUiAction()
+    data class ViewSummary(val frames: List<UiFrame>) : MatchDetailsUiAction()
 
 }
