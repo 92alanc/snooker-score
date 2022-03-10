@@ -22,7 +22,11 @@ class MatchViewHolder(
         )
         txtPlayers.text = playersText
 
-        val framesText = context.getString(R.string.frames_format, match.numberOfFrames)
+        val framesText = context.resources.getQuantityString(
+            R.plurals.frames_plural,
+            match.numberOfFrames,
+            match.numberOfFrames
+        )
         txtFrames.text = framesText
 
         root.setOnClickListener { onItemClick(match) }
