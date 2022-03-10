@@ -12,7 +12,6 @@ import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.setMain
@@ -92,24 +91,6 @@ class NewMatchViewModelTest {
 
     @Test
     @Ignore("Re-write")
-    fun `when creating match onStartMatchButtonClicked should send ShowLoading action`() {
-        mockSuccessfulPlayersResponse()
-        every {
-            mockArePlayersTheSameUseCase.invoke(player1 = any(), player2 = any())
-        } returns false
-        every { mockAddMatchUseCase.invoke(match = any()) } returns flow { delay(timeMillis = 50) }
-
-        /*val player = UiPlayer(name = "Judd Trump", gender = UiGender.MALE)
-        viewModel.onPlayer1Selected(player)
-        viewModel.onPlayer2Selected(player)*/
-
-        viewModel.onStartMatchButtonClicked()
-
-        verify { mockActionObserver.onChanged(NewMatchUiAction.ShowLoading) }
-    }
-
-    @Test
-    @Ignore("Re-write")
     fun `when match is successfully added onStartMatchButtonClicked should send StartMatch action`() {
         mockSuccessfulPlayersResponse()
         every {
@@ -142,24 +123,6 @@ class NewMatchViewModelTest {
         viewModel.onStartMatchButtonClicked()
 
         verify { mockActionObserver.onChanged(NewMatchUiAction.ShowError) }
-    }
-
-    @Test
-    @Ignore("Re-write")
-    fun `after creating match onStartMatchButtonClicked should send HideLoading action`() {
-        mockSuccessfulPlayersResponse()
-        every {
-            mockArePlayersTheSameUseCase.invoke(player1 = any(), player2 = any())
-        } returns false
-        every { mockAddMatchUseCase.invoke(match = any()) } returns flow { emit(Unit) }
-
-        /*val player = UiPlayer(name = "Judd Trump", gender = UiGender.MALE)
-        viewModel.onPlayer1Selected(player)
-        viewModel.onPlayer2Selected(player)*/
-
-        viewModel.onStartMatchButtonClicked()
-
-        verify { mockActionObserver.onChanged(NewMatchUiAction.HideLoading) }
     }
 
     @Test

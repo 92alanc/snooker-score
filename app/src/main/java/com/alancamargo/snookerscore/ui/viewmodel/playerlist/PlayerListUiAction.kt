@@ -9,10 +9,6 @@ sealed class PlayerListUiAction : UiAction {
 
     object ShowNewPlayerDialogue : PlayerListUiAction()
 
-    object ShowLoading : PlayerListUiAction()
-
-    object HideLoading : PlayerListUiAction()
-
     object ShowError : PlayerListUiAction()
 
     data class PickPlayer(val player: UiPlayer) : PlayerListUiAction()

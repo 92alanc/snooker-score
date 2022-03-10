@@ -16,8 +16,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.onCompletion
-import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import java.util.UUID
 
@@ -96,17 +94,12 @@ class PlayerListViewModel(
     }
 
     private suspend fun <T> Flow<T>.handleFlow(block: (T) -> Unit) {
-        flowOn(dispatcher)
-            .onStart {
-                sendAction { PlayerListUiAction.ShowLoading }
-            }.onCompletion {
-                sendAction { PlayerListUiAction.HideLoading }
-            }.catch { throwable ->
-                logger.error(throwable)
-                sendAction { PlayerListUiAction.ShowError }
-            }.collect {
-                block(it)
-            }
+        flowOn(dispatcher).catch { throwable ->
+            logger.error(throwable)
+            sendAction { PlayerListUiAction.ShowError }
+        }.collect {
+            block(it)
+        }
     }
 
 }

@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Parcelable
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.isVisible
 import com.alancamargo.snookerscore.R
 import com.alancamargo.snookerscore.core.arch.extensions.args
 import com.alancamargo.snookerscore.core.arch.extensions.createIntent
@@ -50,8 +49,6 @@ class PlayerStatsActivity : AppCompatActivity() {
 
     private fun onStateChanged(state: PlayerStatsUiState) {
         state.playerStats?.run {
-            binding.groupContent.isVisible = true
-
             binding.toolbar.title = player.name
             binding.txtMatchesWon.text = matchesWon.toString()
             binding.txtHighestScore.text = highestScore.toString()
@@ -62,8 +59,6 @@ class PlayerStatsActivity : AppCompatActivity() {
 
     private fun onAction(action: PlayerStatsUiAction) {
         when (action) {
-            PlayerStatsUiAction.ShowLoading -> showLoading()
-            PlayerStatsUiAction.HideLoading -> binding.progressBar.isVisible = false
             PlayerStatsUiAction.ShowError -> showError()
             PlayerStatsUiAction.Finish -> finish()
             PlayerStatsUiAction.ShowDeletePlayerConfirmation -> showDeletePlayerConfirmation()
@@ -75,15 +70,8 @@ class PlayerStatsActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
-    private fun showLoading() = with(binding) {
-        groupContent.isVisible = false
-        progressBar.isVisible = true
-    }
-
-    private fun showError() = with(binding) {
-        groupContent.isVisible = false
-
-        Snackbar.make(root, R.string.error_message, Snackbar.LENGTH_LONG)
+    private fun showError() {
+        Snackbar.make(binding.root, R.string.error_message, Snackbar.LENGTH_LONG)
             .setAction(R.string.retry) {
                 viewModel.getPlayerStats(args.player)
             }.show()

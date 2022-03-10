@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Parcelable
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.isVisible
 import com.alancamargo.snookerscore.R
 import com.alancamargo.snookerscore.core.arch.extensions.args
 import com.alancamargo.snookerscore.core.arch.extensions.createIntent
@@ -75,8 +74,6 @@ class MatchDetailsActivity : AppCompatActivity() {
 
     private fun onAction(action: MatchDetailsUiAction) {
         when (action) {
-            is MatchDetailsUiAction.ShowLoading -> showLoading()
-            is MatchDetailsUiAction.HideLoading -> hideLoading()
             is MatchDetailsUiAction.ShowError -> showError()
             is MatchDetailsUiAction.Finish -> finish()
             is MatchDetailsUiAction.ShowDeleteMatchConfirmation -> showDeleteMatchConfirmation()
@@ -92,16 +89,6 @@ class MatchDetailsActivity : AppCompatActivity() {
         binding.txtWinner.text = winner?.let { winner ->
             getString(R.string.winner_format, winner.name)
         }
-    }
-
-    private fun showLoading() = with(binding) {
-        recyclerView.isVisible = false
-        progressBar.isVisible = true
-    }
-
-    private fun hideLoading() = with(binding) {
-        progressBar.isVisible = false
-        recyclerView.isVisible = true
     }
 
     private fun showError() {

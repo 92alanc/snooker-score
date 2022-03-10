@@ -12,11 +12,10 @@ import com.alancamargo.snookerscore.ui.model.UiFrame
 import com.alancamargo.snookerscore.ui.model.UiMatch
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.onCompletion
-import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 
 class MatchDetailsViewModel(
@@ -34,23 +33,15 @@ class MatchDetailsViewModel(
         this.match = match
 
         viewModelScope.launch {
-            getFramesUseCase(match.toDomain()).flowOn(dispatcher)
-                .onStart {
-                    sendAction { MatchDetailsUiAction.ShowLoading }
-                }.onCompletion {
-                    sendAction { MatchDetailsUiAction.HideLoading }
-                }.catch { throwable ->
-                    logger.error(throwable)
-                    sendAction { MatchDetailsUiAction.ShowError }
-                }.collect { result ->
-                    frames = result.map { it.toUi() }.toMutableList()
-                    if (frames.isNotEmpty()) {
-                        setState { state -> state.onFramesReceived(frames) }
-                    }
-
-                    val winner = getMatchSummaryUseCase(result).winner
-                    setState { state -> state.onWinnerSet(winner.toUi()) }
+            getFramesUseCase(match.toDomain()).doOnCollect { result ->
+                frames = result.map { it.toUi() }.toMutableList()
+                if (frames.isNotEmpty()) {
+                    setState { state -> state.onFramesReceived(frames) }
                 }
+
+                val winner = getMatchSummaryUseCase(result).winner
+                setState { state -> state.onWinnerSet(winner.toUi()) }
+            }
         }
     }
 
@@ -64,17 +55,18 @@ class MatchDetailsViewModel(
 
     fun onDeleteMatchConfirmed(match: UiMatch) {
         viewModelScope.launch {
-            deleteMatchUseCase(match.toDomain()).flowOn(dispatcher)
-                .onStart {
-                    sendAction { MatchDetailsUiAction.ShowLoading }
-                }.onCompletion {
-                    sendAction { MatchDetailsUiAction.HideLoading }
-                }.catch { throwable ->
-                    logger.error(throwable)
-                    sendAction { MatchDetailsUiAction.ShowError }
-                }.collect {
-                    sendAction { MatchDetailsUiAction.Finish }
-                }
+            deleteMatchUseCase(match.toDomain()).doOnCollect {
+                sendAction { MatchDetailsUiAction.Finish }
+            }
+        }
+    }
+
+    private suspend fun <T> Flow<T>.doOnCollect(onCollect: (T) -> Unit) {
+        flowOn(dispatcher).catch { throwable ->
+            logger.error(throwable)
+            sendAction { MatchDetailsUiAction.ShowError }
+        }.collect {
+            onCollect(it)
         }
     }
 

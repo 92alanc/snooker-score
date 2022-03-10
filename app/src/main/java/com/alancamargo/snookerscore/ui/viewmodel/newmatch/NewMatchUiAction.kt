@@ -9,10 +9,6 @@ sealed class NewMatchUiAction : UiAction {
 
     object ShowSamePlayersDialogue : NewMatchUiAction()
 
-    object ShowLoading : NewMatchUiAction()
-
-    object HideLoading : NewMatchUiAction()
-
     object ShowError : NewMatchUiAction()
 
     object PickPlayer : NewMatchUiAction()

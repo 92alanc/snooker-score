@@ -11,8 +11,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.onCompletion
-import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 
 class MatchListViewModel(
@@ -32,11 +30,7 @@ class MatchListViewModel(
     fun getMatches() {
         viewModelScope.launch {
             getMatchesUseCase().flowOn(dispatcher)
-                .onStart {
-                    sendAction { MatchListUiAction.ShowLoading }
-                }.onCompletion {
-                    sendAction { MatchListUiAction.HideLoading }
-                }.catch { throwable ->
+                .catch { throwable ->
                     logger.error(throwable)
                     sendAction { MatchListUiAction.ShowError }
                 }.collect { matches ->

@@ -13,8 +13,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.onCompletion
-import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 
 class PlayerStatsViewModel(
@@ -27,11 +25,7 @@ class PlayerStatsViewModel(
     fun getPlayerStats(player: UiPlayer) {
         viewModelScope.launch {
             getPlayerStatsUseCase(player.toDomain()).flowOn(dispatcher)
-                .onStart {
-                    sendAction { PlayerStatsUiAction.ShowLoading }
-                }.onCompletion {
-                    sendAction { PlayerStatsUiAction.HideLoading }
-                }.catch { throwable ->
+                .catch { throwable ->
                     logger.error(throwable)
                     sendAction { PlayerStatsUiAction.ShowError }
                 }.collect {
@@ -48,11 +42,7 @@ class PlayerStatsViewModel(
     fun onDeletePlayerConfirmed(player: UiPlayer) {
         viewModelScope.launch {
             deletePlayerUseCase(player.toDomain()).flowOn(dispatcher)
-                .onStart {
-                    sendAction { PlayerStatsUiAction.ShowLoading }
-                }.onCompletion {
-                    sendAction { PlayerStatsUiAction.HideLoading }
-                }.catch { throwable ->
+                .catch { throwable ->
                     logger.error(throwable)
                     sendAction { PlayerStatsUiAction.ShowError }
                 }.collect {

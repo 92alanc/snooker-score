@@ -83,8 +83,6 @@ class FrameActivity : AppCompatActivity() {
                 action.player1,
                 action.player2
             )
-            is FrameUiAction.ShowLoading -> showLoading()
-            is FrameUiAction.HideLoading -> hideLoading()
             is FrameUiAction.ShowError -> showError()
             is FrameUiAction.ShowObjectBalls -> showObjectBalls()
             is FrameUiAction.OpenMain -> openMain()
@@ -200,16 +198,6 @@ class FrameActivity : AppCompatActivity() {
                 textRes = R.string.ok
             }
         }.show(supportFragmentManager, DIALOGUE_TAG)
-    }
-
-    private fun showLoading() = with(binding) {
-        groupContent.isVisible = false
-        progressBar.isVisible = true
-    }
-
-    private fun hideLoading() = with(binding) {
-        progressBar.isVisible = false
-        groupContent.isVisible = true
     }
 
     private fun showError() {

@@ -5,10 +5,6 @@ import com.alancamargo.snookerscore.ui.model.UiFrame
 
 sealed class MatchDetailsUiAction : UiAction {
 
-    object ShowLoading : MatchDetailsUiAction()
-
-    object HideLoading : MatchDetailsUiAction()
-
     object ShowError : MatchDetailsUiAction()
 
     object Finish : MatchDetailsUiAction()

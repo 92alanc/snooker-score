@@ -23,8 +23,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.onCompletion
-import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import java.util.Stack
 
@@ -283,11 +281,7 @@ class FrameViewModel(
 
     private fun <T> Flow<T>.handleDefaultActions(): Flow<T> {
         return this.flowOn(dispatcher)
-            .onStart {
-                sendAction { FrameUiAction.ShowLoading }
-            }.onCompletion {
-                sendAction { FrameUiAction.HideLoading }
-            }.catch { throwable ->
+            .catch { throwable ->
                 logger.error(throwable)
                 sendAction { FrameUiAction.ShowError }
             }

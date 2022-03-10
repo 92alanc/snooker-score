@@ -6,7 +6,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Parcelable
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.isVisible
 import com.alancamargo.snookerscore.R
 import com.alancamargo.snookerscore.core.arch.extensions.args
 import com.alancamargo.snookerscore.core.arch.extensions.createIntent
@@ -79,8 +78,6 @@ class PlayerListActivity : AppCompatActivity() {
 
     private fun handleAction(action: PlayerListUiAction) {
         when (action) {
-            is PlayerListUiAction.ShowLoading -> showLoading()
-            is PlayerListUiAction.HideLoading -> hideLoading()
             is PlayerListUiAction.ShowError -> showError()
             is PlayerListUiAction.ShowNewPlayerDialogue -> showNewPlayerDialogue()
             is PlayerListUiAction.OpenPlayerStats -> showPlayerStats(action.player)
@@ -92,16 +89,6 @@ class PlayerListActivity : AppCompatActivity() {
     private fun setUpToolbar() {
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-    }
-
-    private fun showLoading() = with(binding) {
-        recyclerView.isVisible = false
-        progressBar.isVisible = true
-    }
-
-    private fun hideLoading() = with(binding) {
-        progressBar.isVisible = false
-        recyclerView.isVisible = true
     }
 
     private fun showError() {

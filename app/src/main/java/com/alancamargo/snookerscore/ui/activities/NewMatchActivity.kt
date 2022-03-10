@@ -87,8 +87,6 @@ class NewMatchActivity : AppCompatActivity() {
 
     private fun onAction(action: NewMatchUiAction) {
         when (action) {
-            is NewMatchUiAction.ShowLoading -> showLoading()
-            is NewMatchUiAction.HideLoading -> hideLoading()
             is NewMatchUiAction.ShowError -> showError()
             is NewMatchUiAction.PickPlayer -> pickPlayer()
             is NewMatchUiAction.StartMatch -> startMatch(action.frames)
@@ -124,20 +122,6 @@ class NewMatchActivity : AppCompatActivity() {
 
     private fun NewMatchUiState.handleStartMatchButton() {
         binding.btStartMatch.isEnabled = isStartMatchButtonEnabled
-    }
-
-    private fun showLoading() = with(binding) {
-        btUp.isEnabled = false
-        btDown.isEnabled = false
-        btStartMatch.isEnabled = false
-        progressBar.isVisible = true
-    }
-
-    private fun hideLoading() = with(binding) {
-        progressBar.isVisible = false
-        btUp.isEnabled = true
-        btDown.isEnabled = true
-        btStartMatch.isEnabled = true
     }
 
     private fun showError() {

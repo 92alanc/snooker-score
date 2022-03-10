@@ -6,10 +6,6 @@ import com.alancamargo.snookerscore.ui.model.UiPlayer
 
 sealed class FrameUiAction : UiAction {
 
-    object ShowLoading : FrameUiAction()
-
-    object HideLoading : FrameUiAction()
-
     object ShowError : FrameUiAction()
 
     data class OpenMatchSummary(val frames: List<UiFrame>) : FrameUiAction()

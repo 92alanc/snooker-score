@@ -13,7 +13,6 @@ import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.setMain
@@ -55,17 +54,6 @@ class PlayerStatsViewModelTest {
     }
 
     @Test
-    fun `getPlayerStats should send ShowLoading action`() {
-        every {
-            mockGetPlayerStatsUseCase.invoke(player = any())
-        } returns flow { delay(timeMillis = 50) }
-
-        viewModel.getPlayerStats(player)
-
-        verify { mockActionObserver.onChanged(PlayerStatsUiAction.ShowLoading) }
-    }
-
-    @Test
     fun `getPlayerStats should set state with player stats`() {
         val playerStats = getPlayerStats()
         every {
@@ -76,18 +64,6 @@ class PlayerStatsViewModelTest {
 
         val expected = playerStats.toUi()
         verify { mockStateObserver.onChanged(PlayerStatsUiState(expected)) }
-    }
-
-    @Test
-    fun `getPlayerStats should send HideLoading action`() {
-        val playerStats = getPlayerStats()
-        every {
-            mockGetPlayerStatsUseCase.invoke(player = any())
-        } returns flow { emit(playerStats) }
-
-        viewModel.getPlayerStats(player)
-
-        verify { mockActionObserver.onChanged(PlayerStatsUiAction.HideLoading) }
     }
 
     @Test
@@ -109,16 +85,6 @@ class PlayerStatsViewModelTest {
     }
 
     @Test
-    fun `onDeletePlayerConfirmed should send ShowLoading action`() {
-        every { mockDeletePlayerUseCase.invoke(any()) } returns flow { delay(timeMillis = 50) }
-
-        val player = getPlayer().toUi()
-        viewModel.onDeletePlayerConfirmed(player)
-
-        verify { mockActionObserver.onChanged(PlayerStatsUiAction.ShowLoading) }
-    }
-
-    @Test
     fun `onDeletePlayerConfirmed should send Finish action`() {
         every { mockDeletePlayerUseCase.invoke(any()) } returns flow { emit(Unit) }
 
@@ -126,16 +92,6 @@ class PlayerStatsViewModelTest {
         viewModel.onDeletePlayerConfirmed(player)
 
         verify { mockActionObserver.onChanged(PlayerStatsUiAction.Finish) }
-    }
-
-    @Test
-    fun `onDeletePlayerConfirmed should send HideLoading action`() {
-        every { mockDeletePlayerUseCase.invoke(any()) } returns flow { emit(Unit) }
-
-        val player = getPlayer().toUi()
-        viewModel.onDeletePlayerConfirmed(player)
-
-        verify { mockActionObserver.onChanged(PlayerStatsUiAction.HideLoading) }
     }
 
     @Test

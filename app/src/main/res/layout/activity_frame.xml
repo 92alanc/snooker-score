@@ -325,19 +325,4 @@
         app:layout_constraintEnd_toEndOf="parent"
         tools:text="Carina"/>
 
-    <ProgressBar
-        android:id="@+id/progressBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/toolbar"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
-
-    <androidx.constraintlayout.widget.Group
-        android:id="@+id/groupContent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:constraint_referenced_ids="containerPotBall, containerFoul, btEndTurn, btEndFrame, txtBreak, txtPlayer1, txtPlayer1Score, txtPlayer2Score, txtPlayer2"/>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -15,7 +15,6 @@ import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.setMain
@@ -57,17 +56,6 @@ class MatchDetailsViewModelTest {
     }
 
     @Test
-    fun `getMatchDetails should send ShowLoading action`() {
-        every {
-            mockGetFramesUseCase.invoke(match = any())
-        } returns flow { delay(timeMillis = 50) }
-
-        viewModel.getMatchDetails(getUiMatch())
-
-        verify { mockActionObserver.onChanged(MatchDetailsUiAction.ShowLoading) }
-    }
-
-    @Test
     fun `getMatchDetails should set state with frames and winner`() {
         val expected = getFrameList()
         val matchSummary = getMatchSummary()
@@ -83,15 +71,6 @@ class MatchDetailsViewModelTest {
                 MatchDetailsUiState(winner = matchSummary.winner.toUi(), frames = frames)
             )
         }
-    }
-
-    @Test
-    fun `getMatchDetails should send HideLoading action`() {
-        every { mockGetFramesUseCase.invoke(match = any()) } returns flow { emit(getFrameList()) }
-
-        viewModel.getMatchDetails(getUiMatch())
-
-        verify { mockActionObserver.onChanged(MatchDetailsUiAction.HideLoading) }
     }
 
     @Test
@@ -111,32 +90,12 @@ class MatchDetailsViewModelTest {
     }
 
     @Test
-    fun `onDeleteMatchConfirmed should send ShowLoading action`() {
-        every {
-            mockDeleteMatchUseCase.invoke(match = any())
-        } returns flow { delay(timeMillis = 50) }
-
-        viewModel.onDeleteMatchConfirmed(getUiMatch())
-
-        verify { mockActionObserver.onChanged(MatchDetailsUiAction.ShowLoading) }
-    }
-
-    @Test
     fun `onDeleteMatchConfirmed should send Finish action`() {
         every { mockDeleteMatchUseCase.invoke(match = any()) } returns flow { emit(Unit) }
 
         viewModel.onDeleteMatchConfirmed(getUiMatch())
 
         verify { mockActionObserver.onChanged(MatchDetailsUiAction.Finish) }
-    }
-
-    @Test
-    fun `onDeleteMatchConfirmed should send HideLoading action`() {
-        every { mockDeleteMatchUseCase.invoke(match = any()) } returns flow { emit(Unit) }
-
-        viewModel.onDeleteMatchConfirmed(getUiMatch())
-
-        verify { mockActionObserver.onChanged(MatchDetailsUiAction.HideLoading) }
     }
 
     @Test

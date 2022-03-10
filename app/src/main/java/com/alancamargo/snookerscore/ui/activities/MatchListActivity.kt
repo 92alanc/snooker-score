@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.isVisible
 import com.alancamargo.snookerscore.R
 import com.alancamargo.snookerscore.core.arch.extensions.createIntent
 import com.alancamargo.snookerscore.core.arch.extensions.observeAction
@@ -63,22 +62,10 @@ class MatchListActivity : AppCompatActivity() {
 
     private fun onAction(action: MatchListUiAction) {
         when (action) {
-            is MatchListUiAction.ShowLoading -> showLoading()
-            is MatchListUiAction.HideLoading -> hideLoading()
             is MatchListUiAction.ShowError -> showError()
             is MatchListUiAction.OpenNewMatch -> openNewMatch()
             is MatchListUiAction.OpenMatchDetails -> openMatchDetails(action.match)
         }
-    }
-
-    private fun showLoading() = with(binding) {
-        groupContent.isVisible = false
-        progressBar.isVisible = true
-    }
-
-    private fun hideLoading() = with(binding) {
-        progressBar.isVisible = false
-        groupContent.isVisible = true
     }
 
     private fun showError() {

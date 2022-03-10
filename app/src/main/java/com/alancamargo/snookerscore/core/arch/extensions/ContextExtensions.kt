@@ -14,6 +14,7 @@ inline fun <reified T : AppCompatActivity> Context.createIntent(): Intent {
     return Intent(this, T::class.java)
 }
 
+@Suppress("DEPRECATION")
 fun Context.vibrate() {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
         val vibratorManager = getSystemService(Context.VIBRATOR_MANAGER_SERVICE) as VibratorManager

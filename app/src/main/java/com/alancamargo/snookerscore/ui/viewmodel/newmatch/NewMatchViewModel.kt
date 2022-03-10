@@ -18,8 +18,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.onCompletion
-import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 
 private const val MIN_NUMBER_OF_FRAMES = 1
@@ -124,17 +122,12 @@ class NewMatchViewModel(
     }
 
     private suspend fun <T> Flow<T>.handleFlow(onCollect: () -> Unit) {
-        return flowOn(dispatcher)
-            .onStart {
-                sendAction { NewMatchUiAction.ShowLoading }
-            }.onCompletion {
-                sendAction { NewMatchUiAction.HideLoading }
-            }.catch { throwable ->
-                logger.error(throwable)
-                sendAction { NewMatchUiAction.ShowError }
-            }.collect {
-                onCollect()
-            }
+        return flowOn(dispatcher).catch { throwable ->
+            logger.error(throwable)
+            sendAction { NewMatchUiAction.ShowError }
+        }.collect {
+            onCollect()
+        }
     }
 
     private fun createFrames(match: Match) {

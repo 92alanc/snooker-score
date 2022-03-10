@@ -4,10 +4,6 @@ import com.alancamargo.snookerscore.core.arch.viewmodel.UiAction
 
 sealed class PlayerStatsUiAction : UiAction {
 
-    object ShowLoading : PlayerStatsUiAction()
-
-    object HideLoading : PlayerStatsUiAction()
-
     object ShowError : PlayerStatsUiAction()
 
     object Finish : PlayerStatsUiAction()

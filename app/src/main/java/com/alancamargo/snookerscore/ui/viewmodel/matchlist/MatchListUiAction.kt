@@ -9,10 +9,6 @@ sealed class MatchListUiAction : UiAction {
 
     object OpenNewMatch : MatchListUiAction()
 
-    object ShowLoading : MatchListUiAction()
-
-    object HideLoading : MatchListUiAction()
-
     object ShowError : MatchListUiAction()
 
 }

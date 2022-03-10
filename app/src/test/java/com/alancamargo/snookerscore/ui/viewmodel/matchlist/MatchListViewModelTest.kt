@@ -13,7 +13,6 @@ import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.setMain
@@ -59,15 +58,6 @@ class MatchListViewModelTest {
     }
 
     @Test
-    fun `getMatches should send ShowLoading action`() {
-        every { mockGetMatchesUseCase.invoke() } returns flow { delay(timeMillis = 50) }
-
-        viewModel.getMatches()
-
-        verify { mockActionObserver.onChanged(MatchListUiAction.ShowLoading) }
-    }
-
-    @Test
     fun `with successful response getMatches should set state with matches`() {
         mockSuccessfulResponse()
 
@@ -84,15 +74,6 @@ class MatchListViewModelTest {
         viewModel.getMatches()
 
         verify { mockActionObserver.onChanged(MatchListUiAction.ShowError) }
-    }
-
-    @Test
-    fun `getMatches should send HideLoading action`() {
-        mockSuccessfulResponse()
-
-        viewModel.getMatches()
-
-        verify { mockActionObserver.onChanged(MatchListUiAction.HideLoading) }
     }
 
     @Test

@@ -23,7 +23,6 @@ import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.setMain
@@ -292,15 +291,6 @@ class FrameViewModelTest {
     }
 
     @Test
-    fun `onForfeitMatchConfirmed should send ShowLoading action`() {
-        every { mockDeleteMatchUseCase.invoke(any()) } returns flow { delay(timeMillis = 50) }
-
-        viewModel.onForfeitMatchConfirmed()
-
-        verify { mockActionObserver.onChanged(FrameUiAction.ShowLoading) }
-    }
-
-    @Test
     fun `with successful response onForfeitMatchConfirmed should send OpenMain action`() {
         every { mockDeleteMatchUseCase.invoke(any()) } returns flow { emit(Unit) }
 
@@ -316,15 +306,6 @@ class FrameViewModelTest {
         viewModel.onForfeitMatchConfirmed()
 
         verify { mockActionObserver.onChanged(FrameUiAction.ShowError) }
-    }
-
-    @Test
-    fun `onForfeitMatchConfirmed should send HideLoading action`() {
-        every { mockDeleteMatchUseCase.invoke(any()) } returns flow { emit(Unit) }
-
-        viewModel.onForfeitMatchConfirmed()
-
-        verify { mockActionObserver.onChanged(FrameUiAction.HideLoading) }
     }
 
     private fun configureMocks() {
