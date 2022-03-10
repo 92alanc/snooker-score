@@ -91,6 +91,8 @@ class MatchListActivity : AppCompatActivity() {
     private fun openNewMatch() {
         val navigation = get<NewMatchNavigation>()
         navigation.startActivity(context = this)
+
+        finish()
     }
 
     private fun openMatchDetails(match: UiMatch) {

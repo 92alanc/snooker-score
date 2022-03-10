@@ -129,6 +129,8 @@ class MatchDetailsActivity : AppCompatActivity() {
     private fun viewSummary(frames: List<UiFrame>) {
         val navigation = get<MatchSummaryNavigation>()
         navigation.startActivity(context = this, frames = frames)
+
+        finish()
     }
 
     @Parcelize
