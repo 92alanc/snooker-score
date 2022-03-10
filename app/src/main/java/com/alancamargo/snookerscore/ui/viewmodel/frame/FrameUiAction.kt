@@ -23,4 +23,6 @@ sealed class FrameUiAction : UiAction {
         val player2: UiPlayer
     ) : FrameUiAction()
 
+    object ShowFullScreenAds : FrameUiAction()
+
 }

@@ -96,6 +96,7 @@ class FrameActivity : AppCompatActivity() {
             is FrameUiAction.ShowEndFrameConfirmation -> showEndFrameConfirmation()
             is FrameUiAction.ShowForfeitMatchConfirmation -> showForfeitMatchConfirmation()
             is FrameUiAction.OpenMatchSummary -> openMatchSummary(action.frames)
+            is FrameUiAction.ShowFullScreenAds -> showFullScreenAds()
         }
     }
 
@@ -300,6 +301,10 @@ class FrameActivity : AppCompatActivity() {
         navigation.startActivity(context = this, frames = frames)
 
         finish()
+    }
+
+    private fun showFullScreenAds() {
+        get<AdLoader>().loadInterstitialAds(activity = this, adIdRes = R.string.ads_full_screen)
     }
 
     @Parcelize

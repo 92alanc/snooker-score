@@ -57,6 +57,8 @@ class FrameViewModel(
     }
 
     fun onStartingPlayerSelected(player: UiPlayer) {
+        sendAction { FrameUiAction.ShowFullScreenAds }
+
         val frame = currentFrame ?: frames.first { !it.isFinished }.also { currentFrame = it }
 
         frame.match.player1.toDomain().let { p1 ->
