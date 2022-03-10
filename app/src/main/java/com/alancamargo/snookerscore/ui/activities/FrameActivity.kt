@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Parcelable
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
@@ -23,6 +22,7 @@ import com.alancamargo.snookerscore.databinding.ActivityFrameBinding
 import com.alancamargo.snookerscore.domain.model.Ball
 import com.alancamargo.snookerscore.domain.model.Foul
 import com.alancamargo.snookerscore.navigation.MainNavigation
+import com.alancamargo.snookerscore.navigation.MatchSummaryNavigation
 import com.alancamargo.snookerscore.ui.model.UiFrame
 import com.alancamargo.snookerscore.ui.model.UiPlayer
 import com.alancamargo.snookerscore.ui.viewmodel.frame.FrameUiAction
@@ -301,8 +301,10 @@ class FrameActivity : AppCompatActivity() {
     }
 
     private fun openMatchSummary(frames: List<UiFrame>) {
-        // TODO
-        Toast.makeText(this, "Match ended", Toast.LENGTH_SHORT).show()
+        val navigation = get<MatchSummaryNavigation>()
+        navigation.startActivity(context = this, frames = frames)
+
+        finish()
     }
 
     @Parcelize

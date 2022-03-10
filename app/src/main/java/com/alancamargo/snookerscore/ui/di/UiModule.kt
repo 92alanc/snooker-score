@@ -4,6 +4,7 @@ import com.alancamargo.snookerscore.navigation.FrameNavigation
 import com.alancamargo.snookerscore.navigation.MainNavigation
 import com.alancamargo.snookerscore.navigation.MatchDetailsNavigation
 import com.alancamargo.snookerscore.navigation.MatchListNavigation
+import com.alancamargo.snookerscore.navigation.MatchSummaryNavigation
 import com.alancamargo.snookerscore.navigation.NewMatchNavigation
 import com.alancamargo.snookerscore.navigation.PlayerListNavigation
 import com.alancamargo.snookerscore.navigation.PlayerStatsNavigation
@@ -13,6 +14,7 @@ import com.alancamargo.snookerscore.ui.navigation.FrameNavigationImpl
 import com.alancamargo.snookerscore.ui.navigation.MainNavigationImpl
 import com.alancamargo.snookerscore.ui.navigation.MatchDetailsNavigationImpl
 import com.alancamargo.snookerscore.ui.navigation.MatchListNavigationImpl
+import com.alancamargo.snookerscore.ui.navigation.MatchSummaryNavigationImpl
 import com.alancamargo.snookerscore.ui.navigation.NewMatchNavigationImpl
 import com.alancamargo.snookerscore.ui.navigation.PlayerListNavigationImpl
 import com.alancamargo.snookerscore.ui.navigation.PlayerStatsNavigationImpl
@@ -93,4 +95,5 @@ val uiModule = module {
     viewModel { (frames: List<UiFrame>) ->
         MatchSummaryViewModel(frames = frames, getMatchSummaryUseCase = get())
     }
+    factory<MatchSummaryNavigation> { MatchSummaryNavigationImpl() }
 }
