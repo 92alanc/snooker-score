@@ -1,0 +1,2 @@
+This app only collects and processes anonymous usage data in order to monitor its performance.
+No personal data is collected or processed.
