@@ -14,6 +14,7 @@ import com.alancamargo.snookerscore.core.arch.extensions.observeAction
 import com.alancamargo.snookerscore.core.arch.extensions.observeState
 import com.alancamargo.snookerscore.core.arch.extensions.putArguments
 import com.alancamargo.snookerscore.core.arch.extensions.vibrate
+import com.alancamargo.snookerscore.core.ui.AdLoader
 import com.alancamargo.snookerscore.core.ui.button
 import com.alancamargo.snookerscore.core.ui.makeDialogue
 import com.alancamargo.snookerscore.core.ui.radioButton
@@ -60,6 +61,11 @@ class FrameActivity : AppCompatActivity() {
         viewModel.onForfeitMatchClicked()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        binding.banner.destroy()
+    }
+
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
         return true
@@ -68,6 +74,7 @@ class FrameActivity : AppCompatActivity() {
     private fun setUpUi() {
         setUpToolbar()
         setUpButtons()
+        get<AdLoader>().loadBannerAds(binding.banner, R.string.ads_frame)
     }
 
     private fun onStateChanged(state: FrameUiState) = with(state) {

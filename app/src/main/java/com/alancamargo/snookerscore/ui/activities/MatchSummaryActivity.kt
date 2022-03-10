@@ -12,6 +12,7 @@ import com.alancamargo.snookerscore.core.arch.extensions.createIntent
 import com.alancamargo.snookerscore.core.arch.extensions.observeAction
 import com.alancamargo.snookerscore.core.arch.extensions.observeState
 import com.alancamargo.snookerscore.core.arch.extensions.putArguments
+import com.alancamargo.snookerscore.core.ui.AdLoader
 import com.alancamargo.snookerscore.databinding.ActivityMatchSummaryBinding
 import com.alancamargo.snookerscore.navigation.MainNavigation
 import com.alancamargo.snookerscore.navigation.NewMatchNavigation
@@ -52,9 +53,15 @@ class MatchSummaryActivity : AppCompatActivity() {
         return true
     }
 
-    private fun setUpUi() {
+    override fun onDestroy() {
+        super.onDestroy()
+        binding.banner.destroy()
+    }
+
+    private fun setUpUi() = with(binding) {
         setUpToolbar()
-        binding.btNewMatch.setOnClickListener { viewModel.onNewMatchButtonClicked() }
+        btNewMatch.setOnClickListener { viewModel.onNewMatchButtonClicked() }
+        get<AdLoader>().loadBannerAds(banner, R.string.ads_match_summary)
     }
 
     private fun onStateChanged(state: MatchSummaryUiState) {

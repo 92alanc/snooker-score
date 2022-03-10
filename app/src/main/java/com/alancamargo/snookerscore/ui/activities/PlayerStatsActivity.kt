@@ -11,6 +11,7 @@ import com.alancamargo.snookerscore.core.arch.extensions.createIntent
 import com.alancamargo.snookerscore.core.arch.extensions.observeAction
 import com.alancamargo.snookerscore.core.arch.extensions.observeState
 import com.alancamargo.snookerscore.core.arch.extensions.putArguments
+import com.alancamargo.snookerscore.core.ui.AdLoader
 import com.alancamargo.snookerscore.core.ui.button
 import com.alancamargo.snookerscore.core.ui.makeDialogue
 import com.alancamargo.snookerscore.databinding.ActivityPlayerStatsBinding
@@ -20,6 +21,7 @@ import com.alancamargo.snookerscore.ui.viewmodel.playerstats.PlayerStatsUiState
 import com.alancamargo.snookerscore.ui.viewmodel.playerstats.PlayerStatsViewModel
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.parcelize.Parcelize
+import org.koin.android.ext.android.get
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 private const val DIALOGUE_TAG = "DialogueTag"
@@ -36,15 +38,23 @@ class PlayerStatsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         _binding = ActivityPlayerStatsBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        setUpToolbar()
+
+        setUpUi()
+
         observeState(viewModel, ::onStateChanged)
         observeAction(viewModel, ::onAction)
+
         viewModel.getPlayerStats(args.player)
     }
 
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
         return true
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        binding.banner.destroy()
     }
 
     private fun onStateChanged(state: PlayerStatsUiState) {
@@ -65,9 +75,10 @@ class PlayerStatsActivity : AppCompatActivity() {
         }
     }
 
-    private fun setUpToolbar() {
-        setSupportActionBar(binding.toolbar)
+    private fun setUpUi() = with(binding) {
+        setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        get<AdLoader>().loadBannerAds(banner, R.string.ads_player_stats)
     }
 
     private fun showError() {

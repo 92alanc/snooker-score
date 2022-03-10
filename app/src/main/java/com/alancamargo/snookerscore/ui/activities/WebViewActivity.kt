@@ -17,10 +17,12 @@ import com.alancamargo.snookerscore.core.arch.extensions.args
 import com.alancamargo.snookerscore.core.arch.extensions.createIntent
 import com.alancamargo.snookerscore.core.arch.extensions.observeAction
 import com.alancamargo.snookerscore.core.arch.extensions.putArguments
+import com.alancamargo.snookerscore.core.ui.AdLoader
 import com.alancamargo.snookerscore.databinding.ActivityWebViewBinding
 import com.alancamargo.snookerscore.ui.viewmodel.webview.WebViewUiAction
 import com.alancamargo.snookerscore.ui.viewmodel.webview.WebViewViewModel
 import kotlinx.parcelize.Parcelize
+import org.koin.android.ext.android.get
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class WebViewActivity : AppCompatActivity() {
@@ -59,9 +61,15 @@ class WebViewActivity : AppCompatActivity() {
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        binding.banner.destroy()
+    }
+
     private fun setUpUi() {
         setUpToolbar()
         setUpWebView()
+        get<AdLoader>().loadBannerAds(binding.banner, R.string.ads_web_view)
     }
 
     private fun onActionChanged(action: WebViewUiAction) {

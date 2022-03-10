@@ -17,11 +17,7 @@ class App : Application() {
     }
 
     private fun initialiseSmaato() {
-        val config = Config.builder()
-            .setLogLevel(LogLevel.ERROR)
-            .setHttpsOnly(true)
-            .build()
-
+        val config = Config.builder().setLogLevel(LogLevel.ERROR).build()
         SmaatoSdk.init(this, config, BuildConfig.SMAATO_PUBLISHER_ID)
     }
 

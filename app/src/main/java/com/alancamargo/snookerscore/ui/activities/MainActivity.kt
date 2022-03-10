@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.alancamargo.snookerscore.R
 import com.alancamargo.snookerscore.core.arch.extensions.createIntent
 import com.alancamargo.snookerscore.core.arch.extensions.observeAction
+import com.alancamargo.snookerscore.core.ui.AdLoader
 import com.alancamargo.snookerscore.core.ui.button
 import com.alancamargo.snookerscore.core.ui.makeDialogue
 import com.alancamargo.snookerscore.databinding.ActivityMainBinding
@@ -52,9 +53,15 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        binding.banner.destroy()
+    }
+
     private fun setUpUi() {
         setUpToolbar()
         setUpButtons()
+        get<AdLoader>().loadBannerAds(binding.banner, R.string.ads_main)
     }
 
     private fun setUpToolbar() {

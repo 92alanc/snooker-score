@@ -42,7 +42,8 @@
     <string name="match">Match</string>
     <string name="winner_format">Winner: %s</string>
     <string name="pot_ball">Pot ball</string>
-    <string name="undo">Undo</string>
+    <string name="undo_potted_ball">Undo potted ball</string>
+    <string name="undo_foul">Undo foul</string>
     <string name="red">Red</string>
     <string name="yellow">Yellow</string>
     <string name="green">Green</string>

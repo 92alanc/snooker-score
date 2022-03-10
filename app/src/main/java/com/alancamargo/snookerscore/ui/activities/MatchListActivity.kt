@@ -8,6 +8,7 @@ import com.alancamargo.snookerscore.R
 import com.alancamargo.snookerscore.core.arch.extensions.createIntent
 import com.alancamargo.snookerscore.core.arch.extensions.observeAction
 import com.alancamargo.snookerscore.core.arch.extensions.observeState
+import com.alancamargo.snookerscore.core.ui.AdLoader
 import com.alancamargo.snookerscore.databinding.ActivityMatchListBinding
 import com.alancamargo.snookerscore.navigation.MatchDetailsNavigation
 import com.alancamargo.snookerscore.navigation.NewMatchNavigation
@@ -49,11 +50,17 @@ class MatchListActivity : AppCompatActivity() {
         return true
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        binding.banner.destroy()
+    }
+
     private fun setUpUi() = with(binding) {
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         recyclerView.adapter = adapter
         btNewMatch.setOnClickListener { viewModel.onNewMatchClicked() }
+        get<AdLoader>().loadBannerAds(banner, R.string.ads_match_list)
     }
 
     private fun onStateChanged(state: MatchListUiState) {

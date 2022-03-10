@@ -13,5 +13,5 @@
     <dimen name="min_width_player_score">50dp</dimen>
     <dimen name="width_divider">2dp</dimen>
 
-    <dimen name="size_ball">24dp</dimen>
+    <dimen name="size_ball">36dp</dimen>
 </resources>

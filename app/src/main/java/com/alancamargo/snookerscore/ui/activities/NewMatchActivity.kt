@@ -12,6 +12,7 @@ import com.alancamargo.snookerscore.core.arch.extensions.createIntent
 import com.alancamargo.snookerscore.core.arch.extensions.getResponse
 import com.alancamargo.snookerscore.core.arch.extensions.observeAction
 import com.alancamargo.snookerscore.core.arch.extensions.observeState
+import com.alancamargo.snookerscore.core.ui.AdLoader
 import com.alancamargo.snookerscore.core.ui.button
 import com.alancamargo.snookerscore.core.ui.makeDialogue
 import com.alancamargo.snookerscore.databinding.ActivityNewMatchBinding
@@ -53,10 +54,16 @@ class NewMatchActivity : AppCompatActivity() {
         return true
     }
 
-    private fun setUpUi() {
-        setSupportActionBar(binding.toolbar)
+    override fun onDestroy() {
+        super.onDestroy()
+        binding.banner.destroy()
+    }
+
+    private fun setUpUi() = with(binding) {
+        setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         setUpButtons()
+        get<AdLoader>().loadBannerAds(banner, R.string.ads_new_match)
     }
 
     private fun setUpActivityResultLauncher() {

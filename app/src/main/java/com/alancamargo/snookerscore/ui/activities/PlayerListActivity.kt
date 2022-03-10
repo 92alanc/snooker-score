@@ -13,6 +13,7 @@ import com.alancamargo.snookerscore.core.arch.extensions.observeAction
 import com.alancamargo.snookerscore.core.arch.extensions.observeState
 import com.alancamargo.snookerscore.core.arch.extensions.putArguments
 import com.alancamargo.snookerscore.core.arch.extensions.putResponse
+import com.alancamargo.snookerscore.core.ui.AdLoader
 import com.alancamargo.snookerscore.core.ui.button
 import com.alancamargo.snookerscore.core.ui.editText
 import com.alancamargo.snookerscore.core.ui.makeDialogue
@@ -66,10 +67,16 @@ class PlayerListActivity : AppCompatActivity() {
         return true
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        binding.banner.destroy()
+    }
+
     private fun setUpUi() = with(binding) {
         setUpToolbar()
         recyclerView.adapter = adapter
         btAddPlayer.setOnClickListener { viewModel.onNewPlayerClicked() }
+        get<AdLoader>().loadBannerAds(banner, R.string.ads_player_list)
     }
 
     private fun handleState(state: PlayerListUiState) {

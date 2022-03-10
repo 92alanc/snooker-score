@@ -14,7 +14,7 @@ ext {
     coroutines_version = '1.5.2'
     koin_version = '3.1.0'
     room_version = '2.4.2'
-    smaato_version = '21.7.1'
+    smaato_version = '21.5.5'
 }
 
 task clean(type: Delete) {

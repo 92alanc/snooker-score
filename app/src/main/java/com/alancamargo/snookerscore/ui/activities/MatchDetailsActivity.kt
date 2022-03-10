@@ -11,6 +11,7 @@ import com.alancamargo.snookerscore.core.arch.extensions.createIntent
 import com.alancamargo.snookerscore.core.arch.extensions.observeAction
 import com.alancamargo.snookerscore.core.arch.extensions.observeState
 import com.alancamargo.snookerscore.core.arch.extensions.putArguments
+import com.alancamargo.snookerscore.core.ui.AdLoader
 import com.alancamargo.snookerscore.core.ui.button
 import com.alancamargo.snookerscore.core.ui.makeDialogue
 import com.alancamargo.snookerscore.databinding.ActivityMatchDetailsBinding
@@ -59,10 +60,24 @@ class MatchDetailsActivity : AppCompatActivity() {
         return true
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        binding.banner.destroy()
+    }
+
     private fun setUpUi() = with(binding) {
-        setSupportActionBar(toolbar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        setUpToolbar()
+        setUpButtons()
         recyclerView.adapter = adapter
+        get<AdLoader>().loadBannerAds(banner, R.string.ads_match_details)
+    }
+
+    private fun setUpToolbar() {
+        setSupportActionBar(binding.toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+    }
+
+    private fun setUpButtons() = with(binding) {
         btDeleteMatch.setOnClickListener { viewModel.onDeleteMatchClicked() }
         btViewSummary.setOnClickListener { viewModel.onViewSummaryClicked() }
     }
