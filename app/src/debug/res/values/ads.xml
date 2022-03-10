@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ads_full_screen">130626426</string>
+    <string name="ads_main">130626424</string>
+    <string name="ads_player_list">130626424</string>
+    <string name="ads_player_stats">130626424</string>
+    <string name="ads_web_view">130626424</string>
+    <string name="ads_new_match">130626424</string>
+    <string name="ads_match_list">130626424</string>
+    <string name="ads_match_details">130626424</string>
+    <string name="ads_match_summary">130626424</string>
+    <string name="ads_frame">130626424</string>
+</resources>
