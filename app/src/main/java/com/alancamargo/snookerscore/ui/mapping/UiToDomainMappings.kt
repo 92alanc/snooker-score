@@ -20,7 +20,8 @@ fun UiMatch.toDomain() = Match(
     dateTime = dateTime,
     player1 = player1.toDomain(),
     player2 = player2.toDomain(),
-    numberOfFrames = numberOfFrames
+    numberOfFrames = numberOfFrames,
+    isFinished = isFinished
 )
 
 fun UiFrame.toDomain() = Frame(

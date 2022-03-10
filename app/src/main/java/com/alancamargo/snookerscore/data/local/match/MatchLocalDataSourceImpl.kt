@@ -18,7 +18,7 @@ class MatchLocalDataSourceImpl(
     }
 
     override fun deleteMatch(match: Match) = flow {
-        val task = matchDao.deleteMatch(match.dateTime)
+        val task = matchDao.deleteMatch(match.toData())
         emit(task)
     }
 

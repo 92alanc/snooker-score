@@ -106,13 +106,13 @@ class PlayerLocalDataSourceImplTest {
             awaitComplete()
         }
 
-        coVerify { mockDatabase.deletePlayer(player.id) }
+        coVerify { mockDatabase.deletePlayer(player.toData()) }
     }
 
     @Test
     fun `when player database throws exception deletePlayer should return error`() = runBlocking {
         val player = getPlayer()
-        coEvery { mockDatabase.deletePlayer(player.id) } throws IOException(ERROR_MESSAGE)
+        coEvery { mockDatabase.deletePlayer(player.toData()) } throws IOException(ERROR_MESSAGE)
 
         val result = localDataSource.deletePlayer(player)
 

@@ -46,5 +46,6 @@ fun DbMatch.toDomain(player1: Player, player2: Player) = Match(
     dateTime = dateTime,
     player1 = player1,
     player2 = player2,
-    numberOfFrames = numberOfFrames
+    numberOfFrames = numberOfFrames,
+    isFinished = isFinished
 )

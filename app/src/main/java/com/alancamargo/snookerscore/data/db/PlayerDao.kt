@@ -1,6 +1,7 @@
 package com.alancamargo.snookerscore.data.db
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
@@ -21,7 +22,7 @@ interface PlayerDao {
     @Update(entity = DbPlayer::class)
     suspend fun updatePlayer(player: DbPlayer)
 
-    @Query("DELETE FROM Players WHERE id = :playerId")
-    suspend fun deletePlayer(playerId: String)
+    @Delete(entity = DbPlayer::class)
+    suspend fun deletePlayer(player: DbPlayer)
 
 }

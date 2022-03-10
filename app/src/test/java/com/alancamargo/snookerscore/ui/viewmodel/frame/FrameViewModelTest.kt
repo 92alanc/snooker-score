@@ -174,44 +174,37 @@ class FrameViewModelTest {
     }
 
     @Test
-    fun `onEndTurnClicked should send ShowEndTurnConfirmation`() {
+    fun `onEndTurnClicked should disable undo last potted ball button`() {
+        mockSuccessfulResponse()
+
         viewModel.onEndTurnClicked()
 
-        verify { mockActionObserver.onChanged(FrameUiAction.ShowEndTurnConfirmation) }
+        verify { mockStateObserver.onChanged(any()) }
     }
 
     @Test
-    fun `onEndTurnConfirmed should disable undo last potted ball button`() {
+    fun `onEndTurnClicked should swap current player`() {
         mockSuccessfulResponse()
 
-        viewModel.onEndTurnConfirmed()
+        viewModel.onEndTurnClicked()
 
         verify { mockStateObserver.onChanged(any()) }
     }
 
     @Test
-    fun `onEndTurnConfirmed should swap current player`() {
+    fun `onEndTurnClicked should update frame`() {
         mockSuccessfulResponse()
 
-        viewModel.onEndTurnConfirmed()
-
-        verify { mockStateObserver.onChanged(any()) }
-    }
-
-    @Test
-    fun `onEndTurnConfirmed should update frame`() {
-        mockSuccessfulResponse()
-
-        viewModel.onEndTurnConfirmed()
+        viewModel.onEndTurnClicked()
 
         verify { mockAddOrUpdateFrameUseCase.invoke(any()) }
     }
 
     @Test
-    fun `onEndTurnConfirmed should clear break calculator`() {
+    fun `onEndTurnClicked should clear break calculator`() {
         mockSuccessfulResponse()
 
-        viewModel.onEndTurnConfirmed()
+        viewModel.onEndTurnClicked()
 
         verify { mockBreakCalculator.clear() }
     }

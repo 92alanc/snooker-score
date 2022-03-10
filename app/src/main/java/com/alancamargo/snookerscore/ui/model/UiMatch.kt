@@ -8,5 +8,6 @@ data class UiMatch(
     val dateTime: Long,
     val player1: UiPlayer,
     val player2: UiPlayer,
-    val numberOfFrames: Int
+    val numberOfFrames: Int,
+    val isFinished: Boolean
 ) : Parcelable

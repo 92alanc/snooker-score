@@ -61,13 +61,13 @@ class MatchLocalDataSourceImplTest {
             awaitComplete()
         }
 
-        coVerify { mockMatchDao.deleteMatch(match.dateTime) }
+        coVerify { mockMatchDao.deleteMatch(match.toData()) }
     }
 
     @Test
     fun `when database throws exception deleteMatch should return error`() = runBlocking {
         val match = getMatch()
-        coEvery { mockMatchDao.deleteMatch(match.dateTime) } throws IOException(ERROR_MESSAGE)
+        coEvery { mockMatchDao.deleteMatch(match.toData()) } throws IOException(ERROR_MESSAGE)
 
         val result = localDataSource.deleteMatch(match)
 

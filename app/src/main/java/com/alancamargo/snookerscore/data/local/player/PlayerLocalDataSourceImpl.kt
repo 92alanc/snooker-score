@@ -26,7 +26,7 @@ class PlayerLocalDataSourceImpl(private val playerDao: PlayerDao) : PlayerLocalD
     }
 
     override fun deletePlayer(player: Player) = flow {
-        val task = playerDao.deletePlayer(player.id)
+        val task = playerDao.deletePlayer(player.toData())
         emit(task)
     }
 

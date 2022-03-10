@@ -31,7 +31,8 @@ fun Match.toData() = DbMatch(
     dateTime = dateTime,
     player1Id = player1.id,
     player2Id = player2.id,
-    numberOfFrames = numberOfFrames
+    numberOfFrames = numberOfFrames,
+    isFinished = isFinished
 )
 
 fun Frame.toData() = DbFrame(

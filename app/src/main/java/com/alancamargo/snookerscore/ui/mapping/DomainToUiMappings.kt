@@ -22,7 +22,8 @@ fun Match.toUi() = UiMatch(
     dateTime = dateTime,
     player1 = player1.toUi(),
     player2 = player2.toUi(),
-    numberOfFrames = numberOfFrames
+    numberOfFrames = numberOfFrames,
+    isFinished = isFinished
 )
 
 fun PlayerStats.toUi() = UiPlayerStats(

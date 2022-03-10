@@ -28,5 +28,6 @@ data class DbMatch(
     @PrimaryKey val dateTime: Long,
     @ColumnInfo(index = true) val player1Id: String,
     @ColumnInfo(index = true) val player2Id: String,
-    val numberOfFrames: Int
+    val numberOfFrames: Int,
+    val isFinished: Boolean
 )
