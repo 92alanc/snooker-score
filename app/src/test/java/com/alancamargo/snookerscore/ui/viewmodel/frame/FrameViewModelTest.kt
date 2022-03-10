@@ -37,8 +37,7 @@ import java.io.IOException
 @ExperimentalCoroutinesApi
 class FrameViewModelTest {
 
-    @Rule
-    @JvmField
+    @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
     private val mockAddOrUpdateFrameUseCase = mockk<AddOrUpdateFrameUseCase>()

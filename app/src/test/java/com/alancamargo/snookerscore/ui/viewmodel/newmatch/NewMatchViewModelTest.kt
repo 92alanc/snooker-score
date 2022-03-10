@@ -25,8 +25,7 @@ import java.io.IOException
 @ExperimentalCoroutinesApi
 class NewMatchViewModelTest {
 
-    @Rule
-    @JvmField
+    @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
     private val mockGetPlayersUseCase = mockk<GetPlayersUseCase>()

@@ -21,6 +21,7 @@ import com.alancamargo.snookerscore.ui.viewmodel.frame.FrameViewModel
 import com.alancamargo.snookerscore.ui.viewmodel.main.MainViewModel
 import com.alancamargo.snookerscore.ui.viewmodel.match.MatchDetailsViewModel
 import com.alancamargo.snookerscore.ui.viewmodel.matchlist.MatchListViewModel
+import com.alancamargo.snookerscore.ui.viewmodel.matchsummary.MatchSummaryViewModel
 import com.alancamargo.snookerscore.ui.viewmodel.newmatch.NewMatchViewModel
 import com.alancamargo.snookerscore.ui.viewmodel.playerlist.PlayerListViewModel
 import com.alancamargo.snookerscore.ui.viewmodel.playerstats.PlayerStatsViewModel
@@ -89,4 +90,5 @@ val uiModule = module {
     factory<MatchDetailsNavigation> { MatchDetailsNavigationImpl() }
     factory<FrameNavigation> { FrameNavigationImpl() }
     factory<MainNavigation> { MainNavigationImpl() }
+    viewModel { MatchSummaryViewModel() }
 }

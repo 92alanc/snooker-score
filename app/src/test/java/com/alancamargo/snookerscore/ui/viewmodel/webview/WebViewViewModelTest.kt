@@ -10,8 +10,7 @@ import org.junit.Test
 
 class WebViewViewModelTest {
 
-    @Rule
-    @JvmField
+    @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
     private val mockActionObserver = mockk<Observer<WebViewUiAction>>(relaxed = true)

@@ -13,8 +13,7 @@ import org.junit.Test
 
 class MainViewModelTest {
 
-    @Rule
-    @JvmField
+    @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
     private val mockGetRulesUrlUseCase = mockk<GetRulesUrlUseCase>()

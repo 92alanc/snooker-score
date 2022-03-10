@@ -25,8 +25,7 @@ import java.io.IOException
 @ExperimentalCoroutinesApi
 class PlayerStatsViewModelTest {
 
-    @Rule
-    @JvmField
+    @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
     private val mockGetPlayerStatsUseCase = mockk<GetPlayerStatsUseCase>()
