@@ -42,7 +42,7 @@ val uiModule = module {
         FrameViewModel(
             frames = frames,
             useCases = FrameViewModel.UseCases(
-                getWinningPlayerUseCase = get(),
+                getMatchSummaryUseCase = get(),
                 playerStatsUseCases = FrameViewModel.PlayerStatsUseCases(
                     getPlayerStatsUseCase = get(),
                     addOrUpdatePlayerStatsUseCase = get(),
@@ -60,7 +60,7 @@ val uiModule = module {
         MatchDetailsViewModel(
             getFramesUseCase = get(),
             deleteMatchUseCase = get(),
-            getWinningPlayerUseCase = get(),
+            getMatchSummaryUseCase = get(),
             logger = get()
         )
     }

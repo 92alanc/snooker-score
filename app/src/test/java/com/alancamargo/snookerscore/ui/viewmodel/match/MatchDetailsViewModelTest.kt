@@ -5,8 +5,9 @@ import androidx.lifecycle.Observer
 import com.alancamargo.snookerscore.core.log.Logger
 import com.alancamargo.snookerscore.domain.usecase.frame.GetFramesUseCase
 import com.alancamargo.snookerscore.domain.usecase.match.DeleteMatchUseCase
-import com.alancamargo.snookerscore.domain.usecase.player.GetWinningPlayerUseCase
+import com.alancamargo.snookerscore.domain.usecase.match.GetMatchSummaryUseCase
 import com.alancamargo.snookerscore.testtools.getFrameList
+import com.alancamargo.snookerscore.testtools.getMatchSummary
 import com.alancamargo.snookerscore.testtools.getUiMatch
 import com.alancamargo.snookerscore.ui.mapping.toUi
 import io.mockk.every
@@ -32,7 +33,7 @@ class MatchDetailsViewModelTest {
 
     private val mockGetFramesUseCase = mockk<GetFramesUseCase>()
     private val mockDeleteMatchUseCase = mockk<DeleteMatchUseCase>()
-    private val mockGetWinningPlayerUseCase = mockk<GetWinningPlayerUseCase>()
+    private val mockGetMatchSummaryUseCase = mockk<GetMatchSummaryUseCase>()
     private val mockLogger = mockk<Logger>(relaxed = true)
     private val mockStateObserver = mockk<Observer<MatchDetailsUiState>>(relaxed = true)
     private val mockActionObserver = mockk<Observer<MatchDetailsUiAction>>(relaxed = true)
@@ -47,7 +48,7 @@ class MatchDetailsViewModelTest {
         viewModel = MatchDetailsViewModel(
             mockGetFramesUseCase,
             mockDeleteMatchUseCase,
-            mockGetWinningPlayerUseCase,
+            mockGetMatchSummaryUseCase,
             mockLogger,
             testCoroutineDispatcher
         ).apply {
@@ -70,9 +71,9 @@ class MatchDetailsViewModelTest {
     @Test
     fun `getMatchDetails should set state with frames and winner`() {
         val expected = getFrameList()
-        val winner = expected.first().match.player1
+        val matchSummary = getMatchSummary()
         every { mockGetFramesUseCase.invoke(match = any()) } returns flow { emit(expected) }
-        every { mockGetWinningPlayerUseCase.invoke(frames = any()) } returns winner
+        every { mockGetMatchSummaryUseCase.invoke(frames = any()) } returns matchSummary
 
         viewModel.getMatchDetails(getUiMatch())
 
@@ -80,7 +81,7 @@ class MatchDetailsViewModelTest {
         verify { mockStateObserver.onChanged(MatchDetailsUiState(winner = null, frames = frames)) }
         verify {
             mockStateObserver.onChanged(
-                MatchDetailsUiState(winner = winner.toUi(), frames = frames)
+                MatchDetailsUiState(winner = matchSummary.winner.toUi(), frames = frames)
             )
         }
     }

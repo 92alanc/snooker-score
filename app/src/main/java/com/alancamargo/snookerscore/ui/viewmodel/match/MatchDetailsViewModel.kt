@@ -6,7 +6,7 @@ import com.alancamargo.snookerscore.core.log.Logger
 import com.alancamargo.snookerscore.domain.model.Frame
 import com.alancamargo.snookerscore.domain.usecase.frame.GetFramesUseCase
 import com.alancamargo.snookerscore.domain.usecase.match.DeleteMatchUseCase
-import com.alancamargo.snookerscore.domain.usecase.player.GetWinningPlayerUseCase
+import com.alancamargo.snookerscore.domain.usecase.match.GetMatchSummaryUseCase
 import com.alancamargo.snookerscore.ui.mapping.toDomain
 import com.alancamargo.snookerscore.ui.mapping.toUi
 import com.alancamargo.snookerscore.ui.model.UiFrame
@@ -23,7 +23,7 @@ import kotlinx.coroutines.launch
 class MatchDetailsViewModel(
     private val getFramesUseCase: GetFramesUseCase,
     private val deleteMatchUseCase: DeleteMatchUseCase,
-    private val getWinningPlayerUseCase: GetWinningPlayerUseCase,
+    private val getMatchSummaryUseCase: GetMatchSummaryUseCase,
     private val logger: Logger,
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : ViewModel<MatchDetailsUiState, MatchDetailsUiAction>(initialState = MatchDetailsUiState()) {
@@ -49,7 +49,7 @@ class MatchDetailsViewModel(
                         setState { state -> state.onFramesReceived(frames) }
                     }
 
-                    val winner = getWinningPlayerUseCase(result)
+                    val winner = getMatchSummaryUseCase(result).winner
                     setState { state -> state.onWinnerSet(winner.toUi()) }
 
                     if (frames.any { !it.isFinished }) {

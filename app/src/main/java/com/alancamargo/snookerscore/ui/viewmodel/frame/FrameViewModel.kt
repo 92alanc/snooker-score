@@ -10,11 +10,12 @@ import com.alancamargo.snookerscore.domain.tools.BreakCalculator
 import com.alancamargo.snookerscore.domain.usecase.foul.GetPenaltyValueUseCase
 import com.alancamargo.snookerscore.domain.usecase.frame.AddOrUpdateFrameUseCase
 import com.alancamargo.snookerscore.domain.usecase.match.DeleteMatchUseCase
-import com.alancamargo.snookerscore.domain.usecase.player.GetWinningPlayerUseCase
+import com.alancamargo.snookerscore.domain.usecase.match.GetMatchSummaryUseCase
 import com.alancamargo.snookerscore.domain.usecase.playerstats.AddOrUpdatePlayerStatsUseCase
 import com.alancamargo.snookerscore.domain.usecase.playerstats.GetPlayerStatsUseCase
 import com.alancamargo.snookerscore.domain.usecase.playerstats.UpdatePlayerStatsWithMatchResultUseCase
 import com.alancamargo.snookerscore.ui.mapping.toDomain
+import com.alancamargo.snookerscore.ui.mapping.toUi
 import com.alancamargo.snookerscore.ui.model.UiFrame
 import com.alancamargo.snookerscore.ui.model.UiPlayer
 import kotlinx.coroutines.CoroutineDispatcher
@@ -212,7 +213,6 @@ class FrameViewModel(
                 }
             } else {
                 endMatch()
-                sendAction { FrameUiAction.OpenMatchSummary(frame.match) }
             }
         }
     }
@@ -257,16 +257,20 @@ class FrameViewModel(
     private fun endMatch() {
         val domainFrames = frames.map { it.toDomain() }
 
-        useCases.getWinningPlayerUseCase(domainFrames).let { winner ->
-            viewModelScope.launch {
-                useCases.playerStatsUseCases.getPlayerStatsUseCase(winner).handleDefaultActions()
-                    .collect { currentWinnerStats ->
-                        useCases.playerStatsUseCases.updatePlayerStatsWithMatchResultUseCase(
-                            currentWinnerStats
-                        ).handleDefaultActions()
-                            .collect()
-                    }
-            }
+        val matchSummary = useCases.getMatchSummaryUseCase(domainFrames)
+
+        viewModelScope.launch {
+            useCases.playerStatsUseCases.getPlayerStatsUseCase(
+                matchSummary.winner
+            ).handleDefaultActions()
+                .collect { currentWinnerStats ->
+                    useCases.playerStatsUseCases.updatePlayerStatsWithMatchResultUseCase(
+                        currentWinnerStats
+                    ).handleDefaultActions()
+                        .collect {
+                            sendAction { FrameUiAction.OpenMatchSummary(matchSummary.toUi()) }
+                        }
+                }
         }
     }
 
@@ -291,11 +295,11 @@ class FrameViewModel(
     }
 
     class UseCases(
-        val getWinningPlayerUseCase: GetWinningPlayerUseCase,
         val playerStatsUseCases: PlayerStatsUseCases,
         val addOrUpdateFrameUseCase: AddOrUpdateFrameUseCase,
         val getPenaltyValueUseCase: GetPenaltyValueUseCase,
-        val deleteMatchUseCase: DeleteMatchUseCase
+        val deleteMatchUseCase: DeleteMatchUseCase,
+        val getMatchSummaryUseCase: GetMatchSummaryUseCase
     )
 
     class PlayerStatsUseCases(

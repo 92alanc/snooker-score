@@ -4,6 +4,7 @@ import com.alancamargo.snookerscore.data.model.DbPlayer
 import com.alancamargo.snookerscore.domain.model.Frame
 import com.alancamargo.snookerscore.domain.model.Gender
 import com.alancamargo.snookerscore.domain.model.Match
+import com.alancamargo.snookerscore.domain.model.MatchSummary
 import com.alancamargo.snookerscore.domain.model.Player
 import com.alancamargo.snookerscore.domain.model.PlayerStats
 import com.alancamargo.snookerscore.ui.mapping.toUi
@@ -100,4 +101,13 @@ fun getUiFrameList(
     getUiFrame(player1Id, player2Id, positionInMatch = 1),
     getUiFrame(player1Id, player2Id, positionInMatch = 2),
     getUiFrame(player1Id, player2Id, positionInMatch = 3)
+)
+
+fun getMatchSummary() = MatchSummary(
+    match = getMatch(),
+    winner = getPlayer(),
+    player1Score = 2,
+    player2Score = 1,
+    player1HighestBreak = 147,
+    player2HighestBreak = 100
 )

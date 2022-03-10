@@ -17,12 +17,12 @@ import com.alancamargo.snookerscore.domain.usecase.frame.AddOrUpdateFrameUseCase
 import com.alancamargo.snookerscore.domain.usecase.frame.GetFramesUseCase
 import com.alancamargo.snookerscore.domain.usecase.match.AddMatchUseCase
 import com.alancamargo.snookerscore.domain.usecase.match.DeleteMatchUseCase
+import com.alancamargo.snookerscore.domain.usecase.match.GetMatchSummaryUseCase
 import com.alancamargo.snookerscore.domain.usecase.match.GetMatchesUseCase
 import com.alancamargo.snookerscore.domain.usecase.player.AddOrUpdatePlayerUseCase
 import com.alancamargo.snookerscore.domain.usecase.player.ArePlayersTheSameUseCase
 import com.alancamargo.snookerscore.domain.usecase.player.DeletePlayerUseCase
 import com.alancamargo.snookerscore.domain.usecase.player.GetPlayersUseCase
-import com.alancamargo.snookerscore.domain.usecase.player.GetWinningPlayerUseCase
 import com.alancamargo.snookerscore.domain.usecase.playerstats.AddOrUpdatePlayerStatsUseCase
 import com.alancamargo.snookerscore.domain.usecase.playerstats.GetPlayerStatsUseCase
 import com.alancamargo.snookerscore.domain.usecase.playerstats.UpdatePlayerStatsWithMatchResultUseCase
@@ -49,6 +49,6 @@ val domainModule = module {
     factory { ArePlayersTheSameUseCase() }
     factory { GetRulesUrlUseCase(repository = get()) }
     factory<RulesUrlRepository> { RulesUrlRepositoryImpl(remoteDataSource = get()) }
-    factory { GetWinningPlayerUseCase() }
     factory { UpdatePlayerStatsWithMatchResultUseCase(repository = get()) }
+    factory { GetMatchSummaryUseCase() }
 }

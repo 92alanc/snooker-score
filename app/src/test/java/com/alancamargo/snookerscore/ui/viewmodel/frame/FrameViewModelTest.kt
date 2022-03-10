@@ -9,14 +9,14 @@ import com.alancamargo.snookerscore.domain.tools.BreakCalculator
 import com.alancamargo.snookerscore.domain.usecase.foul.GetPenaltyValueUseCase
 import com.alancamargo.snookerscore.domain.usecase.frame.AddOrUpdateFrameUseCase
 import com.alancamargo.snookerscore.domain.usecase.match.DeleteMatchUseCase
-import com.alancamargo.snookerscore.domain.usecase.player.GetWinningPlayerUseCase
+import com.alancamargo.snookerscore.domain.usecase.match.GetMatchSummaryUseCase
 import com.alancamargo.snookerscore.domain.usecase.playerstats.AddOrUpdatePlayerStatsUseCase
 import com.alancamargo.snookerscore.domain.usecase.playerstats.GetPlayerStatsUseCase
 import com.alancamargo.snookerscore.domain.usecase.playerstats.UpdatePlayerStatsWithMatchResultUseCase
+import com.alancamargo.snookerscore.testtools.getMatchSummary
 import com.alancamargo.snookerscore.testtools.getPlayer
 import com.alancamargo.snookerscore.testtools.getPlayerStats
 import com.alancamargo.snookerscore.testtools.getUiFrameList
-import com.alancamargo.snookerscore.ui.mapping.toDomain
 import com.alancamargo.snookerscore.ui.mapping.toUi
 import io.mockk.every
 import io.mockk.mockk
@@ -47,7 +47,7 @@ class FrameViewModelTest {
     private val mockDeleteMatchUseCase = mockk<DeleteMatchUseCase>()
     private val mockGetPlayerStatsUseCase = mockk<GetPlayerStatsUseCase>()
     private val mockAddOrUpdatePlayerStatsUseCase = mockk<AddOrUpdatePlayerStatsUseCase>()
-    private val mockGetWinningPlayerUseCase = mockk<GetWinningPlayerUseCase>()
+    private val mockGetMatchSummaryUseCase = mockk<GetMatchSummaryUseCase>()
     private val mockUpdatePlayerStatsWithMatchResultUseCase = mockk<UpdatePlayerStatsWithMatchResultUseCase>()
     private val mockLogger = mockk<Logger>(relaxed = true)
     private val mockStateObserver = mockk<Observer<FrameUiState>>(relaxed = true)
@@ -68,7 +68,7 @@ class FrameViewModelTest {
         viewModel = FrameViewModel(
             frames = frames,
             useCases = FrameViewModel.UseCases(
-                getWinningPlayerUseCase = mockGetWinningPlayerUseCase,
+                getMatchSummaryUseCase = mockGetMatchSummaryUseCase,
                 playerStatsUseCases = FrameViewModel.PlayerStatsUseCases(
                     getPlayerStatsUseCase = mockGetPlayerStatsUseCase,
                     addOrUpdatePlayerStatsUseCase = mockAddOrUpdatePlayerStatsUseCase,
@@ -260,7 +260,7 @@ class FrameViewModelTest {
             viewModel.onEndFrameConfirmed()
         }
 
-        verify { mockGetWinningPlayerUseCase.invoke(frames = any()) }
+        verify { mockGetMatchSummaryUseCase.invoke(frames = any()) }
     }
 
     @Test
@@ -282,7 +282,8 @@ class FrameViewModelTest {
             viewModel.onEndFrameConfirmed()
         }
 
-        verify { mockActionObserver.onChanged(FrameUiAction.OpenMatchSummary(match)) }
+        val matchSummary = getMatchSummary().toUi()
+        verify { mockActionObserver.onChanged(FrameUiAction.OpenMatchSummary(matchSummary)) }
     }
 
     @Test
@@ -329,7 +330,6 @@ class FrameViewModelTest {
     }
 
     private fun configureMocks() {
-        val domainMatch = match.toDomain()
         every { mockBreakCalculator.getPoints() } returns 10
         every { mockGetPenaltyValueUseCase.invoke(any()) } returns 4
         every {
@@ -342,7 +342,7 @@ class FrameViewModelTest {
                 player = any()
             )
         } returns flow { emit(Unit) }
-        every { mockGetWinningPlayerUseCase.invoke(frames = any()) } returns domainMatch.player1
+        every { mockGetMatchSummaryUseCase.invoke(frames = any()) } returns getMatchSummary()
         every {
             mockUpdatePlayerStatsWithMatchResultUseCase.invoke(winnerCurrentStats = any())
         } returns flow { emit(Unit) }

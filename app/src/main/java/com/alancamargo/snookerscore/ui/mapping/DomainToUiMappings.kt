@@ -3,11 +3,13 @@ package com.alancamargo.snookerscore.ui.mapping
 import com.alancamargo.snookerscore.domain.model.Frame
 import com.alancamargo.snookerscore.domain.model.Gender
 import com.alancamargo.snookerscore.domain.model.Match
+import com.alancamargo.snookerscore.domain.model.MatchSummary
 import com.alancamargo.snookerscore.domain.model.Player
 import com.alancamargo.snookerscore.domain.model.PlayerStats
 import com.alancamargo.snookerscore.ui.model.UiFrame
 import com.alancamargo.snookerscore.ui.model.UiGender
 import com.alancamargo.snookerscore.ui.model.UiMatch
+import com.alancamargo.snookerscore.ui.model.UiMatchSummary
 import com.alancamargo.snookerscore.ui.model.UiPlayer
 import com.alancamargo.snookerscore.ui.model.UiPlayerStats
 
@@ -43,4 +45,13 @@ fun Frame.toUi() = UiFrame(
     player1HighestBreak = player1HighestBreak,
     player2HighestBreak = player2HighestBreak,
     isFinished = isFinished
+)
+
+fun MatchSummary.toUi() = UiMatchSummary(
+    match = match.toUi(),
+    winner = winner.toUi(),
+    player1Score = player1Score,
+    player2Score = player2Score,
+    player1HighestBreak = player1HighestBreak,
+    player2HighestBreak = player2HighestBreak
 )
