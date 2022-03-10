@@ -15,7 +15,6 @@ import com.alancamargo.snookerscore.domain.usecase.playerstats.AddOrUpdatePlayer
 import com.alancamargo.snookerscore.domain.usecase.playerstats.GetPlayerStatsUseCase
 import com.alancamargo.snookerscore.domain.usecase.playerstats.UpdatePlayerStatsWithMatchResultUseCase
 import com.alancamargo.snookerscore.ui.mapping.toDomain
-import com.alancamargo.snookerscore.ui.mapping.toUi
 import com.alancamargo.snookerscore.ui.model.UiFrame
 import com.alancamargo.snookerscore.ui.model.UiPlayer
 import kotlinx.coroutines.CoroutineDispatcher
@@ -268,7 +267,7 @@ class FrameViewModel(
                         currentWinnerStats
                     ).handleDefaultActions()
                         .collect {
-                            sendAction { FrameUiAction.OpenMatchSummary(matchSummary.toUi()) }
+                            sendAction { FrameUiAction.OpenMatchSummary(frames) }
                         }
                 }
         }

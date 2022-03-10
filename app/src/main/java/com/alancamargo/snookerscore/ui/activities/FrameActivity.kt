@@ -24,7 +24,6 @@ import com.alancamargo.snookerscore.domain.model.Ball
 import com.alancamargo.snookerscore.domain.model.Foul
 import com.alancamargo.snookerscore.navigation.MainNavigation
 import com.alancamargo.snookerscore.ui.model.UiFrame
-import com.alancamargo.snookerscore.ui.model.UiMatchSummary
 import com.alancamargo.snookerscore.ui.model.UiPlayer
 import com.alancamargo.snookerscore.ui.viewmodel.frame.FrameUiAction
 import com.alancamargo.snookerscore.ui.viewmodel.frame.FrameUiState
@@ -91,7 +90,7 @@ class FrameActivity : AppCompatActivity() {
             is FrameUiAction.OpenMain -> openMain()
             is FrameUiAction.ShowEndFrameConfirmation -> showEndFrameConfirmation()
             is FrameUiAction.ShowForfeitMatchConfirmation -> showForfeitMatchConfirmation()
-            is FrameUiAction.OpenMatchSummary -> openMatchSummary(action.matchSummary)
+            is FrameUiAction.OpenMatchSummary -> openMatchSummary(action.frames)
         }
     }
 
@@ -301,7 +300,7 @@ class FrameActivity : AppCompatActivity() {
         }.show(supportFragmentManager, DIALOGUE_TAG)
     }
 
-    private fun openMatchSummary(matchSummary: UiMatchSummary) {
+    private fun openMatchSummary(frames: List<UiFrame>) {
         // TODO
         Toast.makeText(this, "Match ended", Toast.LENGTH_SHORT).show()
     }

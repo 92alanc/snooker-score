@@ -90,5 +90,7 @@ val uiModule = module {
     factory<MatchDetailsNavigation> { MatchDetailsNavigationImpl() }
     factory<FrameNavigation> { FrameNavigationImpl() }
     factory<MainNavigation> { MainNavigationImpl() }
-    viewModel { MatchSummaryViewModel() }
+    viewModel { (frames: List<UiFrame>) ->
+        MatchSummaryViewModel(frames = frames, getMatchSummaryUseCase = get())
+    }
 }

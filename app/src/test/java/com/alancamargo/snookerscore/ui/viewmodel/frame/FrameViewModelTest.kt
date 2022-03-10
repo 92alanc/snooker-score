@@ -281,8 +281,7 @@ class FrameViewModelTest {
             viewModel.onEndFrameConfirmed()
         }
 
-        val matchSummary = getMatchSummary().toUi()
-        verify { mockActionObserver.onChanged(FrameUiAction.OpenMatchSummary(matchSummary)) }
+        verify { mockActionObserver.onChanged(FrameUiAction.OpenMatchSummary(frames)) }
     }
 
     @Test

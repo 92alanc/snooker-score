@@ -104,7 +104,7 @@ fun getUiFrameList(
 )
 
 fun getMatchSummary() = MatchSummary(
-    match = getMatch(),
+    match = getMatch(player1Id = "12345", player2Id = "54321"),
     winner = getPlayer(),
     player1Score = 2,
     player2Score = 1,

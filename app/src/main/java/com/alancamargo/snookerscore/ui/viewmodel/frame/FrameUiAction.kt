@@ -1,7 +1,7 @@
 package com.alancamargo.snookerscore.ui.viewmodel.frame
 
 import com.alancamargo.snookerscore.core.arch.viewmodel.UiAction
-import com.alancamargo.snookerscore.ui.model.UiMatchSummary
+import com.alancamargo.snookerscore.ui.model.UiFrame
 import com.alancamargo.snookerscore.ui.model.UiPlayer
 
 sealed class FrameUiAction : UiAction {
@@ -12,7 +12,7 @@ sealed class FrameUiAction : UiAction {
 
     object ShowError : FrameUiAction()
 
-    data class OpenMatchSummary(val matchSummary: UiMatchSummary) : FrameUiAction()
+    data class OpenMatchSummary(val frames: List<UiFrame>) : FrameUiAction()
 
     object OpenMain : FrameUiAction()
 

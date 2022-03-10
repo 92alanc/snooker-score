@@ -2,6 +2,11 @@ package com.alancamargo.snookerscore.ui.viewmodel.matchsummary
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
+import com.alancamargo.snookerscore.domain.usecase.match.GetMatchSummaryUseCase
+import com.alancamargo.snookerscore.testtools.getMatchSummary
+import com.alancamargo.snookerscore.testtools.getUiFrameList
+import com.alancamargo.snookerscore.ui.mapping.toUi
+import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
 import org.junit.Before
@@ -13,15 +18,27 @@ class MatchSummaryViewModelTest {
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
+    private val mockGetMatchSummaryUseCase = mockk<GetMatchSummaryUseCase>()
+    private val mockStateObserver = mockk<Observer<MatchSummaryUiState>>(relaxed = true)
     private val mockActionObserver = mockk<Observer<MatchSummaryUiAction>>(relaxed = true)
 
     private lateinit var viewModel: MatchSummaryViewModel
 
     @Before
     fun setUp() {
-        viewModel = MatchSummaryViewModel().apply {
+        val frames = getUiFrameList()
+        every { mockGetMatchSummaryUseCase.invoke(frames = any()) } returns getMatchSummary()
+
+        viewModel = MatchSummaryViewModel(frames, mockGetMatchSummaryUseCase).apply {
+            state.observeForever(mockStateObserver)
             action.observeForever(mockActionObserver)
         }
+    }
+
+    @Test
+    fun `at startup should set state with match summary`() {
+        val expected = getMatchSummary().toUi()
+        verify { mockStateObserver.onChanged(MatchSummaryUiState(expected)) }
     }
 
     @Test

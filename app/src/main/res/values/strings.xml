@@ -10,7 +10,7 @@
     <string name="error_message">An error occurred</string>
     <string name="retry">Retry</string>
     <string name="empty"/>
-    <string name="app_info">App developed by Alan Camargo\n\nIllustrations by: Those Icons, Chanut is Industries and Smashicons</string>
+    <string name="app_info">App developed by Alan Camargo\n\nIllustrations by: Freepik, Those Icons, Chanut is Industries and Smashicons</string>
     <string name="ok">OK</string>
     <string name="name">Name</string>
     <string name="male">Male</string>
@@ -65,4 +65,6 @@
     <string name="select_ball">Select ball</string>
     <string name="title_select_player">Select player</string>
     <string name="message_select_player">Who\'s starting this frame?</string>
+    <string name="match_summary">Match summary</string>
+    <string name="won_the_match">Won the match</string>
 </resources>
