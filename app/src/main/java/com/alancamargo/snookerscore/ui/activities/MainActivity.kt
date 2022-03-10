@@ -98,6 +98,7 @@ class MainActivity : AppCompatActivity() {
         makeDialogue {
             titleRes = R.string.about
             messageRes = R.string.app_info
+            illustrationRes = R.drawable.illu_table
             primaryButton = button {
                 textRes = R.string.ok
             }
