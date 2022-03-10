@@ -82,7 +82,7 @@ class MatchLocalDataSourceImplTest {
     fun `getMatches should return matches`() = runBlocking {
         val player1Id = "12345"
         val player2Id = "54321"
-        val expected = getMatchList(player1Id, player2Id)
+        val expected = getMatchList(player1Id, player2Id).map { it.copy(isFinished = true) }
 
         coEvery { mockMatchDao.getMatches() } returns expected.map { it.toData() }
         coEvery {
@@ -101,6 +101,33 @@ class MatchLocalDataSourceImplTest {
         }
 
         coVerify { mockMatchDao.getMatches() }
+        coVerify(exactly = expected.size * 2) { mockPlayerDao.getPlayer(playerId = any()) }
+    }
+
+    @Test
+    fun `getMatches should delete unfinished matches before returning`() = runBlocking {
+        val player1Id = "12345"
+        val player2Id = "54321"
+        val expected = getMatchList(player1Id, player2Id)
+
+        coEvery { mockMatchDao.getMatches() } returns expected.map { it.toData() }
+        coEvery {
+            mockPlayerDao.getPlayer(playerId = player1Id)
+        } returns expected.first().player1.toData()
+        coEvery {
+            mockPlayerDao.getPlayer(playerId = player2Id)
+        } returns expected.first().player2.toData()
+
+        val result = localDataSource.getMatches()
+
+        result.test {
+            val item = awaitItem()
+            assertThat(item).isEmpty()
+            awaitComplete()
+        }
+
+        coVerify { mockMatchDao.getMatches() }
+        coVerify(exactly = expected.size) { mockMatchDao.deleteMatch(match = any()) }
         coVerify(exactly = expected.size * 2) { mockPlayerDao.getPlayer(playerId = any()) }
     }
 

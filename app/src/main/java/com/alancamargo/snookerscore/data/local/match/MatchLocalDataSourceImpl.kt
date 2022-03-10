@@ -32,7 +32,18 @@ class MatchLocalDataSourceImpl(
             dbMatch.toDomain(player1, player2)
         }
 
-        emit(matches)
+        val matchesToDelete = mutableListOf<Match>()
+        matches.forEach { match ->
+            if (!match.isFinished) {
+                matchDao.deleteMatch(match.toData())
+                matchesToDelete.add(match)
+            }
+        }
+
+        val result = matches.toMutableList().apply {
+            removeAll(matchesToDelete)
+        }
+        emit(result)
     }
 
 }

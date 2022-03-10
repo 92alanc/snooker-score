@@ -43,7 +43,10 @@ val dataModule = module {
     }
 
     factory<FrameLocalDataSource> {
-        FrameLocalDataSourceImpl(frameDao = getDatabaseProvider().provideFrameDao())
+        FrameLocalDataSourceImpl(
+            frameDao = getDatabaseProvider().provideFrameDao(),
+            matchDao = getDatabaseProvider().provideMatchDao()
+        )
     }
 
     factory<RulesUrlRemoteDataSource> { RulesUrlRemoteDataSourceImpl(remoteConfigManager = get()) }
