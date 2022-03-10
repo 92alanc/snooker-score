@@ -68,6 +68,7 @@
     <string name="match_summary">Match summary</string>
     <string name="won_the_match">Won the match</string>
     <string name="view_summary">View summary</string>
-    <string name="ads_notice_title">This app uses ads</string>
-    <string name="ads_notice_message">Would you like to see personalised ads whilst using this app? You can change this setting any time in the settings screen.</string>
+    <string name="dont_show_again">Don\'t show again</string>
+    <string name="tip">Tip</string>
+    <string name="tip_player_list_message">Click on a player card to view his/her details. To edit a player, click and hold a card</string>
 </resources>

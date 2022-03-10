@@ -3,6 +3,7 @@ package com.alancamargo.snookerscore.ui.viewmodel.playerlist
 import androidx.lifecycle.viewModelScope
 import com.alancamargo.snookerscore.core.arch.viewmodel.ViewModel
 import com.alancamargo.snookerscore.core.log.Logger
+import com.alancamargo.snookerscore.core.preferences.PreferenceManager
 import com.alancamargo.snookerscore.domain.model.Gender
 import com.alancamargo.snookerscore.domain.model.Player
 import com.alancamargo.snookerscore.domain.usecase.player.AddOrUpdatePlayerUseCase
@@ -24,6 +25,7 @@ class PlayerListViewModel(
     private val addOrUpdatePlayerUseCase: AddOrUpdatePlayerUseCase,
     private val addOrUpdatePlayerStatsUseCase: AddOrUpdatePlayerStatsUseCase,
     private val getPlayersUseCase: GetPlayersUseCase,
+    private val preferenceManager: PreferenceManager,
     private val logger: Logger,
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : ViewModel<PlayerListUiState, PlayerListUiAction>(initialState = PlayerListUiState()) {
@@ -31,6 +33,10 @@ class PlayerListViewModel(
     private var playerId = ""
     private var playerName = ""
     private var playerGenderOrdinal = -1
+
+    fun onDontShowTipAgainClicked() {
+        preferenceManager.dontShowPlayerListTipAgain()
+    }
 
     fun onNewPlayerClicked() {
         playerId = UUID.randomUUID().toString()
@@ -89,6 +95,10 @@ class PlayerListViewModel(
             getPlayersUseCase().handleFlow {
                 val players = it.map { domainPlayer -> domainPlayer.toUi() }
                 setState { state -> state.onPlayersReceived(players) }
+
+                if (players.isNotEmpty() && preferenceManager.shouldShowPlayerListTip()) {
+                    sendAction { PlayerListUiAction.ShowTip }
+                }
             }
         }
     }

@@ -15,4 +15,6 @@ sealed class PlayerListUiAction : UiAction {
 
     data class EditPlayer(val player: UiPlayer) : PlayerListUiAction()
 
+    object ShowTip : PlayerListUiAction()
+
 }

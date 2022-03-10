@@ -73,6 +73,7 @@ val uiModule = module {
             addOrUpdatePlayerUseCase = get(),
             addOrUpdatePlayerStatsUseCase = get(),
             getPlayersUseCase = get(),
+            preferenceManager = get(),
             logger = get()
         )
     }

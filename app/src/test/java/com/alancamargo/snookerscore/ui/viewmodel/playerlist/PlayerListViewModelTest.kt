@@ -3,6 +3,8 @@ package com.alancamargo.snookerscore.ui.viewmodel.playerlist
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import com.alancamargo.snookerscore.core.log.Logger
+import com.alancamargo.snookerscore.core.preferences.PreferenceManager
+import com.alancamargo.snookerscore.domain.model.Player
 import com.alancamargo.snookerscore.domain.usecase.player.AddOrUpdatePlayerUseCase
 import com.alancamargo.snookerscore.domain.usecase.player.GetPlayersUseCase
 import com.alancamargo.snookerscore.domain.usecase.playerstats.AddOrUpdatePlayerStatsUseCase
@@ -30,6 +32,7 @@ class PlayerListViewModelTest {
     private val mockAddOrUpdatePlayerUseCase = mockk<AddOrUpdatePlayerUseCase>()
     private val mockAddOrUpdatePlayerStatsUseCase = mockk<AddOrUpdatePlayerStatsUseCase>()
     private val mockGetPlayersUseCase = mockk<GetPlayersUseCase>()
+    private val mockPreferenceManager = mockk<PreferenceManager>(relaxed = true)
     private val mockLogger = mockk<Logger>(relaxed = true)
     private val mockStateObserver = mockk<Observer<PlayerListUiState>>(relaxed = true)
     private val mockActionObserver = mockk<Observer<PlayerListUiAction>>(relaxed = true)
@@ -49,6 +52,39 @@ class PlayerListViewModelTest {
     }
 
     @Test
+    fun `when player list is not empty getPlayers should send ShowTip action`() {
+        val players = getPlayerList()
+        every { mockGetPlayersUseCase.invoke() } returns flow { emit(players) }
+        createViewModel(shouldShowTip = true)
+
+        viewModel.getPlayers()
+
+        verify { mockActionObserver.onChanged(PlayerListUiAction.ShowTip) }
+    }
+
+    @Test
+    fun `when player list is empty getPlayers should not send ShowTip action`() {
+        val players = emptyList<Player>()
+        every { mockGetPlayersUseCase.invoke() } returns flow { emit(players) }
+        createViewModel(shouldShowTip = true)
+
+        viewModel.getPlayers()
+
+        verify(exactly = 0) { mockActionObserver.onChanged(PlayerListUiAction.ShowTip) }
+    }
+
+    @Test
+    fun `when preference manager returns false getPlayers should not send ShowTip action`() {
+        val players = getPlayerList()
+        every { mockGetPlayersUseCase.invoke() } returns flow { emit(players) }
+        createViewModel()
+
+        viewModel.getPlayers()
+
+        verify(exactly = 0) { mockActionObserver.onChanged(PlayerListUiAction.ShowTip) }
+    }
+
+    @Test
     fun `with error getting players getPlayers should send ShowError action`() {
         every { mockGetPlayersUseCase.invoke() } returns flow { throw IOException() }
         createViewModel()
@@ -56,6 +92,15 @@ class PlayerListViewModelTest {
         viewModel.getPlayers()
 
         verify { mockActionObserver.onChanged(PlayerListUiAction.ShowError) }
+    }
+
+    @Test
+    fun `onDontShowTipAgainClicked should update preference on preference manager`() {
+        createViewModel(shouldShowTip = true)
+
+        viewModel.onDontShowTipAgainClicked()
+
+        verify { mockPreferenceManager.dontShowPlayerListTipAgain() }
     }
 
     @Test
@@ -133,15 +178,18 @@ class PlayerListViewModelTest {
         verify { mockActionObserver.onChanged(PlayerListUiAction.EditPlayer(player)) }
     }
 
-    private fun createViewModel(isPickingPlayer: Boolean = false) {
+    private fun createViewModel(isPickingPlayer: Boolean = false, shouldShowTip: Boolean = false) {
         val testCoroutineDispatcher = TestCoroutineDispatcher()
         Dispatchers.setMain(testCoroutineDispatcher)
+
+        every { mockPreferenceManager.shouldShowPlayerListTip() } returns shouldShowTip
 
         viewModel = PlayerListViewModel(
             isPickingPlayer = isPickingPlayer,
             addOrUpdatePlayerUseCase = mockAddOrUpdatePlayerUseCase,
             addOrUpdatePlayerStatsUseCase = mockAddOrUpdatePlayerStatsUseCase,
             getPlayersUseCase = mockGetPlayersUseCase,
+            preferenceManager = mockPreferenceManager,
             logger = mockLogger,
             dispatcher = testCoroutineDispatcher
         ).apply {

@@ -83,6 +83,7 @@ class PlayerListActivity : AppCompatActivity() {
             is PlayerListUiAction.OpenPlayerStats -> showPlayerStats(action.player)
             is PlayerListUiAction.PickPlayer -> pickPlayer(action.player)
             is PlayerListUiAction.EditPlayer -> editPlayer(action.player)
+            is PlayerListUiAction.ShowTip -> showTip()
         }
     }
 
@@ -166,6 +167,21 @@ class PlayerListActivity : AppCompatActivity() {
             }
             secondaryButton = button {
                 textRes = R.string.cancel
+            }
+        }.show(supportFragmentManager, DIALOGUE_TAG)
+    }
+
+    private fun showTip() {
+        makeDialogue {
+            titleRes = R.string.tip
+            messageRes = R.string.tip_player_list_message
+            illustrationRes = R.drawable.illu_tip
+            primaryButton = button {
+                textRes = R.string.ok
+            }
+            secondaryButton = button {
+                textRes = R.string.dont_show_again
+                onClick = viewModel::onDontShowTipAgainClicked
             }
         }.show(supportFragmentManager, DIALOGUE_TAG)
     }
