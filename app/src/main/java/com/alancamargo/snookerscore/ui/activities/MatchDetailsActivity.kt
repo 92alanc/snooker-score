@@ -92,7 +92,7 @@ class MatchDetailsActivity : AppCompatActivity() {
     private fun MatchDetailsUiState.handleWinner() {
         binding.txtWinner.text = winner?.let { winner ->
             getString(R.string.winner_format, winner.name)
-        } ?: getString(R.string.unfinished_match)
+        }
     }
 
     private fun MatchDetailsUiState.handleResumeMatchButton() {

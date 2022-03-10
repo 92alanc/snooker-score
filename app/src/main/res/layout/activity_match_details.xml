@@ -54,7 +54,7 @@
         android:layout_marginTop="@dimen/spacing_03"
         android:layout_marginBottom="@dimen/spacing_01"
         android:layout_marginHorizontal="@dimen/spacing_02"
-        android:text="@string/resume_match"
+        android:text="Resume match"
         app:layout_constraintBottom_toTopOf="@+id/btDeleteMatch"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"

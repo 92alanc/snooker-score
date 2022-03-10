@@ -16,8 +16,6 @@ sealed class FrameUiAction : UiAction {
 
     object OpenMain : FrameUiAction()
 
-    object ShowEndTurnConfirmation : FrameUiAction()
-
     object ShowEndFrameConfirmation : FrameUiAction()
 
     object ShowForfeitMatchConfirmation : FrameUiAction()

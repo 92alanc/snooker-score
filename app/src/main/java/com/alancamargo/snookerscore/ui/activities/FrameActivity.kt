@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Parcelable
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
@@ -56,12 +57,11 @@ class FrameActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        viewModel.saveFrame()
-        super.onBackPressed()
+        viewModel.onForfeitMatchClicked()
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        viewModel.onForfeitMatchClicked()
+        onBackPressed()
         return true
     }
 
@@ -88,7 +88,6 @@ class FrameActivity : AppCompatActivity() {
             is FrameUiAction.ShowError -> showError()
             is FrameUiAction.ShowObjectBalls -> showObjectBalls()
             is FrameUiAction.OpenMain -> openMain()
-            is FrameUiAction.ShowEndTurnConfirmation -> showEndTurnConfirmation()
             is FrameUiAction.ShowEndFrameConfirmation -> showEndFrameConfirmation()
             is FrameUiAction.ShowForfeitMatchConfirmation -> showForfeitMatchConfirmation()
             is FrameUiAction.OpenMatchSummary -> openMatchSummary(action.match)
@@ -264,20 +263,6 @@ class FrameActivity : AppCompatActivity() {
         finish()
     }
 
-    private fun showEndTurnConfirmation() {
-        makeDialogue {
-            titleRes = R.string.end_turn
-            messageRes = R.string.end_turn_confirmation
-            primaryButton = button {
-                textRes = R.string.yes
-                onClick = { viewModel.onEndTurnConfirmed() }
-            }
-            secondaryButton = button {
-                textRes = R.string.cancel
-            }
-        }.show(supportFragmentManager, DIALOGUE_TAG)
-    }
-
     private fun showEndFrameConfirmation() {
         makeDialogue {
             titleRes = R.string.end_frame
@@ -308,6 +293,7 @@ class FrameActivity : AppCompatActivity() {
 
     private fun openMatchSummary(match: UiMatch) {
         // TODO
+        Toast.makeText(this, "Match ended", Toast.LENGTH_SHORT).show()
     }
 
     @Parcelize

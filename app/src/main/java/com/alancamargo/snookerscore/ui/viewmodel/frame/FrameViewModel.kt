@@ -155,11 +155,7 @@ class FrameViewModel(
         }
     }
 
-    fun onEndTurnClicked() {
-        sendAction { FrameUiAction.ShowEndTurnConfirmation }
-    }
-
-    fun onEndTurnConfirmed(isEndingFrame: Boolean = false) {
+    fun onEndTurnClicked(isEndingFrame: Boolean = false) {
         takeFrameAndPlayerIfNotNull { frame, player ->
             val breakPoints = breakCalculator.getPoints()
 
@@ -168,15 +164,19 @@ class FrameViewModel(
                     frame.player1HighestBreak = breakPoints
                 }
 
-                currentPlayer = frame.match.player2
-                setState { state -> state.setCurrentPlayer(frame.match.player2) }
+                if (!isEndingFrame) {
+                    currentPlayer = frame.match.player2
+                    setState { state -> state.setCurrentPlayer(frame.match.player2) }
+                }
             } else {
                 if (breakPoints > frame.player2HighestBreak) {
                     frame.player2HighestBreak = breakPoints
                 }
 
-                currentPlayer = frame.match.player1
-                setState { state -> state.setCurrentPlayer(frame.match.player1) }
+                if (!isEndingFrame) {
+                    currentPlayer = frame.match.player1
+                    setState { state -> state.setCurrentPlayer(frame.match.player1) }
+                }
             }
 
             viewModelScope.launch {
@@ -199,7 +199,7 @@ class FrameViewModel(
 
     fun onEndFrameConfirmed() {
         takeFrameAndPlayerIfNotNull { frame, _ ->
-            onEndTurnConfirmed(isEndingFrame = true)
+            onEndTurnClicked(isEndingFrame = true)
 
             if (frameIndex <= frames.lastIndex - 1) {
                 frameIndex++
@@ -232,12 +232,6 @@ class FrameViewModel(
         }
     }
 
-    fun saveFrame() {
-        viewModelScope.launch {
-            addOrUpdateFrame(isEndingFrame = false)
-        }
-    }
-
     private suspend fun addOrUpdatePlayerStats(frame: UiFrame, player: UiPlayer) {
         useCases.playerStatsUseCases.getPlayerStatsUseCase(player.toDomain()).handleDefaultActions()
             .collect { currentPlayerStats ->
@@ -263,7 +257,7 @@ class FrameViewModel(
     private fun endMatch() {
         val domainFrames = frames.map { it.toDomain() }
 
-        useCases.getWinningPlayerUseCase(domainFrames)?.let { winner ->
+        useCases.getWinningPlayerUseCase(domainFrames).let { winner ->
             viewModelScope.launch {
                 useCases.playerStatsUseCases.getPlayerStatsUseCase(winner).handleDefaultActions()
                     .collect { currentWinnerStats ->
@@ -273,8 +267,6 @@ class FrameViewModel(
                             .collect()
                     }
             }
-        } ?: run {
-            sendAction { FrameUiAction.ShowError }
         }
     }
 
