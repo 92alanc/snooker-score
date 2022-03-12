@@ -1,4 +1,4 @@
-package com.alancamargo.snookerscore.ui.viewmodel.main
+package com.alancamargo.snookerscore.features.main.ui.viewmodel
 
 import androidx.annotation.StringRes
 import com.alancamargo.snookerscore.core.arch.viewmodel.UiAction

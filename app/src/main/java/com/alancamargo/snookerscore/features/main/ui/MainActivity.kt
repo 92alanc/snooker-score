@@ -1,4 +1,4 @@
-package com.alancamargo.snookerscore.ui.activities
+package com.alancamargo.snookerscore.features.main.ui
 
 import android.content.Context
 import android.content.Intent
@@ -13,11 +13,11 @@ import com.alancamargo.snookerscore.core.ui.AdLoader
 import com.alancamargo.snookerscore.core.ui.button
 import com.alancamargo.snookerscore.core.ui.makeDialogue
 import com.alancamargo.snookerscore.databinding.ActivityMainBinding
+import com.alancamargo.snookerscore.features.main.ui.viewmodel.MainUiAction
+import com.alancamargo.snookerscore.features.main.ui.viewmodel.MainViewModel
 import com.alancamargo.snookerscore.navigation.MatchListNavigation
 import com.alancamargo.snookerscore.navigation.PlayerListNavigation
 import com.alancamargo.snookerscore.navigation.WebViewNavigation
-import com.alancamargo.snookerscore.ui.viewmodel.main.MainUiAction
-import com.alancamargo.snookerscore.ui.viewmodel.main.MainViewModel
 import org.koin.android.ext.android.get
 import org.koin.androidx.viewmodel.ext.android.viewModel
 

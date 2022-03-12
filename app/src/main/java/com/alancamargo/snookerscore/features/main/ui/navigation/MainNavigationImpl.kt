@@ -1,8 +1,8 @@
-package com.alancamargo.snookerscore.ui.navigation
+package com.alancamargo.snookerscore.features.main.ui.navigation
 
 import android.content.Context
+import com.alancamargo.snookerscore.features.main.ui.MainActivity
 import com.alancamargo.snookerscore.navigation.MainNavigation
-import com.alancamargo.snookerscore.ui.activities.MainActivity
 
 class MainNavigationImpl : MainNavigation {
 

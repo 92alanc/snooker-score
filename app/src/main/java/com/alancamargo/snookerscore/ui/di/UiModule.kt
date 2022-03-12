@@ -11,7 +11,7 @@ import com.alancamargo.snookerscore.navigation.PlayerStatsNavigation
 import com.alancamargo.snookerscore.navigation.WebViewNavigation
 import com.alancamargo.snookerscore.ui.model.UiFrame
 import com.alancamargo.snookerscore.ui.navigation.FrameNavigationImpl
-import com.alancamargo.snookerscore.ui.navigation.MainNavigationImpl
+import com.alancamargo.snookerscore.features.main.ui.navigation.MainNavigationImpl
 import com.alancamargo.snookerscore.ui.navigation.MatchDetailsNavigationImpl
 import com.alancamargo.snookerscore.ui.navigation.MatchListNavigationImpl
 import com.alancamargo.snookerscore.ui.navigation.MatchSummaryNavigationImpl
@@ -20,7 +20,7 @@ import com.alancamargo.snookerscore.ui.navigation.PlayerListNavigationImpl
 import com.alancamargo.snookerscore.ui.navigation.PlayerStatsNavigationImpl
 import com.alancamargo.snookerscore.ui.navigation.WebViewNavigationImpl
 import com.alancamargo.snookerscore.ui.viewmodel.frame.FrameViewModel
-import com.alancamargo.snookerscore.ui.viewmodel.main.MainViewModel
+import com.alancamargo.snookerscore.features.main.ui.viewmodel.MainViewModel
 import com.alancamargo.snookerscore.ui.viewmodel.match.MatchDetailsViewModel
 import com.alancamargo.snookerscore.ui.viewmodel.matchlist.MatchListViewModel
 import com.alancamargo.snookerscore.ui.viewmodel.matchsummary.MatchSummaryViewModel
