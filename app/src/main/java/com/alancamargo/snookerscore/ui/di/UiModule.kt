@@ -1,7 +1,6 @@
 package com.alancamargo.snookerscore.ui.di
 
 import com.alancamargo.snookerscore.navigation.FrameNavigation
-import com.alancamargo.snookerscore.navigation.MainNavigation
 import com.alancamargo.snookerscore.navigation.MatchDetailsNavigation
 import com.alancamargo.snookerscore.navigation.MatchListNavigation
 import com.alancamargo.snookerscore.navigation.MatchSummaryNavigation
@@ -11,7 +10,6 @@ import com.alancamargo.snookerscore.navigation.PlayerStatsNavigation
 import com.alancamargo.snookerscore.navigation.WebViewNavigation
 import com.alancamargo.snookerscore.ui.model.UiFrame
 import com.alancamargo.snookerscore.ui.navigation.FrameNavigationImpl
-import com.alancamargo.snookerscore.features.main.ui.navigation.MainNavigationImpl
 import com.alancamargo.snookerscore.ui.navigation.MatchDetailsNavigationImpl
 import com.alancamargo.snookerscore.ui.navigation.MatchListNavigationImpl
 import com.alancamargo.snookerscore.ui.navigation.MatchSummaryNavigationImpl
@@ -20,7 +18,6 @@ import com.alancamargo.snookerscore.ui.navigation.PlayerListNavigationImpl
 import com.alancamargo.snookerscore.ui.navigation.PlayerStatsNavigationImpl
 import com.alancamargo.snookerscore.ui.navigation.WebViewNavigationImpl
 import com.alancamargo.snookerscore.ui.viewmodel.frame.FrameViewModel
-import com.alancamargo.snookerscore.features.main.ui.viewmodel.MainViewModel
 import com.alancamargo.snookerscore.ui.viewmodel.match.MatchDetailsViewModel
 import com.alancamargo.snookerscore.ui.viewmodel.matchlist.MatchListViewModel
 import com.alancamargo.snookerscore.ui.viewmodel.matchsummary.MatchSummaryViewModel
@@ -32,7 +29,6 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 val uiModule = module {
-    viewModel { MainViewModel(getRulesUrlUseCase = get()) }
     viewModel { MatchListViewModel(getMatchesUseCase = get(), logger = get()) }
     viewModel {
         NewMatchViewModel(
@@ -92,7 +88,6 @@ val uiModule = module {
     factory<NewMatchNavigation> { NewMatchNavigationImpl() }
     factory<MatchDetailsNavigation> { MatchDetailsNavigationImpl() }
     factory<FrameNavigation> { FrameNavigationImpl() }
-    factory<MainNavigation> { MainNavigationImpl() }
     viewModel { (frames: List<UiFrame>) ->
         MatchSummaryViewModel(frames = frames, getMatchSummaryUseCase = get())
     }

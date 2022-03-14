@@ -2,7 +2,7 @@ package com.alancamargo.snookerscore.features.main.ui.viewmodel
 
 import com.alancamargo.snookerscore.R
 import com.alancamargo.snookerscore.core.arch.viewmodel.ActionViewModel
-import com.alancamargo.snookerscore.domain.usecase.rules.GetRulesUrlUseCase
+import com.alancamargo.snookerscore.features.main.domain.usecase.GetRulesUrlUseCase
 
 class MainViewModel(
     private val getRulesUrlUseCase: GetRulesUrlUseCase

@@ -1,6 +1,6 @@
-package com.alancamargo.snookerscore.data.repository
+package com.alancamargo.snookerscore.features.main.data.repository
 
-import com.alancamargo.snookerscore.data.remote.RulesUrlRemoteDataSource
+import com.alancamargo.snookerscore.features.main.data.remote.RulesUrlRemoteDataSource
 import com.google.common.truth.Truth
 import io.mockk.every
 import io.mockk.mockk

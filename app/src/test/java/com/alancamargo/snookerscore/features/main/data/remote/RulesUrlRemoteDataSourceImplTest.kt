@@ -1,4 +1,4 @@
-package com.alancamargo.snookerscore.data.remote
+package com.alancamargo.snookerscore.features.main.data.remote
 
 import com.alancamargo.snookerscore.core.remoteconfig.RemoteConfigManager
 import com.google.common.truth.Truth.assertThat

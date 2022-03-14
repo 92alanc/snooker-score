@@ -4,12 +4,10 @@ import com.alancamargo.snookerscore.data.repository.FrameRepositoryImpl
 import com.alancamargo.snookerscore.data.repository.MatchRepositoryImpl
 import com.alancamargo.snookerscore.data.repository.PlayerRepositoryImpl
 import com.alancamargo.snookerscore.data.repository.PlayerStatsRepositoryImpl
-import com.alancamargo.snookerscore.data.repository.RulesUrlRepositoryImpl
 import com.alancamargo.snookerscore.domain.repository.FrameRepository
 import com.alancamargo.snookerscore.domain.repository.MatchRepository
 import com.alancamargo.snookerscore.domain.repository.PlayerRepository
 import com.alancamargo.snookerscore.domain.repository.PlayerStatsRepository
-import com.alancamargo.snookerscore.domain.repository.RulesUrlRepository
 import com.alancamargo.snookerscore.domain.tools.BreakCalculator
 import com.alancamargo.snookerscore.domain.tools.BreakCalculatorImpl
 import com.alancamargo.snookerscore.domain.usecase.foul.GetPenaltyValueUseCase
@@ -26,7 +24,6 @@ import com.alancamargo.snookerscore.domain.usecase.player.GetPlayersUseCase
 import com.alancamargo.snookerscore.domain.usecase.playerstats.AddOrUpdatePlayerStatsUseCase
 import com.alancamargo.snookerscore.domain.usecase.playerstats.GetPlayerStatsUseCase
 import com.alancamargo.snookerscore.domain.usecase.playerstats.UpdatePlayerStatsWithMatchResultUseCase
-import com.alancamargo.snookerscore.domain.usecase.rules.GetRulesUrlUseCase
 import org.koin.dsl.module
 
 val domainModule = module {
@@ -47,8 +44,6 @@ val domainModule = module {
     factory { GetMatchesUseCase(repository = get()) }
     factory<BreakCalculator> { BreakCalculatorImpl() }
     factory { ArePlayersTheSameUseCase() }
-    factory { GetRulesUrlUseCase(repository = get()) }
-    factory<RulesUrlRepository> { RulesUrlRepositoryImpl(remoteDataSource = get()) }
     factory { UpdatePlayerStatsWithMatchResultUseCase(repository = get()) }
     factory { GetMatchSummaryUseCase() }
 }

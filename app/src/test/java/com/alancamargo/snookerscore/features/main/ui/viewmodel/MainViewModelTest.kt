@@ -3,7 +3,7 @@ package com.alancamargo.snookerscore.features.main.ui.viewmodel
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import com.alancamargo.snookerscore.R
-import com.alancamargo.snookerscore.domain.usecase.rules.GetRulesUrlUseCase
+import com.alancamargo.snookerscore.features.main.domain.usecase.GetRulesUrlUseCase
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify

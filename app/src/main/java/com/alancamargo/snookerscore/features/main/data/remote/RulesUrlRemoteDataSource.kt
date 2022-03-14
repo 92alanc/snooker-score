@@ -1,4 +1,4 @@
-package com.alancamargo.snookerscore.data.remote
+package com.alancamargo.snookerscore.features.main.data.remote
 
 interface RulesUrlRemoteDataSource {
 
