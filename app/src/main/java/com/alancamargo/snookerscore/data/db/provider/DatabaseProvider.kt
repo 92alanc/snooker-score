@@ -2,8 +2,8 @@ package com.alancamargo.snookerscore.data.db.provider
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import com.alancamargo.snookerscore.data.db.FrameDao
-import com.alancamargo.snookerscore.data.model.DbFrame
+import com.alancamargo.snookerscore.features.frame.data.db.FrameDao
+import com.alancamargo.snookerscore.features.frame.data.model.DbFrame
 import com.alancamargo.snookerscore.features.match.data.db.MatchDao
 import com.alancamargo.snookerscore.features.match.data.model.DbMatch
 import com.alancamargo.snookerscore.features.player.data.db.PlayerDao

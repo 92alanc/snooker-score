@@ -3,8 +3,8 @@ package com.alancamargo.snookerscore.features.match.ui.viewmodel.summary
 import com.alancamargo.snookerscore.core.arch.viewmodel.ViewModel
 import com.alancamargo.snookerscore.features.match.domain.usecase.GetMatchSummaryUseCase
 import com.alancamargo.snookerscore.features.match.ui.mapping.toUi
-import com.alancamargo.snookerscore.ui.mapping.toDomain
-import com.alancamargo.snookerscore.ui.model.UiFrame
+import com.alancamargo.snookerscore.features.frame.ui.mapping.toDomain
+import com.alancamargo.snookerscore.features.frame.ui.model.UiFrame
 
 class MatchSummaryViewModel(
     frames: List<UiFrame>,

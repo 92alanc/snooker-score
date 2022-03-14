@@ -19,7 +19,7 @@ import com.alancamargo.snookerscore.databinding.ActivityNewMatchBinding
 import com.alancamargo.snookerscore.features.player.ui.PlayerListActivity
 import com.alancamargo.snookerscore.navigation.FrameNavigation
 import com.alancamargo.snookerscore.navigation.PlayerListNavigation
-import com.alancamargo.snookerscore.ui.model.UiFrame
+import com.alancamargo.snookerscore.features.frame.ui.model.UiFrame
 import com.alancamargo.snookerscore.features.match.ui.viewmodel.newmatch.NewMatchUiAction
 import com.alancamargo.snookerscore.features.match.ui.viewmodel.newmatch.NewMatchUiState
 import com.alancamargo.snookerscore.features.match.ui.viewmodel.newmatch.NewMatchViewModel

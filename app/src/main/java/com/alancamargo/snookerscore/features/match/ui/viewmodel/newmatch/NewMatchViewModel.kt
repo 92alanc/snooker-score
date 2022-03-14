@@ -3,7 +3,7 @@ package com.alancamargo.snookerscore.features.match.ui.viewmodel.newmatch
 import androidx.lifecycle.viewModelScope
 import com.alancamargo.snookerscore.core.arch.viewmodel.ViewModel
 import com.alancamargo.snookerscore.core.log.Logger
-import com.alancamargo.snookerscore.domain.model.Frame
+import com.alancamargo.snookerscore.features.frame.domain.model.Frame
 import com.alancamargo.snookerscore.features.match.domain.model.Match
 import com.alancamargo.snookerscore.features.match.domain.usecase.AddMatchUseCase
 import com.alancamargo.snookerscore.features.match.ui.model.PlayerToPick
@@ -11,8 +11,8 @@ import com.alancamargo.snookerscore.features.player.domain.model.Player
 import com.alancamargo.snookerscore.features.player.domain.usecase.ArePlayersTheSameUseCase
 import com.alancamargo.snookerscore.features.player.ui.mapping.toDomain
 import com.alancamargo.snookerscore.features.player.ui.model.UiPlayer
-import com.alancamargo.snookerscore.ui.mapping.toUi
-import com.alancamargo.snookerscore.ui.model.UiFrame
+import com.alancamargo.snookerscore.features.frame.ui.mapping.toUi
+import com.alancamargo.snookerscore.features.frame.ui.model.UiFrame
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow

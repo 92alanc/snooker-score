@@ -22,7 +22,7 @@ import com.alancamargo.snookerscore.navigation.MatchDetailsNavigation
 import com.alancamargo.snookerscore.navigation.MatchListNavigation
 import com.alancamargo.snookerscore.navigation.MatchSummaryNavigation
 import com.alancamargo.snookerscore.navigation.NewMatchNavigation
-import com.alancamargo.snookerscore.ui.model.UiFrame
+import com.alancamargo.snookerscore.features.frame.ui.model.UiFrame
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.scope.Scope
 import org.koin.dsl.module

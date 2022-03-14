@@ -1,7 +1,7 @@
 package com.alancamargo.snookerscore.features.match.ui.viewmodel.newmatch
 
 import com.alancamargo.snookerscore.core.arch.viewmodel.UiAction
-import com.alancamargo.snookerscore.ui.model.UiFrame
+import com.alancamargo.snookerscore.features.frame.ui.model.UiFrame
 
 sealed class NewMatchUiAction : UiAction {
 

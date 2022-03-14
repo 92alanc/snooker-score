@@ -16,7 +16,7 @@ import com.alancamargo.snookerscore.core.ui.AdLoader
 import com.alancamargo.snookerscore.databinding.ActivityMatchSummaryBinding
 import com.alancamargo.snookerscore.navigation.MainNavigation
 import com.alancamargo.snookerscore.navigation.NewMatchNavigation
-import com.alancamargo.snookerscore.ui.model.UiFrame
+import com.alancamargo.snookerscore.features.frame.ui.model.UiFrame
 import com.alancamargo.snookerscore.features.match.ui.viewmodel.summary.MatchSummaryUiAction
 import com.alancamargo.snookerscore.features.match.ui.viewmodel.summary.MatchSummaryUiState
 import com.alancamargo.snookerscore.features.match.ui.viewmodel.summary.MatchSummaryViewModel

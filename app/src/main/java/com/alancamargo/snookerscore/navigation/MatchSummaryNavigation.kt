@@ -1,7 +1,7 @@
 package com.alancamargo.snookerscore.navigation
 
 import android.content.Context
-import com.alancamargo.snookerscore.ui.model.UiFrame
+import com.alancamargo.snookerscore.features.frame.ui.model.UiFrame
 
 interface MatchSummaryNavigation {
 

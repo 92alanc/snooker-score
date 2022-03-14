@@ -3,14 +3,14 @@ package com.alancamargo.snookerscore.features.match.ui.viewmodel.details
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import com.alancamargo.snookerscore.core.log.Logger
-import com.alancamargo.snookerscore.domain.usecase.frame.GetFramesUseCase
+import com.alancamargo.snookerscore.features.frame.domain.usecase.GetFramesUseCase
 import com.alancamargo.snookerscore.features.match.domain.usecase.DeleteMatchUseCase
 import com.alancamargo.snookerscore.features.match.domain.usecase.GetMatchSummaryUseCase
 import com.alancamargo.snookerscore.features.player.ui.mapping.toUi
 import com.alancamargo.snookerscore.testtools.getFrameList
 import com.alancamargo.snookerscore.testtools.getMatchSummary
 import com.alancamargo.snookerscore.testtools.getUiMatch
-import com.alancamargo.snookerscore.ui.mapping.toUi
+import com.alancamargo.snookerscore.features.frame.ui.mapping.toUi
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify

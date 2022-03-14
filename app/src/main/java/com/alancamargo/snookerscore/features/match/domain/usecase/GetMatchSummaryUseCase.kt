@@ -1,6 +1,6 @@
 package com.alancamargo.snookerscore.features.match.domain.usecase
 
-import com.alancamargo.snookerscore.domain.model.Frame
+import com.alancamargo.snookerscore.features.frame.domain.model.Frame
 import com.alancamargo.snookerscore.features.match.domain.model.MatchSummary
 
 class GetMatchSummaryUseCase {
