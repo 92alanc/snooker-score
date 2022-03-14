@@ -5,6 +5,7 @@ import com.alancamargo.snookerscore.core.di.coreModule
 import com.alancamargo.snookerscore.data.di.dataModule
 import com.alancamargo.snookerscore.domain.di.domainModule
 import com.alancamargo.snookerscore.features.main.di.MainModule
+import com.alancamargo.snookerscore.features.match.di.MatchModule
 import com.alancamargo.snookerscore.features.player.di.PlayerModule
 import com.alancamargo.snookerscore.features.playerstats.di.PlayerStatsModule
 import com.alancamargo.snookerscore.ui.di.uiModule
@@ -21,6 +22,7 @@ object KoinAppDeclarationProvider {
         MainModule().load()
         PlayerStatsModule().load()
         PlayerModule().load()
+        MatchModule().load()
     }
 
     private fun getModules(): List<Module> = listOf(

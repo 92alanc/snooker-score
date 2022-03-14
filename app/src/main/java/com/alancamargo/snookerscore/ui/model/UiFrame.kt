@@ -1,6 +1,7 @@
 package com.alancamargo.snookerscore.ui.model
 
 import android.os.Parcelable
+import com.alancamargo.snookerscore.features.match.ui.model.UiMatch
 import kotlinx.parcelize.Parcelize
 import java.util.UUID
 

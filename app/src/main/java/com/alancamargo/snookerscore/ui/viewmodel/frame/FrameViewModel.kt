@@ -8,8 +8,9 @@ import com.alancamargo.snookerscore.domain.model.Foul
 import com.alancamargo.snookerscore.domain.tools.BreakCalculator
 import com.alancamargo.snookerscore.domain.usecase.foul.GetPenaltyValueUseCase
 import com.alancamargo.snookerscore.domain.usecase.frame.AddOrUpdateFrameUseCase
-import com.alancamargo.snookerscore.domain.usecase.match.DeleteMatchUseCase
-import com.alancamargo.snookerscore.domain.usecase.match.GetMatchSummaryUseCase
+import com.alancamargo.snookerscore.features.match.domain.usecase.DeleteMatchUseCase
+import com.alancamargo.snookerscore.features.match.domain.usecase.GetMatchSummaryUseCase
+import com.alancamargo.snookerscore.features.match.ui.mapping.toDomain
 import com.alancamargo.snookerscore.features.player.domain.model.Player
 import com.alancamargo.snookerscore.features.player.ui.mapping.toDomain
 import com.alancamargo.snookerscore.features.player.ui.model.UiPlayer

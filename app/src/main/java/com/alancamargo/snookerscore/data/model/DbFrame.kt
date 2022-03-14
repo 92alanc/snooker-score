@@ -4,6 +4,8 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
+import com.alancamargo.snookerscore.features.match.data.model.DbMatch
+import com.alancamargo.snookerscore.features.match.data.model.MATCH_COLUMN_DATE_TIME
 
 @Entity(
     tableName = "Frames",

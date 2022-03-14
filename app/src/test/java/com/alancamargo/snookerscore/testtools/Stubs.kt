@@ -1,13 +1,13 @@
 package com.alancamargo.snookerscore.testtools
 
 import com.alancamargo.snookerscore.domain.model.Frame
-import com.alancamargo.snookerscore.domain.model.Match
-import com.alancamargo.snookerscore.domain.model.MatchSummary
+import com.alancamargo.snookerscore.features.match.domain.model.Match
+import com.alancamargo.snookerscore.features.match.domain.model.MatchSummary
+import com.alancamargo.snookerscore.features.match.ui.mapping.toUi
 import com.alancamargo.snookerscore.features.player.data.model.DbPlayer
 import com.alancamargo.snookerscore.features.player.domain.model.Gender
 import com.alancamargo.snookerscore.features.player.domain.model.Player
 import com.alancamargo.snookerscore.features.playerstats.domain.model.PlayerStats
-import com.alancamargo.snookerscore.ui.mapping.toUi
 import com.alancamargo.snookerscore.ui.model.UiFrame
 import java.util.UUID
 

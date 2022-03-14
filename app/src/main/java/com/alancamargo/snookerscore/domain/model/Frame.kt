@@ -1,5 +1,6 @@
 package com.alancamargo.snookerscore.domain.model
 
+import com.alancamargo.snookerscore.features.match.domain.model.Match
 import java.util.UUID
 
 data class Frame(

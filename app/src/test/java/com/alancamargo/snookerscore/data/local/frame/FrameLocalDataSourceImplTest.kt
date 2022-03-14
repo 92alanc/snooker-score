@@ -2,8 +2,9 @@ package com.alancamargo.snookerscore.data.local.frame
 
 import app.cash.turbine.test
 import com.alancamargo.snookerscore.data.db.FrameDao
-import com.alancamargo.snookerscore.data.db.MatchDao
 import com.alancamargo.snookerscore.data.mapping.toData
+import com.alancamargo.snookerscore.features.match.data.db.MatchDao
+import com.alancamargo.snookerscore.features.match.data.mapping.toData
 import com.alancamargo.snookerscore.testtools.ERROR_MESSAGE
 import com.alancamargo.snookerscore.testtools.getFrame
 import com.alancamargo.snookerscore.testtools.getFrameList
