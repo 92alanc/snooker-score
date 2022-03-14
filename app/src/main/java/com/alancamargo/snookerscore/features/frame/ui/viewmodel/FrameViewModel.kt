@@ -2,7 +2,7 @@ package com.alancamargo.snookerscore.features.frame.ui.viewmodel
 
 import androidx.lifecycle.viewModelScope
 import com.alancamargo.snookerscore.core.arch.viewmodel.ViewModel
-import com.alancamargo.snookerscore.core.log.Logger
+import com.alancamargo.snookerscore.core.data.log.Logger
 import com.alancamargo.snookerscore.features.frame.domain.model.Ball
 import com.alancamargo.snookerscore.features.frame.domain.model.Foul
 import com.alancamargo.snookerscore.features.frame.domain.tools.BreakCalculator

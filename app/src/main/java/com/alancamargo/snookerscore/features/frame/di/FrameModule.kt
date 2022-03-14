@@ -1,7 +1,7 @@
 package com.alancamargo.snookerscore.features.frame.di
 
 import com.alancamargo.snookerscore.core.arch.di.FeatureModule
-import com.alancamargo.snookerscore.data.db.provider.DatabaseProvider
+import com.alancamargo.snookerscore.core.data.db.DatabaseProvider
 import com.alancamargo.snookerscore.features.frame.data.local.FrameLocalDataSource
 import com.alancamargo.snookerscore.features.frame.data.local.FrameLocalDataSourceImpl
 import com.alancamargo.snookerscore.features.frame.data.repository.FrameRepositoryImpl

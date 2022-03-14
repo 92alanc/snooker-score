@@ -1,4 +1,4 @@
-package com.alancamargo.snookerscore.core.analytics
+package com.alancamargo.snookerscore.core.data.analytics
 
 interface Analytics {
 

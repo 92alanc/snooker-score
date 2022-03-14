@@ -2,7 +2,7 @@ package com.alancamargo.snookerscore.features.frame.ui.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
-import com.alancamargo.snookerscore.core.log.Logger
+import com.alancamargo.snookerscore.core.data.log.Logger
 import com.alancamargo.snookerscore.features.frame.domain.model.Ball
 import com.alancamargo.snookerscore.features.frame.domain.model.Foul
 import com.alancamargo.snookerscore.features.frame.domain.tools.BreakCalculator

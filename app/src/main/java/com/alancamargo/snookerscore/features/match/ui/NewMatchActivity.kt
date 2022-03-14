@@ -12,9 +12,9 @@ import com.alancamargo.snookerscore.core.arch.extensions.createIntent
 import com.alancamargo.snookerscore.core.arch.extensions.getResponse
 import com.alancamargo.snookerscore.core.arch.extensions.observeAction
 import com.alancamargo.snookerscore.core.arch.extensions.observeState
-import com.alancamargo.snookerscore.core.ui.AdLoader
-import com.alancamargo.snookerscore.core.ui.button
-import com.alancamargo.snookerscore.core.ui.makeDialogue
+import com.alancamargo.snookerscore.core.ui.ads.AdLoader
+import com.alancamargo.snookerscore.core.ui.dialogue.button
+import com.alancamargo.snookerscore.core.ui.dialogue.makeDialogue
 import com.alancamargo.snookerscore.databinding.ActivityNewMatchBinding
 import com.alancamargo.snookerscore.features.player.ui.PlayerListActivity
 import com.alancamargo.snookerscore.navigation.FrameNavigation

@@ -1,4 +1,4 @@
-package com.alancamargo.snookerscore.data.db.provider
+package com.alancamargo.snookerscore.core.data.db
 
 import androidx.room.Database
 import androidx.room.RoomDatabase

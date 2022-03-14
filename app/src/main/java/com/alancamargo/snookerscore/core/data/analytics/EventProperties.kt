@@ -1,4 +1,4 @@
-package com.alancamargo.snookerscore.core.analytics
+package com.alancamargo.snookerscore.core.data.analytics
 
 private const val PROPERTY_SCREEN_NAME = "screen-name"
 private const val PROPERTY_BUTTON_NAME = "button-name"

@@ -2,7 +2,7 @@ package com.alancamargo.snookerscore.features.match.ui.adapter
 
 import androidx.recyclerview.widget.RecyclerView
 import com.alancamargo.snookerscore.R
-import com.alancamargo.snookerscore.core.ui.formatDateTime
+import com.alancamargo.snookerscore.core.ui.tools.formatDateTime
 import com.alancamargo.snookerscore.databinding.ItemMatchBinding
 import com.alancamargo.snookerscore.features.match.ui.model.UiMatch
 

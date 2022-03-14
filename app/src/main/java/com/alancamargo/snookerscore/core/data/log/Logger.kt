@@ -1,4 +1,4 @@
-package com.alancamargo.snookerscore.core.log
+package com.alancamargo.snookerscore.core.data.log
 
 interface Logger {
 

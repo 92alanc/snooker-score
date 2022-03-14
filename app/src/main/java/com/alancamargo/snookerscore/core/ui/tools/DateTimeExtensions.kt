@@ -1,4 +1,4 @@
-package com.alancamargo.snookerscore.core.ui
+package com.alancamargo.snookerscore.core.ui.tools
 
 import java.text.SimpleDateFormat
 import java.util.Locale

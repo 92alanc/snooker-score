@@ -1,4 +1,4 @@
-package com.alancamargo.snookerscore.core.preferences
+package com.alancamargo.snookerscore.core.data.preferences
 
 import android.content.SharedPreferences
 

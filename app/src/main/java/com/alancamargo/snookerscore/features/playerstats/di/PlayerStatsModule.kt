@@ -1,7 +1,7 @@
 package com.alancamargo.snookerscore.features.playerstats.di
 
 import com.alancamargo.snookerscore.core.arch.di.FeatureModule
-import com.alancamargo.snookerscore.data.db.provider.DatabaseProvider
+import com.alancamargo.snookerscore.core.data.db.DatabaseProvider
 import com.alancamargo.snookerscore.features.playerstats.data.local.PlayerStatsLocalDataSource
 import com.alancamargo.snookerscore.features.playerstats.data.local.PlayerStatsLocalDataSourceImpl
 import com.alancamargo.snookerscore.features.playerstats.data.repository.PlayerStatsRepositoryImpl

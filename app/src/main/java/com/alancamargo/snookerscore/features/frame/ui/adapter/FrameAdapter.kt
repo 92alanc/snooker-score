@@ -3,7 +3,7 @@ package com.alancamargo.snookerscore.features.frame.ui.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
-import com.alancamargo.snookerscore.core.adapter.DefaultDiffCallback
+import com.alancamargo.snookerscore.core.ui.adapter.DefaultDiffCallback
 import com.alancamargo.snookerscore.databinding.ItemFrameBinding
 import com.alancamargo.snookerscore.features.frame.ui.model.UiFrame
 

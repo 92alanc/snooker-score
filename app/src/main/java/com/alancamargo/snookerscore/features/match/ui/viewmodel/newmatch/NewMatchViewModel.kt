@@ -2,7 +2,7 @@ package com.alancamargo.snookerscore.features.match.ui.viewmodel.newmatch
 
 import androidx.lifecycle.viewModelScope
 import com.alancamargo.snookerscore.core.arch.viewmodel.ViewModel
-import com.alancamargo.snookerscore.core.log.Logger
+import com.alancamargo.snookerscore.core.data.log.Logger
 import com.alancamargo.snookerscore.features.frame.domain.model.Frame
 import com.alancamargo.snookerscore.features.match.domain.model.Match
 import com.alancamargo.snookerscore.features.match.domain.usecase.AddMatchUseCase

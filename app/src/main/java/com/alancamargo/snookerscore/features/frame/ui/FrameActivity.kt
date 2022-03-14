@@ -14,11 +14,11 @@ import com.alancamargo.snookerscore.core.arch.extensions.observeAction
 import com.alancamargo.snookerscore.core.arch.extensions.observeState
 import com.alancamargo.snookerscore.core.arch.extensions.putArguments
 import com.alancamargo.snookerscore.core.arch.extensions.vibrate
-import com.alancamargo.snookerscore.core.ui.AdLoader
-import com.alancamargo.snookerscore.core.ui.button
-import com.alancamargo.snookerscore.core.ui.makeDialogue
-import com.alancamargo.snookerscore.core.ui.radioButton
-import com.alancamargo.snookerscore.core.ui.radioButtons
+import com.alancamargo.snookerscore.core.ui.ads.AdLoader
+import com.alancamargo.snookerscore.core.ui.dialogue.button
+import com.alancamargo.snookerscore.core.ui.dialogue.makeDialogue
+import com.alancamargo.snookerscore.core.ui.dialogue.radioButton
+import com.alancamargo.snookerscore.core.ui.dialogue.radioButtons
 import com.alancamargo.snookerscore.databinding.ActivityFrameBinding
 import com.alancamargo.snookerscore.features.frame.domain.model.Ball
 import com.alancamargo.snookerscore.features.frame.domain.model.Foul

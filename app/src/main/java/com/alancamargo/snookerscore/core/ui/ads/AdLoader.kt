@@ -1,4 +1,4 @@
-package com.alancamargo.snookerscore.core.ui
+package com.alancamargo.snookerscore.core.ui.ads
 
 import android.view.View
 import androidx.annotation.StringRes

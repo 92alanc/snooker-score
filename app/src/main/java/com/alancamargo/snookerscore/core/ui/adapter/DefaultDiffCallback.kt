@@ -1,4 +1,4 @@
-package com.alancamargo.snookerscore.core.adapter
+package com.alancamargo.snookerscore.core.ui.adapter
 
 import androidx.recyclerview.widget.DiffUtil
 

@@ -17,7 +17,7 @@ import com.alancamargo.snookerscore.core.arch.extensions.args
 import com.alancamargo.snookerscore.core.arch.extensions.createIntent
 import com.alancamargo.snookerscore.core.arch.extensions.observeAction
 import com.alancamargo.snookerscore.core.arch.extensions.putArguments
-import com.alancamargo.snookerscore.core.ui.AdLoader
+import com.alancamargo.snookerscore.core.ui.ads.AdLoader
 import com.alancamargo.snookerscore.databinding.ActivityWebViewBinding
 import com.alancamargo.snookerscore.features.webview.ui.viewmodel.WebViewUiAction
 import com.alancamargo.snookerscore.features.webview.ui.viewmodel.WebViewViewModel

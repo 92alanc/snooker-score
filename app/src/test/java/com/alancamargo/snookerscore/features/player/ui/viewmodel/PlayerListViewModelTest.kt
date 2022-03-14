@@ -2,8 +2,8 @@ package com.alancamargo.snookerscore.features.player.ui.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
-import com.alancamargo.snookerscore.core.log.Logger
-import com.alancamargo.snookerscore.core.preferences.PreferenceManager
+import com.alancamargo.snookerscore.core.data.log.Logger
+import com.alancamargo.snookerscore.core.data.preferences.PreferenceManager
 import com.alancamargo.snookerscore.features.player.domain.model.Player
 import com.alancamargo.snookerscore.features.player.domain.usecase.AddOrUpdatePlayerUseCase
 import com.alancamargo.snookerscore.features.player.domain.usecase.GetPlayersUseCase

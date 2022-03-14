@@ -1,4 +1,4 @@
-package com.alancamargo.snookerscore.core.remoteconfig
+package com.alancamargo.snookerscore.core.data.remoteconfig
 
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 

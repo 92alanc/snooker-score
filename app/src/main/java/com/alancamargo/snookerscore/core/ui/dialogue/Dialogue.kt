@@ -1,4 +1,4 @@
-package com.alancamargo.snookerscore.core.ui
+package com.alancamargo.snookerscore.core.ui.dialogue
 
 import android.app.Dialog
 import android.content.Context

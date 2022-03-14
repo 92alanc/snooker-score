@@ -2,7 +2,7 @@ package com.alancamargo.snookerscore.features.match.ui.viewmodel.newmatch
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
-import com.alancamargo.snookerscore.core.log.Logger
+import com.alancamargo.snookerscore.core.data.log.Logger
 import com.alancamargo.snookerscore.features.match.domain.usecase.AddMatchUseCase
 import com.alancamargo.snookerscore.features.player.domain.usecase.ArePlayersTheSameUseCase
 import com.alancamargo.snookerscore.features.player.domain.usecase.GetPlayersUseCase

@@ -1,4 +1,4 @@
-package com.alancamargo.snookerscore.core.ui
+package com.alancamargo.snookerscore.core.ui.dialogue
 
 fun makeDialogue(block: Dialogue.() -> Unit): Dialogue {
     return Dialogue().apply(block)

@@ -2,7 +2,7 @@ package com.alancamargo.snookerscore.features.playerstats.ui.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
-import com.alancamargo.snookerscore.core.log.Logger
+import com.alancamargo.snookerscore.core.data.log.Logger
 import com.alancamargo.snookerscore.features.player.domain.usecase.DeletePlayerUseCase
 import com.alancamargo.snookerscore.features.player.ui.mapping.toUi
 import com.alancamargo.snookerscore.features.playerstats.domain.usecase.GetPlayerStatsUseCase

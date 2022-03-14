@@ -1,4 +1,4 @@
-package com.alancamargo.snookerscore.core.remoteconfig
+package com.alancamargo.snookerscore.core.data.remoteconfig
 
 interface RemoteConfigManager {
 
