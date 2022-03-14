@@ -25,7 +25,7 @@ import com.alancamargo.snookerscore.domain.model.Foul
 import com.alancamargo.snookerscore.navigation.MainNavigation
 import com.alancamargo.snookerscore.navigation.MatchSummaryNavigation
 import com.alancamargo.snookerscore.ui.model.UiFrame
-import com.alancamargo.snookerscore.ui.model.UiPlayer
+import com.alancamargo.snookerscore.features.player.ui.model.UiPlayer
 import com.alancamargo.snookerscore.ui.viewmodel.frame.FrameUiAction
 import com.alancamargo.snookerscore.ui.viewmodel.frame.FrameUiState
 import com.alancamargo.snookerscore.ui.viewmodel.frame.FrameViewModel

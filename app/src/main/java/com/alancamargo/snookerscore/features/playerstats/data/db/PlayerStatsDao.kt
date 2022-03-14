@@ -4,7 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
-import com.alancamargo.snookerscore.data.model.DbPlayerStats
+import com.alancamargo.snookerscore.features.playerstats.data.model.DbPlayerStats
 
 @Dao
 interface PlayerStatsDao {

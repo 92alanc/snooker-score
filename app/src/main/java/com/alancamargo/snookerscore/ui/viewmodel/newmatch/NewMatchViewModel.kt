@@ -5,13 +5,13 @@ import com.alancamargo.snookerscore.core.arch.viewmodel.ViewModel
 import com.alancamargo.snookerscore.core.log.Logger
 import com.alancamargo.snookerscore.domain.model.Frame
 import com.alancamargo.snookerscore.domain.model.Match
-import com.alancamargo.snookerscore.domain.model.Player
 import com.alancamargo.snookerscore.domain.usecase.match.AddMatchUseCase
-import com.alancamargo.snookerscore.domain.usecase.player.ArePlayersTheSameUseCase
-import com.alancamargo.snookerscore.ui.mapping.toDomain
+import com.alancamargo.snookerscore.features.player.domain.model.Player
+import com.alancamargo.snookerscore.features.player.domain.usecase.ArePlayersTheSameUseCase
+import com.alancamargo.snookerscore.features.player.ui.mapping.toDomain
+import com.alancamargo.snookerscore.features.player.ui.model.UiPlayer
 import com.alancamargo.snookerscore.ui.mapping.toUi
 import com.alancamargo.snookerscore.ui.model.UiFrame
-import com.alancamargo.snookerscore.ui.model.UiPlayer
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow

@@ -2,8 +2,9 @@ package com.alancamargo.snookerscore.data.local.match
 
 import app.cash.turbine.test
 import com.alancamargo.snookerscore.data.db.MatchDao
-import com.alancamargo.snookerscore.data.db.PlayerDao
 import com.alancamargo.snookerscore.data.mapping.toData
+import com.alancamargo.snookerscore.features.player.data.db.PlayerDao
+import com.alancamargo.snookerscore.features.player.data.mapping.toData
 import com.alancamargo.snookerscore.testtools.ERROR_MESSAGE
 import com.alancamargo.snookerscore.testtools.getMatch
 import com.alancamargo.snookerscore.testtools.getMatchList

@@ -2,7 +2,7 @@ package com.alancamargo.snookerscore.ui.viewmodel.frame
 
 import com.alancamargo.snookerscore.core.arch.viewmodel.UiAction
 import com.alancamargo.snookerscore.ui.model.UiFrame
-import com.alancamargo.snookerscore.ui.model.UiPlayer
+import com.alancamargo.snookerscore.features.player.ui.model.UiPlayer
 
 sealed class FrameUiAction : UiAction {
 

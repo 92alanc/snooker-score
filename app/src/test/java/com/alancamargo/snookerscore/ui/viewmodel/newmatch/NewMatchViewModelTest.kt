@@ -4,8 +4,8 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import com.alancamargo.snookerscore.core.log.Logger
 import com.alancamargo.snookerscore.domain.usecase.match.AddMatchUseCase
-import com.alancamargo.snookerscore.domain.usecase.player.ArePlayersTheSameUseCase
-import com.alancamargo.snookerscore.domain.usecase.player.GetPlayersUseCase
+import com.alancamargo.snookerscore.features.player.domain.usecase.ArePlayersTheSameUseCase
+import com.alancamargo.snookerscore.features.player.domain.usecase.GetPlayersUseCase
 import com.alancamargo.snookerscore.testtools.getPlayerList
 import io.mockk.every
 import io.mockk.mockk

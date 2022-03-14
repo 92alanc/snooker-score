@@ -10,6 +10,7 @@ import com.alancamargo.snookerscore.domain.usecase.foul.GetPenaltyValueUseCase
 import com.alancamargo.snookerscore.domain.usecase.frame.AddOrUpdateFrameUseCase
 import com.alancamargo.snookerscore.domain.usecase.match.DeleteMatchUseCase
 import com.alancamargo.snookerscore.domain.usecase.match.GetMatchSummaryUseCase
+import com.alancamargo.snookerscore.features.player.ui.mapping.toUi
 import com.alancamargo.snookerscore.features.playerstats.domain.usecase.AddOrUpdatePlayerStatsUseCase
 import com.alancamargo.snookerscore.features.playerstats.domain.usecase.GetPlayerStatsUseCase
 import com.alancamargo.snookerscore.features.playerstats.domain.usecase.UpdatePlayerStatsWithMatchResultUseCase
@@ -17,7 +18,6 @@ import com.alancamargo.snookerscore.testtools.getMatchSummary
 import com.alancamargo.snookerscore.testtools.getPlayer
 import com.alancamargo.snookerscore.testtools.getPlayerStats
 import com.alancamargo.snookerscore.testtools.getUiFrameList
-import com.alancamargo.snookerscore.ui.mapping.toUi
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify

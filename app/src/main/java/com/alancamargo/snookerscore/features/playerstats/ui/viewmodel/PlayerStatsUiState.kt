@@ -1,7 +1,7 @@
 package com.alancamargo.snookerscore.features.playerstats.ui.viewmodel
 
 import com.alancamargo.snookerscore.core.arch.viewmodel.UiState
-import com.alancamargo.snookerscore.ui.model.UiPlayerStats
+import com.alancamargo.snookerscore.features.playerstats.ui.model.UiPlayerStats
 
 data class PlayerStatsUiState(val playerStats: UiPlayerStats? = null) : UiState {
 

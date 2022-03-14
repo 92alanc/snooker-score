@@ -1,6 +1,7 @@
 package com.alancamargo.snookerscore.ui.model
 
 import android.os.Parcelable
+import com.alancamargo.snookerscore.features.player.ui.model.UiPlayer
 import kotlinx.parcelize.Parcelize
 
 @Parcelize

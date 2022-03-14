@@ -4,6 +4,8 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
+import com.alancamargo.snookerscore.features.player.data.model.DbPlayer
+import com.alancamargo.snookerscore.features.player.data.model.PLAYER_COLUMN_ID
 
 const val MATCH_COLUMN_DATE_TIME = "dateTime"
 

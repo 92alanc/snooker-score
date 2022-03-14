@@ -16,6 +16,7 @@ import com.alancamargo.snookerscore.core.ui.AdLoader
 import com.alancamargo.snookerscore.core.ui.button
 import com.alancamargo.snookerscore.core.ui.makeDialogue
 import com.alancamargo.snookerscore.databinding.ActivityNewMatchBinding
+import com.alancamargo.snookerscore.features.player.ui.PlayerListActivity
 import com.alancamargo.snookerscore.navigation.FrameNavigation
 import com.alancamargo.snookerscore.navigation.PlayerListNavigation
 import com.alancamargo.snookerscore.ui.model.UiFrame

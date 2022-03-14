@@ -4,12 +4,12 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import com.alancamargo.snookerscore.data.db.FrameDao
 import com.alancamargo.snookerscore.data.db.MatchDao
-import com.alancamargo.snookerscore.data.db.PlayerDao
-import com.alancamargo.snookerscore.features.playerstats.data.db.PlayerStatsDao
 import com.alancamargo.snookerscore.data.model.DbFrame
 import com.alancamargo.snookerscore.data.model.DbMatch
-import com.alancamargo.snookerscore.data.model.DbPlayer
-import com.alancamargo.snookerscore.data.model.DbPlayerStats
+import com.alancamargo.snookerscore.features.player.data.db.PlayerDao
+import com.alancamargo.snookerscore.features.player.data.model.DbPlayer
+import com.alancamargo.snookerscore.features.playerstats.data.db.PlayerStatsDao
+import com.alancamargo.snookerscore.features.playerstats.data.model.DbPlayerStats
 
 @Database(
     entities = [

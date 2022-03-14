@@ -1,7 +1,7 @@
 package com.alancamargo.snookerscore.features.playerstats.data.local
 
-import com.alancamargo.snookerscore.domain.model.Player
-import com.alancamargo.snookerscore.domain.model.PlayerStats
+import com.alancamargo.snookerscore.features.player.domain.model.Player
+import com.alancamargo.snookerscore.features.playerstats.domain.model.PlayerStats
 import kotlinx.coroutines.flow.Flow
 
 interface PlayerStatsLocalDataSource {

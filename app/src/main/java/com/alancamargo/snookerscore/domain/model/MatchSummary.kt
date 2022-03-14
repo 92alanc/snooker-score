@@ -1,5 +1,7 @@
 package com.alancamargo.snookerscore.domain.model
 
+import com.alancamargo.snookerscore.features.player.domain.model.Player
+
 data class MatchSummary(
     val match: Match,
     val winner: Player,

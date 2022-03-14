@@ -1,13 +1,10 @@
 package com.alancamargo.snookerscore.ui.di
 
-import com.alancamargo.snookerscore.features.playerstats.ui.navigation.PlayerStatsNavigationImpl
 import com.alancamargo.snookerscore.navigation.FrameNavigation
 import com.alancamargo.snookerscore.navigation.MatchDetailsNavigation
 import com.alancamargo.snookerscore.navigation.MatchListNavigation
 import com.alancamargo.snookerscore.navigation.MatchSummaryNavigation
 import com.alancamargo.snookerscore.navigation.NewMatchNavigation
-import com.alancamargo.snookerscore.navigation.PlayerListNavigation
-import com.alancamargo.snookerscore.navigation.PlayerStatsNavigation
 import com.alancamargo.snookerscore.navigation.WebViewNavigation
 import com.alancamargo.snookerscore.ui.model.UiFrame
 import com.alancamargo.snookerscore.ui.navigation.FrameNavigationImpl
@@ -15,14 +12,12 @@ import com.alancamargo.snookerscore.ui.navigation.MatchDetailsNavigationImpl
 import com.alancamargo.snookerscore.ui.navigation.MatchListNavigationImpl
 import com.alancamargo.snookerscore.ui.navigation.MatchSummaryNavigationImpl
 import com.alancamargo.snookerscore.ui.navigation.NewMatchNavigationImpl
-import com.alancamargo.snookerscore.ui.navigation.PlayerListNavigationImpl
 import com.alancamargo.snookerscore.ui.navigation.WebViewNavigationImpl
 import com.alancamargo.snookerscore.ui.viewmodel.frame.FrameViewModel
 import com.alancamargo.snookerscore.ui.viewmodel.match.MatchDetailsViewModel
 import com.alancamargo.snookerscore.ui.viewmodel.matchlist.MatchListViewModel
 import com.alancamargo.snookerscore.ui.viewmodel.matchsummary.MatchSummaryViewModel
 import com.alancamargo.snookerscore.ui.viewmodel.newmatch.NewMatchViewModel
-import com.alancamargo.snookerscore.ui.viewmodel.playerlist.PlayerListViewModel
 import com.alancamargo.snookerscore.ui.viewmodel.webview.WebViewViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -62,19 +57,8 @@ val uiModule = module {
             logger = get()
         )
     }
-    viewModel { params ->
-        PlayerListViewModel(
-            isPickingPlayer = params.get(),
-            addOrUpdatePlayerUseCase = get(),
-            addOrUpdatePlayerStatsUseCase = get(),
-            getPlayersUseCase = get(),
-            preferenceManager = get(),
-            logger = get()
-        )
-    }
     factory<WebViewNavigation> { WebViewNavigationImpl() }
     viewModel { WebViewViewModel() }
-    factory<PlayerListNavigation> { PlayerListNavigationImpl() }
     factory<MatchListNavigation> { MatchListNavigationImpl() }
     factory<NewMatchNavigation> { NewMatchNavigationImpl() }
     factory<MatchDetailsNavigation> { MatchDetailsNavigationImpl() }

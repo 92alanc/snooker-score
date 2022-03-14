@@ -2,30 +2,11 @@ package com.alancamargo.snookerscore.data.mapping
 
 import com.alancamargo.snookerscore.data.model.DbFrame
 import com.alancamargo.snookerscore.data.model.DbMatch
-import com.alancamargo.snookerscore.data.model.DbPlayer
-import com.alancamargo.snookerscore.data.model.DbPlayerStats
 import com.alancamargo.snookerscore.domain.model.Frame
-import com.alancamargo.snookerscore.domain.model.Gender
 import com.alancamargo.snookerscore.domain.model.Match
-import com.alancamargo.snookerscore.domain.model.Player
-import com.alancamargo.snookerscore.domain.model.PlayerStats
-
-fun Player.toData(): DbPlayer {
-    val genderId = when (gender) {
-        Gender.MALE -> GENDER_ID_MALE
-        Gender.FEMALE -> GENDER_ID_FEMALE
-    }
-
-    return DbPlayer(id, name, genderId)
-}
-
-fun PlayerStats.toData() = DbPlayerStats(
-    id = id,
-    playerId = player.id,
-    matchesWon = matchesWon,
-    highestScore = highestScore,
-    highestBreak = highestBreak
-)
+import com.alancamargo.snookerscore.features.player.data.model.DbPlayer
+import com.alancamargo.snookerscore.features.player.domain.model.Gender
+import com.alancamargo.snookerscore.features.player.domain.model.Player
 
 fun Match.toData() = DbMatch(
     dateTime = dateTime,

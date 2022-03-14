@@ -6,6 +6,7 @@ import com.alancamargo.snookerscore.core.log.Logger
 import com.alancamargo.snookerscore.domain.usecase.frame.GetFramesUseCase
 import com.alancamargo.snookerscore.domain.usecase.match.DeleteMatchUseCase
 import com.alancamargo.snookerscore.domain.usecase.match.GetMatchSummaryUseCase
+import com.alancamargo.snookerscore.features.player.ui.mapping.toUi
 import com.alancamargo.snookerscore.testtools.getFrameList
 import com.alancamargo.snookerscore.testtools.getMatchSummary
 import com.alancamargo.snookerscore.testtools.getUiMatch

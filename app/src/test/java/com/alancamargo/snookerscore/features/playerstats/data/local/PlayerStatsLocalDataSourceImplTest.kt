@@ -1,8 +1,8 @@
 package com.alancamargo.snookerscore.features.playerstats.data.local
 
 import app.cash.turbine.test
-import com.alancamargo.snookerscore.data.mapping.toData
 import com.alancamargo.snookerscore.features.playerstats.data.db.PlayerStatsDao
+import com.alancamargo.snookerscore.features.playerstats.data.mapping.toData
 import com.alancamargo.snookerscore.testtools.ERROR_MESSAGE
 import com.alancamargo.snookerscore.testtools.getPlayer
 import com.alancamargo.snookerscore.testtools.getPlayerStats

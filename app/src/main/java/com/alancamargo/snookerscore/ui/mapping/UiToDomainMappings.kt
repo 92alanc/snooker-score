@@ -1,20 +1,10 @@
 package com.alancamargo.snookerscore.ui.mapping
 
 import com.alancamargo.snookerscore.domain.model.Frame
-import com.alancamargo.snookerscore.domain.model.Gender
 import com.alancamargo.snookerscore.domain.model.Match
-import com.alancamargo.snookerscore.domain.model.Player
+import com.alancamargo.snookerscore.features.player.ui.mapping.toDomain
 import com.alancamargo.snookerscore.ui.model.UiFrame
-import com.alancamargo.snookerscore.ui.model.UiGender
 import com.alancamargo.snookerscore.ui.model.UiMatch
-import com.alancamargo.snookerscore.ui.model.UiPlayer
-
-fun UiPlayer.toDomain() = Player(id = id, name = name, gender = gender.toDomain())
-
-fun UiGender.toDomain() = when (this) {
-    UiGender.MALE -> Gender.MALE
-    UiGender.FEMALE -> Gender.FEMALE
-}
 
 fun UiMatch.toDomain() = Match(
     dateTime = dateTime,

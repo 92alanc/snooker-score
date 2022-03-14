@@ -1,10 +1,11 @@
 package com.alancamargo.snookerscore.data.local.match
 
 import com.alancamargo.snookerscore.data.db.MatchDao
-import com.alancamargo.snookerscore.data.db.PlayerDao
 import com.alancamargo.snookerscore.data.mapping.toData
 import com.alancamargo.snookerscore.data.mapping.toDomain
 import com.alancamargo.snookerscore.domain.model.Match
+import com.alancamargo.snookerscore.features.player.data.db.PlayerDao
+import com.alancamargo.snookerscore.features.player.data.mapping.toDomain
 import kotlinx.coroutines.flow.flow
 
 class MatchLocalDataSourceImpl(

@@ -1,9 +1,9 @@
 package com.alancamargo.snookerscore.features.playerstats.ui.navigation
 
 import android.content.Context
+import com.alancamargo.snookerscore.features.player.ui.model.UiPlayer
+import com.alancamargo.snookerscore.features.playerstats.ui.PlayerStatsActivity
 import com.alancamargo.snookerscore.navigation.PlayerStatsNavigation
-import com.alancamargo.snookerscore.ui.activities.PlayerStatsActivity
-import com.alancamargo.snookerscore.ui.model.UiPlayer
 
 class PlayerStatsNavigationImpl : PlayerStatsNavigation {
 
