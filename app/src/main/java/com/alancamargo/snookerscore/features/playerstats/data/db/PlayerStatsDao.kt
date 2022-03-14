@@ -1,4 +1,4 @@
-package com.alancamargo.snookerscore.data.db
+package com.alancamargo.snookerscore.features.playerstats.data.db
 
 import androidx.room.Dao
 import androidx.room.Insert

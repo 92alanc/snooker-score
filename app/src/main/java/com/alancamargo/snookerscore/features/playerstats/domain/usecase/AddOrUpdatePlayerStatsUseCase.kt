@@ -1,9 +1,9 @@
-package com.alancamargo.snookerscore.domain.usecase.playerstats
+package com.alancamargo.snookerscore.features.playerstats.domain.usecase
 
 import com.alancamargo.snookerscore.domain.model.Frame
 import com.alancamargo.snookerscore.domain.model.Player
 import com.alancamargo.snookerscore.domain.model.PlayerStats
-import com.alancamargo.snookerscore.domain.repository.PlayerStatsRepository
+import com.alancamargo.snookerscore.features.playerstats.domain.repository.PlayerStatsRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import java.util.UUID

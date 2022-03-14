@@ -3,11 +3,9 @@ package com.alancamargo.snookerscore.domain.di
 import com.alancamargo.snookerscore.data.repository.FrameRepositoryImpl
 import com.alancamargo.snookerscore.data.repository.MatchRepositoryImpl
 import com.alancamargo.snookerscore.data.repository.PlayerRepositoryImpl
-import com.alancamargo.snookerscore.data.repository.PlayerStatsRepositoryImpl
 import com.alancamargo.snookerscore.domain.repository.FrameRepository
 import com.alancamargo.snookerscore.domain.repository.MatchRepository
 import com.alancamargo.snookerscore.domain.repository.PlayerRepository
-import com.alancamargo.snookerscore.domain.repository.PlayerStatsRepository
 import com.alancamargo.snookerscore.domain.tools.BreakCalculator
 import com.alancamargo.snookerscore.domain.tools.BreakCalculatorImpl
 import com.alancamargo.snookerscore.domain.usecase.foul.GetPenaltyValueUseCase
@@ -21,9 +19,6 @@ import com.alancamargo.snookerscore.domain.usecase.player.AddOrUpdatePlayerUseCa
 import com.alancamargo.snookerscore.domain.usecase.player.ArePlayersTheSameUseCase
 import com.alancamargo.snookerscore.domain.usecase.player.DeletePlayerUseCase
 import com.alancamargo.snookerscore.domain.usecase.player.GetPlayersUseCase
-import com.alancamargo.snookerscore.domain.usecase.playerstats.AddOrUpdatePlayerStatsUseCase
-import com.alancamargo.snookerscore.domain.usecase.playerstats.GetPlayerStatsUseCase
-import com.alancamargo.snookerscore.domain.usecase.playerstats.UpdatePlayerStatsWithMatchResultUseCase
 import org.koin.dsl.module
 
 val domainModule = module {
@@ -32,9 +27,6 @@ val domainModule = module {
     factory { AddOrUpdatePlayerUseCase(repository = get()) }
     factory { DeletePlayerUseCase(repository = get()) }
     factory { GetPenaltyValueUseCase() }
-    factory<PlayerStatsRepository> { PlayerStatsRepositoryImpl(localDataSource = get()) }
-    factory { GetPlayerStatsUseCase(repository = get()) }
-    factory { AddOrUpdatePlayerStatsUseCase(repository = get()) }
     factory<MatchRepository> { MatchRepositoryImpl(localDataSource = get()) }
     factory { AddMatchUseCase(repository = get()) }
     factory { DeleteMatchUseCase(repository = get()) }
@@ -44,6 +36,5 @@ val domainModule = module {
     factory { GetMatchesUseCase(repository = get()) }
     factory<BreakCalculator> { BreakCalculatorImpl() }
     factory { ArePlayersTheSameUseCase() }
-    factory { UpdatePlayerStatsWithMatchResultUseCase(repository = get()) }
     factory { GetMatchSummaryUseCase() }
 }

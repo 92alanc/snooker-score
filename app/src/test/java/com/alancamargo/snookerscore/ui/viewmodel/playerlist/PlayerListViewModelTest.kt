@@ -7,7 +7,7 @@ import com.alancamargo.snookerscore.core.preferences.PreferenceManager
 import com.alancamargo.snookerscore.domain.model.Player
 import com.alancamargo.snookerscore.domain.usecase.player.AddOrUpdatePlayerUseCase
 import com.alancamargo.snookerscore.domain.usecase.player.GetPlayersUseCase
-import com.alancamargo.snookerscore.domain.usecase.playerstats.AddOrUpdatePlayerStatsUseCase
+import com.alancamargo.snookerscore.features.playerstats.domain.usecase.AddOrUpdatePlayerStatsUseCase
 import com.alancamargo.snookerscore.testtools.getPlayer
 import com.alancamargo.snookerscore.testtools.getPlayerList
 import com.alancamargo.snookerscore.ui.mapping.toUi

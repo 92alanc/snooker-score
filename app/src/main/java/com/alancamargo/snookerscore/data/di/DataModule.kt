@@ -8,8 +8,6 @@ import com.alancamargo.snookerscore.data.local.match.MatchLocalDataSource
 import com.alancamargo.snookerscore.data.local.match.MatchLocalDataSourceImpl
 import com.alancamargo.snookerscore.data.local.player.PlayerLocalDataSource
 import com.alancamargo.snookerscore.data.local.player.PlayerLocalDataSourceImpl
-import com.alancamargo.snookerscore.data.local.playerstats.PlayerStatsLocalDataSource
-import com.alancamargo.snookerscore.data.local.playerstats.PlayerStatsLocalDataSourceImpl
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.scope.Scope
 import org.koin.dsl.module
@@ -25,12 +23,6 @@ val dataModule = module {
 
     factory<PlayerLocalDataSource> {
         PlayerLocalDataSourceImpl(playerDao = getDatabaseProvider().providePlayerDao())
-    }
-
-    factory<PlayerStatsLocalDataSource> {
-        PlayerStatsLocalDataSourceImpl(
-            playerStatsDao = getDatabaseProvider().providePlayerStatsDao()
-        )
     }
 
     factory<MatchLocalDataSource> {

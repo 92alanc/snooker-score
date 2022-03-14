@@ -11,9 +11,9 @@ import com.alancamargo.snookerscore.domain.usecase.foul.GetPenaltyValueUseCase
 import com.alancamargo.snookerscore.domain.usecase.frame.AddOrUpdateFrameUseCase
 import com.alancamargo.snookerscore.domain.usecase.match.DeleteMatchUseCase
 import com.alancamargo.snookerscore.domain.usecase.match.GetMatchSummaryUseCase
-import com.alancamargo.snookerscore.domain.usecase.playerstats.AddOrUpdatePlayerStatsUseCase
-import com.alancamargo.snookerscore.domain.usecase.playerstats.GetPlayerStatsUseCase
-import com.alancamargo.snookerscore.domain.usecase.playerstats.UpdatePlayerStatsWithMatchResultUseCase
+import com.alancamargo.snookerscore.features.playerstats.domain.usecase.AddOrUpdatePlayerStatsUseCase
+import com.alancamargo.snookerscore.features.playerstats.domain.usecase.GetPlayerStatsUseCase
+import com.alancamargo.snookerscore.features.playerstats.domain.usecase.UpdatePlayerStatsWithMatchResultUseCase
 import com.alancamargo.snookerscore.ui.mapping.toDomain
 import com.alancamargo.snookerscore.ui.model.UiFrame
 import com.alancamargo.snookerscore.ui.model.UiPlayer

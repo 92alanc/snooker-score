@@ -1,6 +1,6 @@
 package com.alancamargo.snookerscore.features.main.di
 
-import com.alancamargo.snookerscore.core.di.FeatureModule
+import com.alancamargo.snookerscore.core.arch.di.FeatureModule
 import com.alancamargo.snookerscore.features.main.data.remote.RulesUrlRemoteDataSource
 import com.alancamargo.snookerscore.features.main.data.remote.RulesUrlRemoteDataSourceImpl
 import com.alancamargo.snookerscore.features.main.data.repository.RulesUrlRepositoryImpl

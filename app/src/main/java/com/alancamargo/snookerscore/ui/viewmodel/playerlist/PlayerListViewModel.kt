@@ -8,7 +8,7 @@ import com.alancamargo.snookerscore.domain.model.Gender
 import com.alancamargo.snookerscore.domain.model.Player
 import com.alancamargo.snookerscore.domain.usecase.player.AddOrUpdatePlayerUseCase
 import com.alancamargo.snookerscore.domain.usecase.player.GetPlayersUseCase
-import com.alancamargo.snookerscore.domain.usecase.playerstats.AddOrUpdatePlayerStatsUseCase
+import com.alancamargo.snookerscore.features.playerstats.domain.usecase.AddOrUpdatePlayerStatsUseCase
 import com.alancamargo.snookerscore.ui.mapping.toUi
 import com.alancamargo.snookerscore.ui.model.UiPlayer
 import kotlinx.coroutines.CoroutineDispatcher

@@ -1,4 +1,4 @@
-package com.alancamargo.snookerscore.ui.viewmodel.playerstats
+package com.alancamargo.snookerscore.features.playerstats.ui.viewmodel
 
 import com.alancamargo.snookerscore.core.arch.viewmodel.UiAction
 

@@ -1,4 +1,4 @@
-package com.alancamargo.snookerscore.ui.navigation
+package com.alancamargo.snookerscore.features.playerstats.ui.navigation
 
 import android.content.Context
 import com.alancamargo.snookerscore.navigation.PlayerStatsNavigation

@@ -1,10 +1,10 @@
-package com.alancamargo.snookerscore.ui.viewmodel.playerstats
+package com.alancamargo.snookerscore.features.playerstats.ui.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import com.alancamargo.snookerscore.core.log.Logger
 import com.alancamargo.snookerscore.domain.usecase.player.DeletePlayerUseCase
-import com.alancamargo.snookerscore.domain.usecase.playerstats.GetPlayerStatsUseCase
+import com.alancamargo.snookerscore.features.playerstats.domain.usecase.GetPlayerStatsUseCase
 import com.alancamargo.snookerscore.testtools.getPlayer
 import com.alancamargo.snookerscore.testtools.getPlayerStats
 import com.alancamargo.snookerscore.ui.mapping.toUi

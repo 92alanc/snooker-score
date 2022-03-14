@@ -1,4 +1,4 @@
-package com.alancamargo.snookerscore.core.di
+package com.alancamargo.snookerscore.core.arch.di
 
 import org.koin.core.context.loadKoinModules
 import org.koin.dsl.module

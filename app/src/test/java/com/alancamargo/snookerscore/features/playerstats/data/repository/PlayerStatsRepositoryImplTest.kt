@@ -1,7 +1,7 @@
-package com.alancamargo.snookerscore.data.repository
+package com.alancamargo.snookerscore.features.playerstats.data.repository
 
 import app.cash.turbine.test
-import com.alancamargo.snookerscore.data.local.playerstats.PlayerStatsLocalDataSource
+import com.alancamargo.snookerscore.features.playerstats.data.local.PlayerStatsLocalDataSource
 import com.alancamargo.snookerscore.testtools.getPlayerStats
 import com.google.common.truth.Truth.assertThat
 import io.mockk.every

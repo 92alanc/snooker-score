@@ -16,9 +16,9 @@ import com.alancamargo.snookerscore.core.ui.button
 import com.alancamargo.snookerscore.core.ui.makeDialogue
 import com.alancamargo.snookerscore.databinding.ActivityPlayerStatsBinding
 import com.alancamargo.snookerscore.ui.model.UiPlayer
-import com.alancamargo.snookerscore.ui.viewmodel.playerstats.PlayerStatsUiAction
-import com.alancamargo.snookerscore.ui.viewmodel.playerstats.PlayerStatsUiState
-import com.alancamargo.snookerscore.ui.viewmodel.playerstats.PlayerStatsViewModel
+import com.alancamargo.snookerscore.features.playerstats.ui.viewmodel.PlayerStatsUiAction
+import com.alancamargo.snookerscore.features.playerstats.ui.viewmodel.PlayerStatsUiState
+import com.alancamargo.snookerscore.features.playerstats.ui.viewmodel.PlayerStatsViewModel
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.parcelize.Parcelize
 import org.koin.android.ext.android.get
