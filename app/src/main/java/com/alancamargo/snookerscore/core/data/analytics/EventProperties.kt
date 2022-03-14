@@ -1,10 +1,10 @@
 package com.alancamargo.snookerscore.core.data.analytics
 
-private const val PROPERTY_SCREEN_NAME = "screen-name"
-private const val PROPERTY_BUTTON_NAME = "button-name"
+private const val PROPERTY_SCREEN_NAME = "Screen-name"
+private const val PROPERTY_BUTTON_NAME = "Button-name"
 
-const val BUTTON_BACK = "back"
-const val BUTTON_BACK_NATIVE = "back-native"
+private const val BUTTON_BACK = "Back"
+private const val BUTTON_BACK_NATIVE = "Back-native"
 
 class EventProperties private constructor(val map: Map<String, String>) {
 

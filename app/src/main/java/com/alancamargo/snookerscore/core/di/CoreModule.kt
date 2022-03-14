@@ -6,6 +6,7 @@ import com.alancamargo.snookerscore.R
 import com.alancamargo.snookerscore.core.arch.di.FeatureModule
 import com.alancamargo.snookerscore.core.data.analytics.Analytics
 import com.alancamargo.snookerscore.core.data.analytics.AnalyticsImpl
+import com.alancamargo.snookerscore.core.data.db.DatabaseProvider
 import com.alancamargo.snookerscore.core.data.log.Logger
 import com.alancamargo.snookerscore.core.data.log.LoggerImpl
 import com.alancamargo.snookerscore.core.data.preferences.PreferenceManager
@@ -14,7 +15,6 @@ import com.alancamargo.snookerscore.core.data.remoteconfig.RemoteConfigManager
 import com.alancamargo.snookerscore.core.data.remoteconfig.RemoteConfigManagerImpl
 import com.alancamargo.snookerscore.core.ui.ads.AdLoader
 import com.alancamargo.snookerscore.core.ui.ads.AdLoaderImpl
-import com.alancamargo.snookerscore.core.data.db.DatabaseProvider
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import org.koin.android.ext.koin.androidContext
@@ -31,7 +31,10 @@ class CoreModule : FeatureModule() {
         }
         factory { get<Context>().getSharedPreferences("snooker-score-prefs", Context.MODE_PRIVATE) }
         factory<Analytics> {
-            AnalyticsImpl(firebaseAnalytics = FirebaseAnalytics.getInstance(get()))
+            AnalyticsImpl(
+                firebaseAnalytics = FirebaseAnalytics.getInstance(get()),
+                logger = get()
+            )
         }
         factory<RemoteConfigManager> { RemoteConfigManagerImpl(firebaseRemoteConfig = get()) }
         factory<Logger> { LoggerImpl() }
