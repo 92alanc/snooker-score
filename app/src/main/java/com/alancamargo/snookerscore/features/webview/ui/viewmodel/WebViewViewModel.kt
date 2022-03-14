@@ -1,4 +1,4 @@
-package com.alancamargo.snookerscore.ui.viewmodel.webview
+package com.alancamargo.snookerscore.features.webview.ui.viewmodel
 
 import com.alancamargo.snookerscore.core.arch.viewmodel.ActionViewModel
 

@@ -1,4 +1,4 @@
-package com.alancamargo.snookerscore.ui.activities
+package com.alancamargo.snookerscore.features.webview.ui
 
 import android.content.Context
 import android.content.Intent
@@ -19,8 +19,8 @@ import com.alancamargo.snookerscore.core.arch.extensions.observeAction
 import com.alancamargo.snookerscore.core.arch.extensions.putArguments
 import com.alancamargo.snookerscore.core.ui.AdLoader
 import com.alancamargo.snookerscore.databinding.ActivityWebViewBinding
-import com.alancamargo.snookerscore.ui.viewmodel.webview.WebViewUiAction
-import com.alancamargo.snookerscore.ui.viewmodel.webview.WebViewViewModel
+import com.alancamargo.snookerscore.features.webview.ui.viewmodel.WebViewUiAction
+import com.alancamargo.snookerscore.features.webview.ui.viewmodel.WebViewViewModel
 import kotlinx.parcelize.Parcelize
 import org.koin.android.ext.android.get
 import org.koin.androidx.viewmodel.ext.android.viewModel

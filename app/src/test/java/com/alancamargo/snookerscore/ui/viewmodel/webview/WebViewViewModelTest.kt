@@ -2,6 +2,8 @@ package com.alancamargo.snookerscore.ui.viewmodel.webview
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
+import com.alancamargo.snookerscore.features.webview.ui.viewmodel.WebViewUiAction
+import com.alancamargo.snookerscore.features.webview.ui.viewmodel.WebViewViewModel
 import io.mockk.mockk
 import io.mockk.verify
 import org.junit.Before

@@ -32,7 +32,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.activities.WebViewActivity"
+        <activity android:name=".features.webview.ui.WebViewActivity"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity"/>
 

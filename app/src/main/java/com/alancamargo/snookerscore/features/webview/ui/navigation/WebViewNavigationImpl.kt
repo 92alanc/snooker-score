@@ -1,8 +1,8 @@
-package com.alancamargo.snookerscore.ui.navigation
+package com.alancamargo.snookerscore.features.webview.ui.navigation
 
 import android.content.Context
+import com.alancamargo.snookerscore.features.webview.ui.WebViewActivity
 import com.alancamargo.snookerscore.navigation.WebViewNavigation
-import com.alancamargo.snookerscore.ui.activities.WebViewActivity
 
 class WebViewNavigationImpl : WebViewNavigation {
 
