@@ -2,12 +2,12 @@ package com.alancamargo.snookerscore.features.main.data.analytics
 
 import com.alancamargo.snookerscore.core.data.analytics.Analytics
 
-private const val SCREEN_NAME = "Main"
+private const val SCREEN_NAME = "main"
 
-private const val BUTTON_MATCHES = "Matches"
-private const val BUTTON_PLAYERS = "Players"
-private const val BUTTON_RULES = "Rules"
-private const val BUTTON_ABOUT = "About"
+private const val BUTTON_MATCHES = "matches"
+private const val BUTTON_PLAYERS = "players"
+private const val BUTTON_RULES = "rules"
+private const val BUTTON_ABOUT = "about"
 
 class MainAnalyticsImpl(private val analytics: Analytics) : MainAnalytics {
 

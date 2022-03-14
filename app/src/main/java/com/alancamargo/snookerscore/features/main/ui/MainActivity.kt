@@ -50,7 +50,7 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.itemAbout -> {
-                showAppInfo()
+                viewModel.onClickAbout()
                 true
             }
             else -> super.onOptionsItemSelected(item)
