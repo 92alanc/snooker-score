@@ -13,4 +13,6 @@ sealed class MainUiAction : UiAction {
 
     object ShowAppInfo : MainUiAction()
 
+    object Finish : MainUiAction()
+
 }

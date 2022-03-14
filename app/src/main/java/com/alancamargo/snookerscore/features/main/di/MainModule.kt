@@ -1,6 +1,8 @@
 package com.alancamargo.snookerscore.features.main.di
 
 import com.alancamargo.snookerscore.core.arch.di.FeatureModule
+import com.alancamargo.snookerscore.features.main.data.analytics.MainAnalytics
+import com.alancamargo.snookerscore.features.main.data.analytics.MainAnalyticsImpl
 import com.alancamargo.snookerscore.features.main.data.remote.RulesUrlRemoteDataSource
 import com.alancamargo.snookerscore.features.main.data.remote.RulesUrlRemoteDataSourceImpl
 import com.alancamargo.snookerscore.features.main.data.repository.RulesUrlRepositoryImpl
@@ -23,10 +25,11 @@ class MainModule : FeatureModule() {
         factory<RulesUrlRemoteDataSource> {
             RulesUrlRemoteDataSourceImpl(remoteConfigManager = get())
         }
+        factory<MainAnalytics> { MainAnalyticsImpl(analytics = get()) }
     }
 
     override val ui = module {
-        viewModel { MainViewModel(getRulesUrlUseCase = get()) }
+        viewModel { MainViewModel(getRulesUrlUseCase = get(), analytics = get()) }
         factory<MainNavigation> { MainNavigationImpl() }
     }
 

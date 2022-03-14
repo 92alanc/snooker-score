@@ -38,6 +38,10 @@ class MainActivity : AppCompatActivity() {
         observeAction(viewModel, ::handleAction)
     }
 
+    override fun onBackPressed() {
+        viewModel.onClickBack()
+    }
+
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
         return true
@@ -83,6 +87,7 @@ class MainActivity : AppCompatActivity() {
                 url = action.url
             )
             is MainUiAction.ShowAppInfo -> showAppInfo()
+            is MainUiAction.Finish -> finish()
         }
     }
 

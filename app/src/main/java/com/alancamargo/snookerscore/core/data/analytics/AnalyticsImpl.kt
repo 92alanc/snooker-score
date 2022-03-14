@@ -4,12 +4,34 @@ import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.logEvent
 
 private const val EVENT_SCREEN_VIEWED = "SCREEN_VIEWED"
+private const val EVENT_BUTTON_CLICKED = "BUTTON_CLICKED"
 
 class AnalyticsImpl(private val firebaseAnalytics: FirebaseAnalytics) : Analytics {
 
     override fun trackScreenViewed(screenName: String) {
         track(EVENT_SCREEN_VIEWED) {
             screen(screenName)
+        }
+    }
+
+    override fun trackButtonClicked(buttonName: String, screenName: String) {
+        track(EVENT_BUTTON_CLICKED) {
+            button(buttonName)
+            screen(screenName)
+        }
+    }
+
+    override fun trackBackButtonClicked(screenName: String) {
+        track(EVENT_BUTTON_CLICKED) {
+            screen(screenName)
+            backButton()
+        }
+    }
+
+    override fun trackNativeBackButtonClicked(screenName: String) {
+        track(EVENT_BUTTON_CLICKED) {
+            screen(screenName)
+            nativeBackButton()
         }
     }
 
