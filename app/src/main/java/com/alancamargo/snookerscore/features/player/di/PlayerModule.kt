@@ -2,6 +2,8 @@ package com.alancamargo.snookerscore.features.player.di
 
 import com.alancamargo.snookerscore.core.arch.di.FeatureModule
 import com.alancamargo.snookerscore.core.data.db.DatabaseProvider
+import com.alancamargo.snookerscore.features.player.data.analytics.PlayerListAnalytics
+import com.alancamargo.snookerscore.features.player.data.analytics.PlayerListAnalyticsImpl
 import com.alancamargo.snookerscore.features.player.data.local.PlayerLocalDataSource
 import com.alancamargo.snookerscore.features.player.data.local.PlayerLocalDataSourceImpl
 import com.alancamargo.snookerscore.features.player.data.repository.PlayerRepositoryImpl
@@ -31,15 +33,19 @@ class PlayerModule : FeatureModule() {
         factory<PlayerLocalDataSource> {
             PlayerLocalDataSourceImpl(playerDao = getDatabaseProvider().providePlayerDao())
         }
+        factory<PlayerListAnalytics> { PlayerListAnalyticsImpl(analytics = get()) }
     }
 
     override val ui = module {
         viewModel { params ->
             PlayerListViewModel(
                 isPickingPlayer = params.get(),
-                addOrUpdatePlayerUseCase = get(),
-                addOrUpdatePlayerStatsUseCase = get(),
-                getPlayersUseCase = get(),
+                useCases = PlayerListViewModel.UseCases(
+                    addOrUpdatePlayerUseCase = get(),
+                    addOrUpdatePlayerStatsUseCase = get(),
+                    getPlayersUseCase = get()
+                ),
+                analytics = get(),
                 preferenceManager = get(),
                 logger = get()
             )

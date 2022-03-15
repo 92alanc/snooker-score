@@ -1,5 +1,6 @@
 package com.alancamargo.snookerscore.core.data.analytics
 
+private const val PROPERTY_CARD_NAME = "card-name"
 private const val PROPERTY_SCREEN_NAME = "screen-name"
 private const val PROPERTY_BUTTON_NAME = "button-name"
 
@@ -19,6 +20,8 @@ class EventProperties private constructor(val map: Map<String, String>) {
         fun nativeBackButton(): Builder = button(BUTTON_BACK_NATIVE)
 
         fun button(name: String): Builder = PROPERTY_BUTTON_NAME withValue name
+
+        fun card(name: String): Builder = PROPERTY_CARD_NAME withValue name
 
         infix fun String.withValue(value: Any): Builder {
             map[this] = value.toString()

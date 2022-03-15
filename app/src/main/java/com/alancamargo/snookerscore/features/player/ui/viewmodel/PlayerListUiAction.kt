@@ -17,4 +17,6 @@ sealed class PlayerListUiAction : UiAction {
 
     object ShowTip : PlayerListUiAction()
 
+    object Finish : PlayerListUiAction()
+
 }

@@ -4,6 +4,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import com.alancamargo.snookerscore.core.data.log.Logger
 import com.alancamargo.snookerscore.core.data.preferences.PreferenceManager
+import com.alancamargo.snookerscore.features.player.data.analytics.PlayerListAnalytics
 import com.alancamargo.snookerscore.features.player.domain.model.Player
 import com.alancamargo.snookerscore.features.player.domain.usecase.AddOrUpdatePlayerUseCase
 import com.alancamargo.snookerscore.features.player.domain.usecase.GetPlayersUseCase
@@ -32,6 +33,7 @@ class PlayerListViewModelTest {
     private val mockAddOrUpdatePlayerUseCase = mockk<AddOrUpdatePlayerUseCase>()
     private val mockAddOrUpdatePlayerStatsUseCase = mockk<AddOrUpdatePlayerStatsUseCase>()
     private val mockGetPlayersUseCase = mockk<GetPlayersUseCase>()
+    private val mockAnalytics = mockk<PlayerListAnalytics>(relaxed = true)
     private val mockPreferenceManager = mockk<PreferenceManager>(relaxed = true)
     private val mockLogger = mockk<Logger>(relaxed = true)
     private val mockStateObserver = mockk<Observer<PlayerListUiState>>(relaxed = true)
@@ -186,9 +188,12 @@ class PlayerListViewModelTest {
 
         viewModel = PlayerListViewModel(
             isPickingPlayer = isPickingPlayer,
-            addOrUpdatePlayerUseCase = mockAddOrUpdatePlayerUseCase,
-            addOrUpdatePlayerStatsUseCase = mockAddOrUpdatePlayerStatsUseCase,
-            getPlayersUseCase = mockGetPlayersUseCase,
+            useCases = PlayerListViewModel.UseCases(
+                addOrUpdatePlayerUseCase = mockAddOrUpdatePlayerUseCase,
+                addOrUpdatePlayerStatsUseCase = mockAddOrUpdatePlayerStatsUseCase,
+                getPlayersUseCase = mockGetPlayersUseCase
+            ),
+            analytics = mockAnalytics,
             preferenceManager = mockPreferenceManager,
             logger = mockLogger,
             dispatcher = testCoroutineDispatcher

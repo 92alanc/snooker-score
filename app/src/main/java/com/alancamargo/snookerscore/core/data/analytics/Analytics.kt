@@ -6,6 +6,8 @@ interface Analytics {
 
     fun trackButtonClicked(buttonName: String, screenName: String)
 
+    fun trackCardClicked(cardName: String, screenName: String)
+
     fun trackBackButtonClicked(screenName: String)
 
     fun trackNativeBackButtonClicked(screenName: String)

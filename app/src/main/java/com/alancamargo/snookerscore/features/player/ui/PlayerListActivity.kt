@@ -21,12 +21,12 @@ import com.alancamargo.snookerscore.core.ui.dialogue.radioButton
 import com.alancamargo.snookerscore.core.ui.dialogue.radioButtons
 import com.alancamargo.snookerscore.databinding.ActivityPlayerListBinding
 import com.alancamargo.snookerscore.features.player.domain.model.Gender
+import com.alancamargo.snookerscore.features.player.ui.adapter.PlayerAdapter
 import com.alancamargo.snookerscore.features.player.ui.model.UiPlayer
 import com.alancamargo.snookerscore.features.player.ui.viewmodel.PlayerListUiAction
 import com.alancamargo.snookerscore.features.player.ui.viewmodel.PlayerListUiState
 import com.alancamargo.snookerscore.features.player.ui.viewmodel.PlayerListViewModel
 import com.alancamargo.snookerscore.navigation.PlayerStatsNavigation
-import com.alancamargo.snookerscore.features.player.ui.adapter.PlayerAdapter
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.parcelize.Parcelize
 import org.koin.android.ext.android.get
@@ -62,8 +62,12 @@ class PlayerListActivity : AppCompatActivity() {
         viewModel.getPlayers()
     }
 
+    override fun onBackPressed() {
+        viewModel.onNativeBackClicked()
+    }
+
     override fun onSupportNavigateUp(): Boolean {
-        onBackPressed()
+        viewModel.onBackClicked()
         return true
     }
 
@@ -91,6 +95,7 @@ class PlayerListActivity : AppCompatActivity() {
             is PlayerListUiAction.PickPlayer -> pickPlayer(action.player)
             is PlayerListUiAction.EditPlayer -> editPlayer(action.player)
             is PlayerListUiAction.ShowTip -> showTip()
+            is PlayerListUiAction.Finish -> finish()
         }
     }
 
@@ -185,6 +190,7 @@ class PlayerListActivity : AppCompatActivity() {
             illustrationRes = R.drawable.illu_tip
             primaryButton = button {
                 textRes = R.string.ok
+                onClick = viewModel::onTipDismissed
             }
             secondaryButton = button {
                 textRes = R.string.dont_show_again
