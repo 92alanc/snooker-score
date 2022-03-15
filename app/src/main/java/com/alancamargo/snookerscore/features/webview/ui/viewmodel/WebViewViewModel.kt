@@ -1,8 +1,15 @@
 package com.alancamargo.snookerscore.features.webview.ui.viewmodel
 
 import com.alancamargo.snookerscore.core.arch.viewmodel.ActionViewModel
+import com.alancamargo.snookerscore.features.webview.data.analytics.WebViewAnalytics
 
-class WebViewViewModel : ActionViewModel<WebViewUiAction>() {
+class WebViewViewModel(
+    private val analytics: WebViewAnalytics
+) : ActionViewModel<WebViewUiAction>() {
+
+    init {
+        analytics.trackScreenViewed()
+    }
 
     fun onStartLoading() {
         sendAction { WebViewUiAction.ShowLoading }
@@ -14,6 +21,16 @@ class WebViewViewModel : ActionViewModel<WebViewUiAction>() {
 
     fun onRefresh() {
         sendAction { WebViewUiAction.Refresh }
+    }
+
+    fun onBackClicked() {
+        analytics.trackBackClicked()
+        sendAction { WebViewUiAction.Finish }
+    }
+
+    fun onNativeBackClicked() {
+        analytics.trackNativeBackClicked()
+        sendAction { WebViewUiAction.Finish }
     }
 
 }

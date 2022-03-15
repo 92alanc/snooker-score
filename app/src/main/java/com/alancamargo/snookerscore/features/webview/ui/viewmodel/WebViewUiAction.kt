@@ -10,4 +10,6 @@ sealed class WebViewUiAction : UiAction {
 
     object Refresh : WebViewUiAction()
 
+    object Finish : WebViewUiAction()
+
 }

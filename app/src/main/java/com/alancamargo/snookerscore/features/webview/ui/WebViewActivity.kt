@@ -41,8 +41,12 @@ class WebViewActivity : AppCompatActivity() {
         observeAction(viewModel, ::onActionChanged)
     }
 
+    override fun onBackPressed() {
+        viewModel.onNativeBackClicked()
+    }
+
     override fun onSupportNavigateUp(): Boolean {
-        onBackPressed()
+        viewModel.onBackClicked()
         return true
     }
 
@@ -77,6 +81,7 @@ class WebViewActivity : AppCompatActivity() {
             WebViewUiAction.ShowLoading -> binding.progressBar.isVisible = true
             WebViewUiAction.HideLoading -> binding.progressBar.isVisible = false
             WebViewUiAction.Refresh -> binding.webView.loadUrl(args.url)
+            WebViewUiAction.Finish -> finish()
         }
     }
 
