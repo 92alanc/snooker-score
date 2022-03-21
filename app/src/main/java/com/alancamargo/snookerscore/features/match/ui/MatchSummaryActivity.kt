@@ -14,12 +14,12 @@ import com.alancamargo.snookerscore.core.arch.extensions.observeState
 import com.alancamargo.snookerscore.core.arch.extensions.putArguments
 import com.alancamargo.snookerscore.core.ui.ads.AdLoader
 import com.alancamargo.snookerscore.databinding.ActivityMatchSummaryBinding
-import com.alancamargo.snookerscore.navigation.MainNavigation
-import com.alancamargo.snookerscore.navigation.NewMatchNavigation
 import com.alancamargo.snookerscore.features.frame.ui.model.UiFrame
 import com.alancamargo.snookerscore.features.match.ui.viewmodel.summary.MatchSummaryUiAction
 import com.alancamargo.snookerscore.features.match.ui.viewmodel.summary.MatchSummaryUiState
 import com.alancamargo.snookerscore.features.match.ui.viewmodel.summary.MatchSummaryViewModel
+import com.alancamargo.snookerscore.navigation.MainNavigation
+import com.alancamargo.snookerscore.navigation.NewMatchNavigation
 import kotlinx.parcelize.Parcelize
 import org.koin.android.ext.android.get
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -45,11 +45,11 @@ class MatchSummaryActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        viewModel.onCloseButtonClicked()
+        viewModel.onNativeBackClicked()
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        onBackPressed()
+        viewModel.onBackClicked()
         return true
     }
 

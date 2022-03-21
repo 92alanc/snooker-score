@@ -9,6 +9,8 @@ import com.alancamargo.snookerscore.features.match.data.analytics.list.MatchList
 import com.alancamargo.snookerscore.features.match.data.analytics.list.MatchListAnalyticsImpl
 import com.alancamargo.snookerscore.features.match.data.analytics.newmatch.NewMatchAnalytics
 import com.alancamargo.snookerscore.features.match.data.analytics.newmatch.NewMatchAnalyticsImpl
+import com.alancamargo.snookerscore.features.match.data.analytics.summary.MatchSummaryAnalytics
+import com.alancamargo.snookerscore.features.match.data.analytics.summary.MatchSummaryAnalyticsImpl
 import com.alancamargo.snookerscore.features.match.data.local.MatchLocalDataSource
 import com.alancamargo.snookerscore.features.match.data.local.MatchLocalDataSourceImpl
 import com.alancamargo.snookerscore.features.match.data.repository.MatchRepositoryImpl
@@ -47,6 +49,7 @@ class MatchModule : FeatureModule() {
         factory<MatchDetailsAnalytics> { MatchDetailsAnalyticsImpl(analytics = get()) }
         factory<MatchListAnalytics> { MatchListAnalyticsImpl(analytics = get()) }
         factory<NewMatchAnalytics> { NewMatchAnalyticsImpl(analytics = get()) }
+        factory<MatchSummaryAnalytics> { MatchSummaryAnalyticsImpl(analytics = get()) }
         factory<MatchLocalDataSource> {
             MatchLocalDataSourceImpl(
                 matchDao = getDatabaseProvider().provideMatchDao(),
@@ -81,7 +84,11 @@ class MatchModule : FeatureModule() {
             )
         }
         viewModel { (frames: List<UiFrame>) ->
-            MatchSummaryViewModel(frames = frames, getMatchSummaryUseCase = get())
+            MatchSummaryViewModel(
+                frames = frames,
+                getMatchSummaryUseCase = get(),
+                analytics = get()
+            )
         }
         factory<MatchSummaryNavigation> { MatchSummaryNavigationImpl() }
         factory<MatchListNavigation> { MatchListNavigationImpl() }
