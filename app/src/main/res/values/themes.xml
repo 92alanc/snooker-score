@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <style name="Theme.SnookerScore" parent="Theme.Material3.Light.NoActionBar">
         <!-- Primary brand colours -->
         <item name="colorPrimary">@color/green</item>
@@ -12,8 +12,9 @@
         <!-- App theme -->
         <item name="colorControlNormal">@color/light_grey</item>
         <item name="colorControlActivated">@color/green</item>
+        <item name="fontFamily">@font/raleway_regular</item>
         <item name="android:textColorSecondary">@color/light_grey</item>
         <item name="android:colorBackground">?attr/colorPrimaryVariant</item>
-        <item name="fontFamily">@font/raleway_regular</item>
+        <item name="android:forceDarkAllowed" tools:ignore="NewApi">false</item>
     </style>
 </resources>
