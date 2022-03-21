@@ -42,6 +42,13 @@ class PlayerListViewModelTest {
     private lateinit var viewModel: PlayerListViewModel
 
     @Test
+    fun `at startup should track screen viewed on analytics`() {
+        createViewModel()
+
+        verify { mockAnalytics.trackScreenViewed() }
+    }
+
+    @Test
     fun `getPlayers should set state with players`() {
         val players = getPlayerList()
         every { mockGetPlayersUseCase.invoke() } returns flow { emit(players) }
@@ -97,6 +104,15 @@ class PlayerListViewModelTest {
     }
 
     @Test
+    fun `onDontShowTipAgainClicked should track on analytics`() {
+        createViewModel(shouldShowTip = true)
+
+        viewModel.onDontShowTipAgainClicked()
+
+        verify { mockAnalytics.trackDoNotShowTipAgainClicked() }
+    }
+
+    @Test
     fun `onDontShowTipAgainClicked should update preference on preference manager`() {
         createViewModel(shouldShowTip = true)
 
@@ -106,12 +122,40 @@ class PlayerListViewModelTest {
     }
 
     @Test
+    fun `onTipDismissed should track on analytics`() {
+        createViewModel(shouldShowTip = true)
+
+        viewModel.onTipDismissed()
+
+        verify { mockAnalytics.trackTipDismissed() }
+    }
+
+    @Test
+    fun `onNewPlayerClicked should track on analytics`() {
+        createViewModel()
+
+        viewModel.onNewPlayerClicked()
+
+        verify { mockAnalytics.trackNewPlayerClicked() }
+    }
+
+    @Test
     fun `onNewPlayerClicked should send ShowNewPlayerDialogue action`() {
         createViewModel()
 
         viewModel.onNewPlayerClicked()
 
         verify { mockActionObserver.onChanged(PlayerListUiAction.ShowNewPlayerDialogue) }
+    }
+
+    @Test
+    fun `onPlayerClicked should track on analytics`() {
+        createViewModel()
+
+        val player = getPlayer().toUi()
+        viewModel.onPlayerClicked(player)
+
+        verify { mockAnalytics.trackPlayerCardClicked() }
     }
 
     @Test
@@ -132,6 +176,15 @@ class PlayerListViewModelTest {
         viewModel.onPlayerClicked(player)
 
         verify { mockActionObserver.onChanged(PlayerListUiAction.PickPlayer(player)) }
+    }
+
+    @Test
+    fun `onSavePlayerClicked should track on analytics`() {
+        createViewModel()
+
+        viewModel.onSavePlayerClicked()
+
+        verify { mockAnalytics.trackSavePlayerClicked() }
     }
 
     @Test
@@ -171,6 +224,16 @@ class PlayerListViewModelTest {
     }
 
     @Test
+    fun `onPlayerLongClicked should track on analytics`() {
+        createViewModel()
+
+        val player = getPlayer().toUi()
+        viewModel.onPlayerLongClicked(player)
+
+        verify { mockAnalytics.trackPlayerCardLongClicked() }
+    }
+
+    @Test
     fun `onPlayerLongClicked should send EditPlayer action`() {
         createViewModel()
 
@@ -178,6 +241,24 @@ class PlayerListViewModelTest {
         viewModel.onPlayerLongClicked(player)
 
         verify { mockActionObserver.onChanged(PlayerListUiAction.EditPlayer(player)) }
+    }
+
+    @Test
+    fun `onBackClicked should track on analytics`() {
+        createViewModel()
+
+        viewModel.onBackClicked()
+
+        verify { mockAnalytics.trackBackClicked() }
+    }
+
+    @Test
+    fun `onNativeBackClicked should track on analytics`() {
+        createViewModel()
+
+        viewModel.onNativeBackClicked()
+
+        verify { mockAnalytics.trackNativeBackClicked() }
     }
 
     private fun createViewModel(isPickingPlayer: Boolean = false, shouldShowTip: Boolean = false) {
