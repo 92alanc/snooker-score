@@ -6,6 +6,8 @@ import com.alancamargo.snookerscore.core.data.log.Logger
 import com.alancamargo.snookerscore.features.match.domain.usecase.AddMatchUseCase
 import com.alancamargo.snookerscore.features.player.domain.usecase.ArePlayersTheSameUseCase
 import com.alancamargo.snookerscore.features.player.domain.usecase.GetPlayersUseCase
+import com.alancamargo.snookerscore.features.player.ui.model.UiGender
+import com.alancamargo.snookerscore.features.player.ui.model.UiPlayer
 import com.alancamargo.snookerscore.testtools.getPlayerList
 import io.mockk.every
 import io.mockk.mockk
@@ -16,7 +18,6 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.setMain
 import org.junit.Before
-import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 import java.io.IOException
@@ -55,34 +56,33 @@ class NewMatchViewModelTest {
     }
 
     @Test
-    @Ignore("Re-write")
-    fun `onSelectPlayer1ButtonClicked should send PickPlayer1 action`() {
+    fun `onSelectPlayer1ButtonClicked should send PickPlayer action`() {
         mockSuccessfulPlayersResponse()
 
         viewModel.onSelectPlayer1ButtonClicked()
 
-        //verify { mockActionObserver.onChanged(NewMatchUiAction.PickPlayer1) }
+        verify { mockActionObserver.onChanged(NewMatchUiAction.PickPlayer) }
     }
 
     @Test
-    @Ignore("Re-write")
-    fun `onSelectPlayer2ButtonClicked should send PickPlayer2 action`() {
+    fun `onSelectPlayer2ButtonClicked should send PickPlayer action`() {
         mockSuccessfulPlayersResponse()
 
         viewModel.onSelectPlayer2ButtonClicked()
 
-        //verify { mockActionObserver.onChanged(NewMatchUiAction.PickPlayer2) }
+        verify { mockActionObserver.onChanged(NewMatchUiAction.PickPlayer) }
     }
 
     @Test
-    @Ignore("Re-write")
     fun `when players are the same onStartMatchButtonClicked should send ShowSamePlayersDialogue action`() {
         mockSuccessfulPlayersResponse()
         every { mockArePlayersTheSameUseCase.invoke(player1 = any(), player2 = any()) } returns true
 
-        /*val player = UiPlayer(name = "Judd Trump", gender = UiGender.MALE)
-        viewModel.onPlayer1Selected(player)
-        viewModel.onPlayer2Selected(player)*/
+        val player = UiPlayer(id = "12345", name = "Judd Trump", gender = UiGender.MALE)
+        viewModel.onSelectPlayer1ButtonClicked()
+        viewModel.onPlayerSelected(player)
+        viewModel.onSelectPlayer2ButtonClicked()
+        viewModel.onPlayerSelected(player.copy(id = "54321"))
 
         viewModel.onStartMatchButtonClicked()
 
@@ -90,7 +90,6 @@ class NewMatchViewModelTest {
     }
 
     @Test
-    @Ignore("Re-write")
     fun `when match is successfully added onStartMatchButtonClicked should send StartMatch action`() {
         mockSuccessfulPlayersResponse()
         every {
@@ -98,9 +97,11 @@ class NewMatchViewModelTest {
         } returns false
         every { mockAddMatchUseCase.invoke(match = any()) } returns flow { emit(Unit) }
 
-        /*val player = UiPlayer(name = "Judd Trump", gender = UiGender.MALE)
-        viewModel.onPlayer1Selected(player)
-        viewModel.onPlayer2Selected(player)*/
+        val player = UiPlayer(id = "12345", name = "Judd Trump", gender = UiGender.MALE)
+        viewModel.onSelectPlayer1ButtonClicked()
+        viewModel.onPlayerSelected(player)
+        viewModel.onSelectPlayer2ButtonClicked()
+        viewModel.onPlayerSelected(player.copy(id = "54321"))
 
         viewModel.onStartMatchButtonClicked()
 
@@ -108,7 +109,6 @@ class NewMatchViewModelTest {
     }
 
     @Test
-    @Ignore("Re-write")
     fun `with error response onStartMatchButtonClicked should send ShowError action`() {
         mockSuccessfulPlayersResponse()
         every {
@@ -116,9 +116,11 @@ class NewMatchViewModelTest {
         } returns false
         every { mockAddMatchUseCase.invoke(match = any()) } returns flow { throw IOException() }
 
-        /*val player = UiPlayer(name = "Judd Trump", gender = UiGender.MALE)
-        viewModel.onPlayer1Selected(player)
-        viewModel.onPlayer2Selected(player)*/
+        val player = UiPlayer(id = "12345", name = "Judd Trump", gender = UiGender.MALE)
+        viewModel.onSelectPlayer1ButtonClicked()
+        viewModel.onPlayerSelected(player)
+        viewModel.onSelectPlayer2ButtonClicked()
+        viewModel.onPlayerSelected(player.copy(id = "54321"))
 
         viewModel.onStartMatchButtonClicked()
 
