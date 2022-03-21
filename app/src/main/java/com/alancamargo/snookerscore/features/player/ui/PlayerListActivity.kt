@@ -122,6 +122,7 @@ class PlayerListActivity : AppCompatActivity() {
                 radioButton {
                     id = Gender.MALE.ordinal
                     textRes = R.string.male
+                    isChecked = true
                 }
                 radioButton {
                     id = Gender.FEMALE.ordinal

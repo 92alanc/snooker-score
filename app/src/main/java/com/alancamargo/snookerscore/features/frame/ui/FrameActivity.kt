@@ -186,6 +186,7 @@ class FrameActivity : AppCompatActivity() {
                 radioButton {
                     id = player1.hashCode()
                     text = player1.name
+                    isChecked = true
                 }
                 radioButton {
                     id = player2.hashCode()
@@ -219,6 +220,7 @@ class FrameActivity : AppCompatActivity() {
                 radioButton {
                     id = Ball.RED.ordinal
                     textRes = R.string.red
+                    isChecked = true
                 }
                 radioButton {
                     id = Ball.YELLOW.ordinal
