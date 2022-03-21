@@ -4,13 +4,14 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import com.alancamargo.snookerscore.core.data.log.Logger
 import com.alancamargo.snookerscore.features.frame.domain.usecase.GetFramesUseCase
+import com.alancamargo.snookerscore.features.frame.ui.mapping.toUi
+import com.alancamargo.snookerscore.features.match.data.analytics.details.MatchDetailsAnalytics
 import com.alancamargo.snookerscore.features.match.domain.usecase.DeleteMatchUseCase
 import com.alancamargo.snookerscore.features.match.domain.usecase.GetMatchSummaryUseCase
 import com.alancamargo.snookerscore.features.player.ui.mapping.toUi
 import com.alancamargo.snookerscore.testtools.getFrameList
 import com.alancamargo.snookerscore.testtools.getMatchSummary
 import com.alancamargo.snookerscore.testtools.getUiMatch
-import com.alancamargo.snookerscore.features.frame.ui.mapping.toUi
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
@@ -30,6 +31,7 @@ class MatchDetailsViewModelTest {
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
+    private val mockAnalytics = mockk<MatchDetailsAnalytics>(relaxed = true)
     private val mockGetFramesUseCase = mockk<GetFramesUseCase>()
     private val mockDeleteMatchUseCase = mockk<DeleteMatchUseCase>()
     private val mockGetMatchSummaryUseCase = mockk<GetMatchSummaryUseCase>()
@@ -45,6 +47,7 @@ class MatchDetailsViewModelTest {
         Dispatchers.setMain(testCoroutineDispatcher)
 
         viewModel = MatchDetailsViewModel(
+            mockAnalytics,
             mockGetFramesUseCase,
             mockDeleteMatchUseCase,
             mockGetMatchSummaryUseCase,
@@ -54,6 +57,11 @@ class MatchDetailsViewModelTest {
             state.observeForever(mockStateObserver)
             action.observeForever(mockActionObserver)
         }
+    }
+
+    @Test
+    fun `at startup should track screen viewed on analytics`() {
+        verify { mockAnalytics.trackScreenViewed() }
     }
 
     @Test
@@ -84,10 +92,53 @@ class MatchDetailsViewModelTest {
     }
 
     @Test
+    fun `onViewSummaryClicked should track on analytics`() {
+        every { mockGetFramesUseCase.invoke(match = any()) } returns flow { emit(getFrameList()) }
+        viewModel.getMatchDetails(getUiMatch())
+
+        viewModel.onViewSummaryClicked()
+
+        verify { mockAnalytics.trackViewSummaryClicked() }
+    }
+
+    @Test
+    fun `onViewSummaryClicked should send ViewSummary action`() {
+        every { mockGetFramesUseCase.invoke(match = any()) } returns flow { emit(getFrameList()) }
+        viewModel.getMatchDetails(getUiMatch())
+
+        viewModel.onViewSummaryClicked()
+
+        verify { mockActionObserver.onChanged(any<MatchDetailsUiAction.ViewSummary>()) }
+    }
+
+    @Test
+    fun `onDeleteMatchClicked should track on analytics`() {
+        viewModel.onDeleteMatchClicked()
+
+        verify { mockAnalytics.trackDeleteMatchClicked() }
+    }
+
+    @Test
     fun `onDeleteMatchClicked should send ShowDeleteMatchConfirmation`() {
         viewModel.onDeleteMatchClicked()
 
         verify { mockActionObserver.onChanged(MatchDetailsUiAction.ShowDeleteMatchConfirmation) }
+    }
+
+    @Test
+    fun `onDeleteMatchCancelled should track on analytics`() {
+        viewModel.onDeleteMatchCancelled()
+
+        verify { mockAnalytics.trackDeleteMatchCancelled() }
+    }
+
+    @Test
+    fun `onDeleteMatchConfirmed should track on analytics`() {
+        every { mockDeleteMatchUseCase.invoke(match = any()) } returns flow { emit(Unit) }
+
+        viewModel.onDeleteMatchConfirmed(getUiMatch())
+
+        verify { mockAnalytics.trackDeleteMatchConfirmed() }
     }
 
     @Test

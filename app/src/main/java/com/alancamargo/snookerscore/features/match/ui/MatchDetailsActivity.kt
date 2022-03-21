@@ -15,13 +15,13 @@ import com.alancamargo.snookerscore.core.ui.ads.AdLoader
 import com.alancamargo.snookerscore.core.ui.dialogue.button
 import com.alancamargo.snookerscore.core.ui.dialogue.makeDialogue
 import com.alancamargo.snookerscore.databinding.ActivityMatchDetailsBinding
-import com.alancamargo.snookerscore.navigation.MatchSummaryNavigation
 import com.alancamargo.snookerscore.features.frame.ui.adapter.FrameAdapter
 import com.alancamargo.snookerscore.features.frame.ui.model.UiFrame
 import com.alancamargo.snookerscore.features.match.ui.model.UiMatch
 import com.alancamargo.snookerscore.features.match.ui.viewmodel.details.MatchDetailsUiAction
 import com.alancamargo.snookerscore.features.match.ui.viewmodel.details.MatchDetailsUiState
 import com.alancamargo.snookerscore.features.match.ui.viewmodel.details.MatchDetailsViewModel
+import com.alancamargo.snookerscore.navigation.MatchSummaryNavigation
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.parcelize.Parcelize
 import org.koin.android.ext.android.get
@@ -55,8 +55,12 @@ class MatchDetailsActivity : AppCompatActivity() {
         viewModel.getMatchDetails(args.match)
     }
 
+    override fun onBackPressed() {
+        viewModel.onNativeBackClicked()
+    }
+
     override fun onSupportNavigateUp(): Boolean {
-        onBackPressed()
+        viewModel.onBackClicked()
         return true
     }
 
@@ -120,6 +124,7 @@ class MatchDetailsActivity : AppCompatActivity() {
             illustrationRes = R.drawable.ic_warning
             primaryButton = button {
                 textRes = R.string.cancel
+                onClick = viewModel::onDeleteMatchCancelled
             }
             secondaryButton = button {
                 textRes = R.string.yes
