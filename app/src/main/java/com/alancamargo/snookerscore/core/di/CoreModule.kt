@@ -16,6 +16,8 @@ import com.alancamargo.snookerscore.core.data.remoteconfig.RemoteConfigManagerIm
 import com.alancamargo.snookerscore.core.ui.ads.AdLoader
 import com.alancamargo.snookerscore.core.ui.ads.AdLoaderImpl
 import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.crashlytics.ktx.crashlytics
+import com.google.firebase.ktx.Firebase
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
@@ -37,7 +39,7 @@ class CoreModule : FeatureModule() {
             )
         }
         factory<RemoteConfigManager> { RemoteConfigManagerImpl(firebaseRemoteConfig = get()) }
-        factory<Logger> { LoggerImpl() }
+        factory<Logger> { LoggerImpl(crashlytics = Firebase.crashlytics) }
         factory<PreferenceManager> { PreferenceManagerImpl(sharedPreferences = get()) }
         single {
             Room.databaseBuilder(

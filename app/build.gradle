@@ -4,6 +4,7 @@ plugins {
     id 'org.jetbrains.kotlin.kapt'
     id 'kotlin-parcelize'
     id 'com.google.gms.google-services'
+    id 'com.google.firebase.crashlytics'
 }
 
 android {
@@ -68,6 +69,7 @@ dependencies {
     implementation 'com.google.android.material:material:1.5.0'
     implementation 'com.google.firebase:firebase-analytics-ktx'
     implementation 'com.google.firebase:firebase-config'
+    implementation 'com.google.firebase:firebase-crashlytics-ktx'
     implementation "com.smaato.android.sdk:smaato-sdk-banner:$smaato_version"
     implementation "com.smaato.android.sdk:smaato-sdk-interstitial:$smaato_version"
     implementation "io.insert-koin:koin-core:$koin_version"
