@@ -2,6 +2,8 @@ package com.alancamargo.snookerscore.features.frame.di
 
 import com.alancamargo.snookerscore.core.arch.di.FeatureModule
 import com.alancamargo.snookerscore.core.data.db.DatabaseProvider
+import com.alancamargo.snookerscore.features.frame.data.analytics.FrameAnalytics
+import com.alancamargo.snookerscore.features.frame.data.analytics.FrameAnalyticsImpl
 import com.alancamargo.snookerscore.features.frame.data.local.FrameLocalDataSource
 import com.alancamargo.snookerscore.features.frame.data.local.FrameLocalDataSourceImpl
 import com.alancamargo.snookerscore.features.frame.data.repository.FrameRepositoryImpl
@@ -11,10 +13,10 @@ import com.alancamargo.snookerscore.features.frame.domain.tools.BreakCalculatorI
 import com.alancamargo.snookerscore.features.frame.domain.usecase.AddOrUpdateFrameUseCase
 import com.alancamargo.snookerscore.features.frame.domain.usecase.GetFramesUseCase
 import com.alancamargo.snookerscore.features.frame.domain.usecase.GetPenaltyValueUseCase
-import com.alancamargo.snookerscore.navigation.FrameNavigation
 import com.alancamargo.snookerscore.features.frame.ui.model.UiFrame
 import com.alancamargo.snookerscore.features.frame.ui.navigation.FrameNavigationImpl
 import com.alancamargo.snookerscore.features.frame.ui.viewmodel.FrameViewModel
+import com.alancamargo.snookerscore.navigation.FrameNavigation
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.scope.Scope
 import org.koin.dsl.module
@@ -30,6 +32,7 @@ class FrameModule : FeatureModule() {
     }
 
     override val data = module {
+        factory<FrameAnalytics> { FrameAnalyticsImpl(analytics = get()) }
         factory<FrameLocalDataSource> {
             FrameLocalDataSourceImpl(
                 frameDao = getDatabaseProvider().provideFrameDao(),
@@ -42,6 +45,7 @@ class FrameModule : FeatureModule() {
         viewModel { (frames: List<UiFrame>) ->
             FrameViewModel(
                 frames = frames,
+                analytics = get(),
                 useCases = FrameViewModel.UseCases(
                     getMatchSummaryUseCase = get(),
                     playerStatsUseCases = FrameViewModel.PlayerStatsUseCases(

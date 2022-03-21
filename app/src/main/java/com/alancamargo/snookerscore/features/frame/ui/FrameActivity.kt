@@ -22,13 +22,13 @@ import com.alancamargo.snookerscore.core.ui.dialogue.radioButtons
 import com.alancamargo.snookerscore.databinding.ActivityFrameBinding
 import com.alancamargo.snookerscore.features.frame.domain.model.Ball
 import com.alancamargo.snookerscore.features.frame.domain.model.Foul
-import com.alancamargo.snookerscore.features.player.ui.model.UiPlayer
-import com.alancamargo.snookerscore.navigation.MainNavigation
-import com.alancamargo.snookerscore.navigation.MatchSummaryNavigation
 import com.alancamargo.snookerscore.features.frame.ui.model.UiFrame
 import com.alancamargo.snookerscore.features.frame.ui.viewmodel.FrameUiAction
 import com.alancamargo.snookerscore.features.frame.ui.viewmodel.FrameUiState
 import com.alancamargo.snookerscore.features.frame.ui.viewmodel.FrameViewModel
+import com.alancamargo.snookerscore.features.player.ui.model.UiPlayer
+import com.alancamargo.snookerscore.navigation.MainNavigation
+import com.alancamargo.snookerscore.navigation.MatchSummaryNavigation
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.parcelize.Parcelize
@@ -58,7 +58,7 @@ class FrameActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        viewModel.onForfeitMatchClicked()
+        viewModel.onNativeBackClicked()
     }
 
     override fun onDestroy() {
@@ -278,6 +278,7 @@ class FrameActivity : AppCompatActivity() {
             }
             secondaryButton = button {
                 textRes = R.string.cancel
+                onClick = viewModel::onEndFrameCancelled
             }
         }.show(supportFragmentManager, DIALOGUE_TAG)
     }
@@ -292,6 +293,7 @@ class FrameActivity : AppCompatActivity() {
             }
             secondaryButton = button {
                 textRes = R.string.cancel
+                onClick = viewModel::onForfeitMatchCancelled
             }
         }.show(supportFragmentManager, DIALOGUE_TAG)
     }

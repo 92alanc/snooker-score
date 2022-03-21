@@ -3,6 +3,7 @@ package com.alancamargo.snookerscore.features.frame.ui.viewmodel
 import androidx.lifecycle.viewModelScope
 import com.alancamargo.snookerscore.core.arch.viewmodel.ViewModel
 import com.alancamargo.snookerscore.core.data.log.Logger
+import com.alancamargo.snookerscore.features.frame.data.analytics.FrameAnalytics
 import com.alancamargo.snookerscore.features.frame.domain.model.Ball
 import com.alancamargo.snookerscore.features.frame.domain.model.Foul
 import com.alancamargo.snookerscore.features.frame.domain.tools.BreakCalculator
@@ -30,6 +31,7 @@ import java.util.Stack
 
 class FrameViewModel(
     private val frames: List<UiFrame>,
+    private val analytics: FrameAnalytics,
     private val useCases: UseCases,
     private val breakCalculator: BreakCalculator,
     private val logger: Logger,
@@ -48,6 +50,8 @@ class FrameViewModel(
     init {
         val frame = frames.first { !it.isFinished }
         val match = frame.match
+        currentFrame = frame
+        frameIndex = frames.indexOf(frame)
         setState { state -> state.setCurrentFrame(frame) }
 
         sendAction {
@@ -60,6 +64,8 @@ class FrameViewModel(
 
     fun onStartingPlayerSelected(player: UiPlayer) {
         sendAction { FrameUiAction.ShowFullScreenAds }
+
+        analytics.trackFrameStarted()
 
         val frame = currentFrame ?: frames.first { !it.isFinished }.also { currentFrame = it }
 
@@ -95,9 +101,11 @@ class FrameViewModel(
     }
 
     fun onUndoLastPottedBallClicked() {
-        val lastPottedBall = breakCalculator.undoLastPottedBall()
+        analytics.trackUndoLastPottedBallClicked()
 
         takeFrameAndPlayerIfNotNull { frame, player ->
+            val lastPottedBall = breakCalculator.undoLastPottedBall()
+
             if (player == frame.match.player1) {
                 frame.player1Score -= lastPottedBall.value
                 setState { state -> state.onPlayer1ScoreUpdated(frame.player1Score) }
@@ -138,8 +146,10 @@ class FrameViewModel(
     }
 
     fun onUndoLastFoulClicked() {
-        fouls.pop().let { foul ->
-            takeFrameAndPlayerIfNotNull { frame, player ->
+        analytics.trackUndoLastFoulClicked()
+
+        takeFrameAndPlayerIfNotNull { frame, player ->
+            fouls.pop().let { foul ->
                 val penaltyValue = useCases.getPenaltyValueUseCase(foul)
 
                 if (player == frame.match.player1) {
@@ -196,7 +206,12 @@ class FrameViewModel(
     }
 
     fun onEndFrameClicked() {
+        analytics.trackEndFrameClicked()
         sendAction { FrameUiAction.ShowEndFrameConfirmation }
+    }
+
+    fun onEndFrameCancelled() {
+        analytics.trackEndFrameCancelled()
     }
 
     fun onEndFrameConfirmed() {
@@ -204,6 +219,7 @@ class FrameViewModel(
             onEndTurnClicked(isEndingFrame = true)
 
             if (frameIndex <= frames.lastIndex - 1) {
+                analytics.trackEndFrameConfirmed(isEndingMatch = false)
                 frameIndex++
                 setState { state -> state.setCurrentFrame(frames[frameIndex]) }
                 sendAction {
@@ -213,16 +229,29 @@ class FrameViewModel(
                     )
                 }
             } else {
+                analytics.trackEndFrameConfirmed(isEndingMatch = true)
                 endMatch()
             }
         }
     }
 
     fun onForfeitMatchClicked() {
+        analytics.trackForfeitMatchClicked()
         sendAction { FrameUiAction.ShowForfeitMatchConfirmation }
     }
 
+    fun onNativeBackClicked() {
+        analytics.trackNativeBackClicked()
+        sendAction { FrameUiAction.ShowForfeitMatchConfirmation }
+    }
+
+    fun onForfeitMatchCancelled() {
+        analytics.trackForfeitMatchCancelled()
+    }
+
     fun onForfeitMatchConfirmed() {
+        analytics.trackForfeitMatchConfirmed()
+
         takeFrameAndPlayerIfNotNull { frame, _ ->
             viewModelScope.launch {
                 useCases.deleteMatchUseCase(frame.match.toDomain()).handleDefaultActions()

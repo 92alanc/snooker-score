@@ -3,11 +3,13 @@ package com.alancamargo.snookerscore.features.frame.ui.viewmodel
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import com.alancamargo.snookerscore.core.data.log.Logger
+import com.alancamargo.snookerscore.features.frame.data.analytics.FrameAnalytics
 import com.alancamargo.snookerscore.features.frame.domain.model.Ball
 import com.alancamargo.snookerscore.features.frame.domain.model.Foul
 import com.alancamargo.snookerscore.features.frame.domain.tools.BreakCalculator
 import com.alancamargo.snookerscore.features.frame.domain.usecase.AddOrUpdateFrameUseCase
 import com.alancamargo.snookerscore.features.frame.domain.usecase.GetPenaltyValueUseCase
+import com.alancamargo.snookerscore.features.frame.ui.model.UiFrame
 import com.alancamargo.snookerscore.features.match.domain.usecase.DeleteMatchUseCase
 import com.alancamargo.snookerscore.features.match.domain.usecase.GetMatchSummaryUseCase
 import com.alancamargo.snookerscore.features.player.ui.mapping.toUi
@@ -26,19 +28,17 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.setMain
-import org.junit.Before
-import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 import java.io.IOException
 
-@Ignore("Re-write tests")
 @ExperimentalCoroutinesApi
 class FrameViewModelTest {
 
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
+    private val mockAnalytics = mockk<FrameAnalytics>(relaxed = true)
     private val mockAddOrUpdateFrameUseCase = mockk<AddOrUpdateFrameUseCase>()
     private val mockBreakCalculator = mockk<BreakCalculator>(relaxed = true)
     private val mockGetPenaltyValueUseCase = mockk<GetPenaltyValueUseCase>()
@@ -51,70 +51,37 @@ class FrameViewModelTest {
     private val mockStateObserver = mockk<Observer<FrameUiState>>(relaxed = true)
     private val mockActionObserver = mockk<Observer<FrameUiAction>>(relaxed = true)
 
-    private val frames = getUiFrameList()
-    private val match = frames.first().match
-
     private lateinit var viewModel: FrameViewModel
-
-    @Before
-    fun setUp() {
-        val testCoroutineDispatcher = TestCoroutineDispatcher()
-        Dispatchers.setMain(testCoroutineDispatcher)
-
-        configureMocks()
-
-        viewModel = FrameViewModel(
-            frames = frames,
-            useCases = FrameViewModel.UseCases(
-                getMatchSummaryUseCase = mockGetMatchSummaryUseCase,
-                playerStatsUseCases = FrameViewModel.PlayerStatsUseCases(
-                    getPlayerStatsUseCase = mockGetPlayerStatsUseCase,
-                    addOrUpdatePlayerStatsUseCase = mockAddOrUpdatePlayerStatsUseCase,
-                    updatePlayerStatsWithMatchResultUseCase = mockUpdatePlayerStatsWithMatchResultUseCase
-                ),
-                addOrUpdateFrameUseCase = mockAddOrUpdateFrameUseCase,
-                getPenaltyValueUseCase = mockGetPenaltyValueUseCase,
-                deleteMatchUseCase = mockDeleteMatchUseCase
-            ),
-            breakCalculator = mockBreakCalculator,
-            logger = mockLogger,
-            dispatcher = testCoroutineDispatcher
-        ).apply {
-            state.observeForever(mockStateObserver)
-            action.observeForever(mockActionObserver)
-        }
-    }
 
     @Test
     fun `at startup should send ShowStartingPlayerPrompt`() {
-        verify {
-            mockActionObserver.onChanged(
-                FrameUiAction.ShowStartingPlayerPrompt(
-                    match.player1,
-                    match.player2
-                )
-            )
-        }
+        createViewModel()
+
+        verify { mockActionObserver.onChanged(any<FrameUiAction.ShowStartingPlayerPrompt>()) }
     }
 
     @Test
-    fun `onStartingPlayerSelected should set current frame and player and undo last potted ball button should be disabled`() {
+    fun `onStartingPlayerSelected should send ShowFullScreenAds action`() {
+        createViewModel()
+
         viewModel.onStartingPlayerSelected(getPlayer().toUi())
 
-        val firstFrame = frames.first()
-        verify {
-            mockStateObserver.onChanged(
-                FrameUiState(
-                    currentFrame = firstFrame,
-                    currentPlayer = firstFrame.match.player1,
-                    isUndoLastPottedBallButtonEnabled = false
-                )
-            )
-        }
+        verify { mockActionObserver.onChanged(FrameUiAction.ShowFullScreenAds) }
+    }
+
+    @Test
+    fun `onStartingPlayerSelected should track on analytics`() {
+        createViewModel()
+
+        viewModel.onStartingPlayerSelected(getPlayer().toUi())
+
+        verify { mockAnalytics.trackFrameStarted() }
     }
 
     @Test
     fun `onBallPotted should enableUndoLastPottedBall button`() {
+        createViewModel()
+
         viewModel.onBallPotted(Ball.BROWN)
 
         verify { mockStateObserver.onChanged(any()) }
@@ -122,6 +89,9 @@ class FrameViewModelTest {
 
     @Test
     fun `onBallPotted should register potted ball on calculator`() {
+        createViewModel()
+        viewModel.onStartingPlayerSelected(player = getPlayer().toUi())
+
         viewModel.onBallPotted(Ball.RED)
 
         verify { mockBreakCalculator.potBall(Ball.RED) }
@@ -130,28 +100,35 @@ class FrameViewModelTest {
     @Test
     fun `onBallPotted should update UI state`() {
         mockSuccessfulResponse()
+        createViewModel()
 
         viewModel.onBallPotted(Ball.BLUE)
 
-        verify(exactly = 4) { mockStateObserver.onChanged(any()) }
+        verify { mockStateObserver.onChanged(any()) }
     }
 
     @Test
-    fun `onUndoLastPottedBallClicked should undo last potted ball on calculator`() {
+    fun `onUndoLastPottedBallClicked should track on analytics`() {
+        createViewModel()
+
         viewModel.onUndoLastPottedBallClicked()
 
-        verify { mockBreakCalculator.undoLastPottedBall() }
+        verify { mockAnalytics.trackUndoLastPottedBallClicked() }
     }
 
     @Test
     fun `onUndoLastPottedBallClicked should update UI state`() {
+        createViewModel()
+
         viewModel.onUndoLastPottedBallClicked()
 
-        verify(exactly = 4) { mockStateObserver.onChanged(any()) }
+        verify { mockStateObserver.onChanged(any()) }
     }
 
     @Test
     fun `onObjectBallFoulClicked should send ShowObjectBalls action`() {
+        createViewModel()
+
         viewModel.onObjectBallFoulClicked()
 
         verify { mockActionObserver.onChanged(FrameUiAction.ShowObjectBalls) }
@@ -159,13 +136,27 @@ class FrameViewModelTest {
 
     @Test
     fun `onFoul should calculate penalty value`() {
+        createViewModel()
+        viewModel.onStartingPlayerSelected(player = getPlayer().toUi())
+
         viewModel.onFoul(Foul.Other)
 
         verify { mockGetPenaltyValueUseCase.invoke(Foul.Other) }
     }
 
     @Test
+    fun `onUndoLastFoulClicked should track on analytics`() {
+        createViewModel()
+
+        viewModel.onUndoLastFoulClicked()
+
+        verify { mockAnalytics.trackUndoLastFoulClicked() }
+    }
+
+    @Test
     fun `onUndoLastFoulClicked should update UI state`() {
+        createViewModel()
+
         viewModel.onUndoLastFoulClicked()
 
         verify { mockStateObserver.onChanged(any()) }
@@ -174,6 +165,7 @@ class FrameViewModelTest {
     @Test
     fun `onEndTurnClicked should disable undo last potted ball button`() {
         mockSuccessfulResponse()
+        createViewModel()
 
         viewModel.onEndTurnClicked()
 
@@ -183,6 +175,7 @@ class FrameViewModelTest {
     @Test
     fun `onEndTurnClicked should swap current player`() {
         mockSuccessfulResponse()
+        createViewModel()
 
         viewModel.onEndTurnClicked()
 
@@ -192,6 +185,8 @@ class FrameViewModelTest {
     @Test
     fun `onEndTurnClicked should update frame`() {
         mockSuccessfulResponse()
+        createViewModel()
+        viewModel.onStartingPlayerSelected(player = getPlayer().toUi())
 
         viewModel.onEndTurnClicked()
 
@@ -201,6 +196,8 @@ class FrameViewModelTest {
     @Test
     fun `onEndTurnClicked should clear break calculator`() {
         mockSuccessfulResponse()
+        createViewModel()
+        viewModel.onStartingPlayerSelected(player = getPlayer().toUi())
 
         viewModel.onEndTurnClicked()
 
@@ -208,15 +205,37 @@ class FrameViewModelTest {
     }
 
     @Test
+    fun `onEndFrameClicked should track on analytics`() {
+        mockSuccessfulResponse()
+        createViewModel()
+
+        viewModel.onEndFrameClicked()
+
+        verify { mockAnalytics.trackEndFrameClicked() }
+    }
+
+    @Test
     fun `onEndFrameClicked should send ShowEndTurnConfirmation`() {
+        createViewModel()
+
         viewModel.onEndFrameClicked()
 
         verify { mockActionObserver.onChanged(FrameUiAction.ShowEndFrameConfirmation) }
     }
 
     @Test
+    fun `onEndFrameCancelled should track on analytics`() {
+        createViewModel()
+
+        viewModel.onEndFrameCancelled()
+
+        verify { mockAnalytics.trackEndFrameCancelled() }
+    }
+
+    @Test
     fun `onEndFrameConfirmed should swap current player`() {
         mockSuccessfulResponse()
+        createViewModel()
 
         viewModel.onEndFrameConfirmed()
 
@@ -226,6 +245,8 @@ class FrameViewModelTest {
     @Test
     fun `onEndFrameConfirmed should update frame and swap current`() {
         mockSuccessfulResponse()
+        createViewModel()
+        viewModel.onStartingPlayerSelected(player = getPlayer().toUi())
 
         viewModel.onEndFrameConfirmed()
 
@@ -235,6 +256,8 @@ class FrameViewModelTest {
     @Test
     fun `onEndFrameConfirmed should clear break calculator`() {
         mockSuccessfulResponse()
+        createViewModel()
+        viewModel.onStartingPlayerSelected(player = getPlayer().toUi())
 
         viewModel.onEndFrameConfirmed()
 
@@ -242,8 +265,20 @@ class FrameViewModelTest {
     }
 
     @Test
+    fun `when not on last frame onEndFrameConfirmed should track on analytics`() {
+        mockSuccessfulResponse()
+        createViewModel()
+        viewModel.onStartingPlayerSelected(player = getPlayer().toUi())
+
+        viewModel.onEndFrameConfirmed()
+
+        verify { mockAnalytics.trackEndFrameConfirmed(isEndingMatch = false) }
+    }
+
+    @Test
     fun `when not on last frame onEndFrameConfirmed should change current frame`() {
         mockSuccessfulResponse()
+        createViewModel()
 
         viewModel.onEndFrameConfirmed()
 
@@ -251,12 +286,23 @@ class FrameViewModelTest {
     }
 
     @Test
-    fun `when on last frame onEndFrameConfirmed should get winning player`() {
+    fun `when on last frame onEndFrameConfirmed should track on analytics`() {
         mockSuccessfulResponse()
+        createViewModel(isLastFrame = true)
+        viewModel.onStartingPlayerSelected(player = getPlayer().toUi())
 
-        repeat(3) {
-            viewModel.onEndFrameConfirmed()
-        }
+        viewModel.onEndFrameConfirmed()
+
+        verify { mockAnalytics.trackEndFrameConfirmed(isEndingMatch = true) }
+    }
+
+    @Test
+    fun `when on last frame onEndFrameConfirmed should get match summary`() {
+        mockSuccessfulResponse()
+        createViewModel(isLastFrame = true)
+        viewModel.onStartingPlayerSelected(player = getPlayer().toUi())
+
+        viewModel.onEndFrameConfirmed()
 
         verify { mockGetMatchSummaryUseCase.invoke(frames = any()) }
     }
@@ -264,10 +310,10 @@ class FrameViewModelTest {
     @Test
     fun `when on last frame onEndFrameConfirmed should update winning player stats`() {
         mockSuccessfulResponse()
+        createViewModel(isLastFrame = true)
+        viewModel.onStartingPlayerSelected(player = getPlayer().toUi())
 
-        repeat(3) {
-            viewModel.onEndFrameConfirmed()
-        }
+        viewModel.onEndFrameConfirmed()
 
         verify { mockUpdatePlayerStatsWithMatchResultUseCase.invoke(winnerCurrentStats = any()) }
     }
@@ -275,24 +321,55 @@ class FrameViewModelTest {
     @Test
     fun `when on last frame onEndFrameConfirmed should send OpenMatchSummary action`() {
         mockSuccessfulResponse()
+        createViewModel(isLastFrame = true)
 
-        repeat(3) {
-            viewModel.onEndFrameConfirmed()
-        }
+        viewModel.onEndFrameConfirmed()
 
-        verify { mockActionObserver.onChanged(FrameUiAction.OpenMatchSummary(frames)) }
+        verify { mockActionObserver.onChanged(any<FrameUiAction.OpenMatchSummary>()) }
+    }
+
+    @Test
+    fun `onForfeitMatchClicked should track on analytics`() {
+        createViewModel()
+
+        viewModel.onForfeitMatchClicked()
+
+        verify { mockAnalytics.trackForfeitMatchClicked() }
     }
 
     @Test
     fun `onForfeitMatchClicked should send ShowForfeitMatchConfirmation`() {
+        createViewModel()
+
         viewModel.onForfeitMatchClicked()
 
         verify { mockActionObserver.onChanged(FrameUiAction.ShowForfeitMatchConfirmation) }
     }
 
     @Test
+    fun `onForfeitMatchCancelled should track on analytics`() {
+        createViewModel()
+
+        viewModel.onForfeitMatchCancelled()
+
+        verify { mockAnalytics.trackForfeitMatchCancelled() }
+    }
+
+    @Test
+    fun `onForfeitMatchConfirmed should track on analytics`() {
+        every { mockDeleteMatchUseCase.invoke(any()) } returns flow { emit(Unit) }
+        createViewModel()
+
+        viewModel.onForfeitMatchConfirmed()
+
+        verify { mockAnalytics.trackForfeitMatchConfirmed() }
+    }
+
+    @Test
     fun `with successful response onForfeitMatchConfirmed should send OpenMain action`() {
         every { mockDeleteMatchUseCase.invoke(any()) } returns flow { emit(Unit) }
+        createViewModel()
+        viewModel.onStartingPlayerSelected(player = getPlayer().toUi())
 
         viewModel.onForfeitMatchConfirmed()
 
@@ -302,10 +379,30 @@ class FrameViewModelTest {
     @Test
     fun `with error response onForfeitMatchConfirmed should send ShowError action`() {
         every { mockDeleteMatchUseCase.invoke(any()) } returns flow { throw IOException() }
+        createViewModel()
+        viewModel.onStartingPlayerSelected(player = getPlayer().toUi())
 
         viewModel.onForfeitMatchConfirmed()
 
         verify { mockActionObserver.onChanged(FrameUiAction.ShowError) }
+    }
+
+    @Test
+    fun `onNativeBackClicked should track on analytics`() {
+        createViewModel()
+
+        viewModel.onNativeBackClicked()
+
+        verify { mockAnalytics.trackNativeBackClicked() }
+    }
+
+    @Test
+    fun `onNativeBackClicked should send ShowForfeitMatchConfirmation`() {
+        createViewModel()
+
+        viewModel.onNativeBackClicked()
+
+        verify { mockActionObserver.onChanged(FrameUiAction.ShowForfeitMatchConfirmation) }
     }
 
     private fun configureMocks() {
@@ -329,6 +426,49 @@ class FrameViewModelTest {
 
     private fun mockSuccessfulResponse() {
         every { mockAddOrUpdateFrameUseCase.invoke(frame = any()) } returns flow { emit(Unit) }
+    }
+
+    private fun createViewModel(isLastFrame: Boolean = false) {
+        val testCoroutineDispatcher = TestCoroutineDispatcher()
+        Dispatchers.setMain(testCoroutineDispatcher)
+
+        configureMocks()
+
+        viewModel = FrameViewModel(
+            frames = getFrames(isLastFrame),
+            analytics = mockAnalytics,
+            useCases = FrameViewModel.UseCases(
+                getMatchSummaryUseCase = mockGetMatchSummaryUseCase,
+                playerStatsUseCases = FrameViewModel.PlayerStatsUseCases(
+                    getPlayerStatsUseCase = mockGetPlayerStatsUseCase,
+                    addOrUpdatePlayerStatsUseCase = mockAddOrUpdatePlayerStatsUseCase,
+                    updatePlayerStatsWithMatchResultUseCase = mockUpdatePlayerStatsWithMatchResultUseCase
+                ),
+                addOrUpdateFrameUseCase = mockAddOrUpdateFrameUseCase,
+                getPenaltyValueUseCase = mockGetPenaltyValueUseCase,
+                deleteMatchUseCase = mockDeleteMatchUseCase
+            ),
+            breakCalculator = mockBreakCalculator,
+            logger = mockLogger,
+            dispatcher = testCoroutineDispatcher
+        ).apply {
+            state.observeForever(mockStateObserver)
+            action.observeForever(mockActionObserver)
+        }
+    }
+
+    private fun getFrames(isLastFrame: Boolean): List<UiFrame> {
+        val frames = getUiFrameList(player1Id = "12345", player2Id = "54331")
+
+        return if (isLastFrame) {
+            frames.apply {
+                forEachIndexed { index, frame ->
+                    frame.isFinished = index < frames.lastIndex
+                }
+            }
+        } else {
+            frames
+        }
     }
 
 }
