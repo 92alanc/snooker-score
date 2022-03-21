@@ -48,4 +48,14 @@ class MatchListViewModel(
         }
     }
 
+    fun onBackClicked() {
+        analytics.trackBackClicked()
+        sendAction { MatchListUiAction.Finish }
+    }
+
+    fun onNativeBackClicked() {
+        analytics.trackNativeBackClicked()
+        sendAction { MatchListUiAction.Finish }
+    }
+
 }

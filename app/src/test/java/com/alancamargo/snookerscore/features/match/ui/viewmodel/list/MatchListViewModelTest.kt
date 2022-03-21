@@ -122,6 +122,34 @@ class MatchListViewModelTest {
         verify { mockActionObserver.onChanged(MatchListUiAction.OpenMatchDetails(match)) }
     }
 
+    @Test
+    fun `onBackClicked should track on analytics`() {
+        viewModel.onBackClicked()
+
+        verify { mockAnalytics.trackBackClicked() }
+    }
+
+    @Test
+    fun `onBackClicked should send Finish action`() {
+        viewModel.onBackClicked()
+
+        verify { mockActionObserver.onChanged(MatchListUiAction.Finish) }
+    }
+
+    @Test
+    fun `onNativeBackClicked should track on analytics`() {
+        viewModel.onNativeBackClicked()
+
+        verify { mockAnalytics.trackNativeBackClicked() }
+    }
+
+    @Test
+    fun `onNativeBackClicked should send Finish action`() {
+        viewModel.onNativeBackClicked()
+
+        verify { mockActionObserver.onChanged(MatchListUiAction.Finish) }
+    }
+
     private fun mockSuccessfulResponse() {
         every { mockGetMatchesUseCase.invoke() } returns flow { emit(matches) }
     }

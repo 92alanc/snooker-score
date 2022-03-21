@@ -16,13 +16,13 @@ import com.alancamargo.snookerscore.core.ui.ads.AdLoader
 import com.alancamargo.snookerscore.core.ui.dialogue.button
 import com.alancamargo.snookerscore.core.ui.dialogue.makeDialogue
 import com.alancamargo.snookerscore.databinding.ActivityNewMatchBinding
-import com.alancamargo.snookerscore.features.player.ui.PlayerListActivity
-import com.alancamargo.snookerscore.navigation.FrameNavigation
-import com.alancamargo.snookerscore.navigation.PlayerListNavigation
 import com.alancamargo.snookerscore.features.frame.ui.model.UiFrame
 import com.alancamargo.snookerscore.features.match.ui.viewmodel.newmatch.NewMatchUiAction
 import com.alancamargo.snookerscore.features.match.ui.viewmodel.newmatch.NewMatchUiState
 import com.alancamargo.snookerscore.features.match.ui.viewmodel.newmatch.NewMatchViewModel
+import com.alancamargo.snookerscore.features.player.ui.PlayerListActivity
+import com.alancamargo.snookerscore.navigation.FrameNavigation
+import com.alancamargo.snookerscore.navigation.PlayerListNavigation
 import com.google.android.material.snackbar.Snackbar
 import org.koin.android.ext.android.get
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -50,8 +50,12 @@ class NewMatchActivity : AppCompatActivity() {
         observeAction(viewModel, ::onAction)
     }
 
+    override fun onBackPressed() {
+        viewModel.onNativeBackClicked()
+    }
+
     override fun onSupportNavigateUp(): Boolean {
-        onBackPressed()
+        viewModel.onBackClicked()
         return true
     }
 
@@ -99,6 +103,7 @@ class NewMatchActivity : AppCompatActivity() {
             is NewMatchUiAction.PickPlayer -> pickPlayer()
             is NewMatchUiAction.StartMatch -> startMatch(action.frames)
             is NewMatchUiAction.ShowSamePlayersDialogue -> showSamePlayersDialogue()
+            is NewMatchUiAction.Finish -> finish()
         }
     }
 

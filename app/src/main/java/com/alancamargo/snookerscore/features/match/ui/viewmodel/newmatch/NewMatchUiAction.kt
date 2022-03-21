@@ -13,4 +13,6 @@ sealed class NewMatchUiAction : UiAction {
 
     object PickPlayer : NewMatchUiAction()
 
+    object Finish : NewMatchUiAction()
+
 }

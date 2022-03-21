@@ -20,4 +20,11 @@ class MatchListAnalyticsImpl(private val analytics: Analytics) : MatchListAnalyt
         analytics.trackCardClicked(cardName = CARD_MATCH, screenName = SCREEN_NAME)
     }
 
+    override fun trackBackClicked() {
+        analytics.trackBackButtonClicked(SCREEN_NAME)
+    }
+
+    override fun trackNativeBackClicked() {
+        analytics.trackNativeBackButtonClicked(SCREEN_NAME)
+    }
 }

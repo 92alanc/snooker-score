@@ -8,4 +8,8 @@ interface MatchListAnalytics {
 
     fun trackMatchCardClicked()
 
+    fun trackBackClicked()
+
+    fun trackNativeBackClicked()
+
 }

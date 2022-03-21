@@ -11,4 +11,6 @@ sealed class MatchListUiAction : UiAction {
 
     object ShowError : MatchListUiAction()
 
+    object Finish : MatchListUiAction()
+
 }

@@ -4,6 +4,9 @@ import androidx.lifecycle.viewModelScope
 import com.alancamargo.snookerscore.core.arch.viewmodel.ViewModel
 import com.alancamargo.snookerscore.core.data.log.Logger
 import com.alancamargo.snookerscore.features.frame.domain.model.Frame
+import com.alancamargo.snookerscore.features.frame.ui.mapping.toUi
+import com.alancamargo.snookerscore.features.frame.ui.model.UiFrame
+import com.alancamargo.snookerscore.features.match.data.analytics.newmatch.NewMatchAnalytics
 import com.alancamargo.snookerscore.features.match.domain.model.Match
 import com.alancamargo.snookerscore.features.match.domain.usecase.AddMatchUseCase
 import com.alancamargo.snookerscore.features.match.ui.model.PlayerToPick
@@ -11,8 +14,6 @@ import com.alancamargo.snookerscore.features.player.domain.model.Player
 import com.alancamargo.snookerscore.features.player.domain.usecase.ArePlayersTheSameUseCase
 import com.alancamargo.snookerscore.features.player.ui.mapping.toDomain
 import com.alancamargo.snookerscore.features.player.ui.model.UiPlayer
-import com.alancamargo.snookerscore.features.frame.ui.mapping.toUi
-import com.alancamargo.snookerscore.features.frame.ui.model.UiFrame
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -25,6 +26,7 @@ private const val MIN_NUMBER_OF_FRAMES = 1
 private const val MAX_NUMBER_OF_FRAMES = 35
 
 class NewMatchViewModel(
+    private val analytics: NewMatchAnalytics,
     private val arePlayersTheSameUseCase: ArePlayersTheSameUseCase,
     private val addMatchUseCase: AddMatchUseCase,
     private val logger: Logger,
@@ -39,6 +41,10 @@ class NewMatchViewModel(
     private var player2: UiPlayer? = null
     private var numberOfFrames = 1
     private var playerToPick = PlayerToPick.PLAYER_1
+
+    init {
+        analytics.trackScreenViewed()
+    }
 
     fun onSelectPlayer1ButtonClicked() {
         playerToPick = PlayerToPick.PLAYER_1
@@ -67,8 +73,10 @@ class NewMatchViewModel(
                 val arePlayersTheSame = arePlayersTheSameUseCase(domainPlayer1, domainPlayer2)
 
                 if (arePlayersTheSame) {
+                    analytics.trackSamePlayers()
                     sendAction { NewMatchUiAction.ShowSamePlayersDialogue }
                 } else {
+                    analytics.trackMatchStarted(numberOfFrames)
                     createMatch(domainPlayer1, domainPlayer2)
                 }
             }
@@ -87,6 +95,16 @@ class NewMatchViewModel(
             numberOfFrames -= 2
             setState { state -> state.onNumberOfFramesChanged(numberOfFrames) }
         }
+    }
+
+    fun onBackClicked() {
+        analytics.trackBackClicked()
+        sendAction { NewMatchUiAction.Finish }
+    }
+
+    fun onNativeBackClicked() {
+        analytics.trackNativeBackClicked()
+        sendAction { NewMatchUiAction.Finish }
     }
 
     private fun onPlayer1Selected(player1: UiPlayer) {

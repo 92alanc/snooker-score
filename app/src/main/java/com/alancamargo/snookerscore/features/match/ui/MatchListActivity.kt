@@ -10,13 +10,13 @@ import com.alancamargo.snookerscore.core.arch.extensions.observeAction
 import com.alancamargo.snookerscore.core.arch.extensions.observeState
 import com.alancamargo.snookerscore.core.ui.ads.AdLoader
 import com.alancamargo.snookerscore.databinding.ActivityMatchListBinding
-import com.alancamargo.snookerscore.navigation.MatchDetailsNavigation
-import com.alancamargo.snookerscore.navigation.NewMatchNavigation
 import com.alancamargo.snookerscore.features.match.ui.adapter.MatchAdapter
 import com.alancamargo.snookerscore.features.match.ui.model.UiMatch
 import com.alancamargo.snookerscore.features.match.ui.viewmodel.list.MatchListUiAction
 import com.alancamargo.snookerscore.features.match.ui.viewmodel.list.MatchListUiState
 import com.alancamargo.snookerscore.features.match.ui.viewmodel.list.MatchListViewModel
+import com.alancamargo.snookerscore.navigation.MatchDetailsNavigation
+import com.alancamargo.snookerscore.navigation.NewMatchNavigation
 import com.google.android.material.snackbar.Snackbar
 import org.koin.android.ext.android.get
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -45,8 +45,12 @@ class MatchListActivity : AppCompatActivity() {
         viewModel.getMatches()
     }
 
+    override fun onBackPressed() {
+        viewModel.onNativeBackClicked()
+    }
+
     override fun onSupportNavigateUp(): Boolean {
-        onBackPressed()
+        viewModel.onBackClicked()
         return true
     }
 
@@ -72,6 +76,7 @@ class MatchListActivity : AppCompatActivity() {
             is MatchListUiAction.ShowError -> showError()
             is MatchListUiAction.OpenNewMatch -> openNewMatch()
             is MatchListUiAction.OpenMatchDetails -> openMatchDetails(action.match)
+            is MatchListUiAction.Finish -> finish()
         }
     }
 

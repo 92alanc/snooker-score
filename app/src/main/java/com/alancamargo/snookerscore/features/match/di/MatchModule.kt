@@ -7,6 +7,8 @@ import com.alancamargo.snookerscore.features.match.data.analytics.details.MatchD
 import com.alancamargo.snookerscore.features.match.data.analytics.details.MatchDetailsAnalyticsImpl
 import com.alancamargo.snookerscore.features.match.data.analytics.list.MatchListAnalytics
 import com.alancamargo.snookerscore.features.match.data.analytics.list.MatchListAnalyticsImpl
+import com.alancamargo.snookerscore.features.match.data.analytics.newmatch.NewMatchAnalytics
+import com.alancamargo.snookerscore.features.match.data.analytics.newmatch.NewMatchAnalyticsImpl
 import com.alancamargo.snookerscore.features.match.data.local.MatchLocalDataSource
 import com.alancamargo.snookerscore.features.match.data.local.MatchLocalDataSourceImpl
 import com.alancamargo.snookerscore.features.match.data.repository.MatchRepositoryImpl
@@ -44,6 +46,7 @@ class MatchModule : FeatureModule() {
     override val data = module {
         factory<MatchDetailsAnalytics> { MatchDetailsAnalyticsImpl(analytics = get()) }
         factory<MatchListAnalytics> { MatchListAnalyticsImpl(analytics = get()) }
+        factory<NewMatchAnalytics> { NewMatchAnalyticsImpl(analytics = get()) }
         factory<MatchLocalDataSource> {
             MatchLocalDataSourceImpl(
                 matchDao = getDatabaseProvider().provideMatchDao(),
@@ -62,6 +65,7 @@ class MatchModule : FeatureModule() {
         }
         viewModel {
             NewMatchViewModel(
+                analytics = get(),
                 arePlayersTheSameUseCase = get(),
                 addMatchUseCase = get(),
                 logger = get()
