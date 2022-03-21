@@ -2,6 +2,8 @@ package com.alancamargo.snookerscore.features.playerstats.di
 
 import com.alancamargo.snookerscore.core.arch.di.FeatureModule
 import com.alancamargo.snookerscore.core.data.db.DatabaseProvider
+import com.alancamargo.snookerscore.features.playerstats.data.analytics.PlayerStatsAnalytics
+import com.alancamargo.snookerscore.features.playerstats.data.analytics.PlayerStatsAnalyticsImpl
 import com.alancamargo.snookerscore.features.playerstats.data.local.PlayerStatsLocalDataSource
 import com.alancamargo.snookerscore.features.playerstats.data.local.PlayerStatsLocalDataSourceImpl
 import com.alancamargo.snookerscore.features.playerstats.data.repository.PlayerStatsRepositoryImpl
@@ -26,6 +28,7 @@ class PlayerStatsModule : FeatureModule() {
     }
 
     override val data = module {
+        factory<PlayerStatsAnalytics> { PlayerStatsAnalyticsImpl(analytics = get()) }
         factory<PlayerStatsLocalDataSource> {
             PlayerStatsLocalDataSourceImpl(
                 playerStatsDao = getDatabaseProvider().providePlayerStatsDao()
@@ -36,6 +39,7 @@ class PlayerStatsModule : FeatureModule() {
     override val ui = module {
         viewModel {
             PlayerStatsViewModel(
+                analytics = get(),
                 getPlayerStatsUseCase = get(),
                 deletePlayerUseCase = get(),
                 logger = get()

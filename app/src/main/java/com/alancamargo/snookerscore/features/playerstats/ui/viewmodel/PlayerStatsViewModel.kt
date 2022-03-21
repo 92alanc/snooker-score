@@ -6,6 +6,7 @@ import com.alancamargo.snookerscore.core.data.log.Logger
 import com.alancamargo.snookerscore.features.player.domain.usecase.DeletePlayerUseCase
 import com.alancamargo.snookerscore.features.player.ui.mapping.toDomain
 import com.alancamargo.snookerscore.features.player.ui.model.UiPlayer
+import com.alancamargo.snookerscore.features.playerstats.data.analytics.PlayerStatsAnalytics
 import com.alancamargo.snookerscore.features.playerstats.domain.usecase.GetPlayerStatsUseCase
 import com.alancamargo.snookerscore.features.playerstats.ui.mapping.toUi
 import kotlinx.coroutines.CoroutineDispatcher
@@ -16,11 +17,16 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 
 class PlayerStatsViewModel(
+    private val analytics: PlayerStatsAnalytics,
     private val getPlayerStatsUseCase: GetPlayerStatsUseCase,
     private val deletePlayerUseCase: DeletePlayerUseCase,
     private val logger: Logger,
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : ViewModel<PlayerStatsUiState, PlayerStatsUiAction>(initialState = PlayerStatsUiState()) {
+
+    init {
+        analytics.trackScreenViewed()
+    }
 
     fun getPlayerStats(player: UiPlayer) {
         viewModelScope.launch {
@@ -36,10 +42,17 @@ class PlayerStatsViewModel(
     }
 
     fun onDeletePlayerClicked() {
+        analytics.trackDeletePlayerClicked()
         sendAction { PlayerStatsUiAction.ShowDeletePlayerConfirmation }
     }
 
+    fun onDeletePlayerCancelled() {
+        analytics.trackDeletePlayerCancelled()
+    }
+
     fun onDeletePlayerConfirmed(player: UiPlayer) {
+        analytics.trackDeletePlayerConfirmed()
+
         viewModelScope.launch {
             deletePlayerUseCase(player.toDomain()).flowOn(dispatcher)
                 .catch { throwable ->
@@ -49,6 +62,16 @@ class PlayerStatsViewModel(
                     sendAction { PlayerStatsUiAction.Finish }
                 }
         }
+    }
+
+    fun onBackClicked() {
+        analytics.trackBackClicked()
+        sendAction { PlayerStatsUiAction.Finish }
+    }
+
+    fun onNativeBackClicked() {
+        analytics.trackNativeBackClicked()
+        sendAction { PlayerStatsUiAction.Finish }
     }
 
 }

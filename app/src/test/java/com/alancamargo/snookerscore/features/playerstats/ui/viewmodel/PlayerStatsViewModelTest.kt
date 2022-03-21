@@ -5,6 +5,7 @@ import androidx.lifecycle.Observer
 import com.alancamargo.snookerscore.core.data.log.Logger
 import com.alancamargo.snookerscore.features.player.domain.usecase.DeletePlayerUseCase
 import com.alancamargo.snookerscore.features.player.ui.mapping.toUi
+import com.alancamargo.snookerscore.features.playerstats.data.analytics.PlayerStatsAnalytics
 import com.alancamargo.snookerscore.features.playerstats.domain.usecase.GetPlayerStatsUseCase
 import com.alancamargo.snookerscore.features.playerstats.ui.mapping.toUi
 import com.alancamargo.snookerscore.testtools.getPlayer
@@ -28,6 +29,7 @@ class PlayerStatsViewModelTest {
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
+    private val mockAnalytics = mockk<PlayerStatsAnalytics>(relaxed = true)
     private val mockGetPlayerStatsUseCase = mockk<GetPlayerStatsUseCase>()
     private val mockDeletePlayerUseCase = mockk<DeletePlayerUseCase>()
     private val mockLogger = mockk<Logger>(relaxed = true)
@@ -44,6 +46,7 @@ class PlayerStatsViewModelTest {
         Dispatchers.setMain(testCoroutineDispatcher)
 
         viewModel = PlayerStatsViewModel(
+            mockAnalytics,
             mockGetPlayerStatsUseCase,
             mockDeletePlayerUseCase,
             mockLogger,
@@ -52,6 +55,11 @@ class PlayerStatsViewModelTest {
             state.observeForever(mockStateObserver)
             action.observeForever(mockActionObserver)
         }
+    }
+
+    @Test
+    fun `at startup should track screen viewed on analytics`() {
+        verify { mockAnalytics.trackScreenViewed() }
     }
 
     @Test
@@ -79,10 +87,34 @@ class PlayerStatsViewModelTest {
     }
 
     @Test
+    fun `onDeletePlayerClicked should track on analytics`() {
+        viewModel.onDeletePlayerClicked()
+
+        verify { mockAnalytics.trackDeletePlayerClicked() }
+    }
+
+    @Test
     fun `onDeletePlayerClicked should send ShowDeletePlayerConfirmation`() {
         viewModel.onDeletePlayerClicked()
 
         verify { mockActionObserver.onChanged(PlayerStatsUiAction.ShowDeletePlayerConfirmation) }
+    }
+
+    @Test
+    fun `onDeletePlayerCancelled should track on analytics`() {
+        viewModel.onDeletePlayerCancelled()
+
+        verify { mockAnalytics.trackDeletePlayerCancelled() }
+    }
+
+    @Test
+    fun `onDeletePlayerConfirmed should track on analytics`() {
+        every { mockDeletePlayerUseCase.invoke(any()) } returns flow { emit(Unit) }
+
+        val player = getPlayer().toUi()
+        viewModel.onDeletePlayerConfirmed(player)
+
+        verify { mockAnalytics.trackDeletePlayerConfirmed() }
     }
 
     @Test
@@ -103,6 +135,34 @@ class PlayerStatsViewModelTest {
         viewModel.onDeletePlayerConfirmed(player)
 
         verify { mockActionObserver.onChanged(PlayerStatsUiAction.ShowError) }
+    }
+
+    @Test
+    fun `onBackClicked should track on analytics`() {
+        viewModel.onBackClicked()
+
+        verify { mockAnalytics.trackBackClicked() }
+    }
+
+    @Test
+    fun `onBackClicked should send Finish action`() {
+        viewModel.onBackClicked()
+
+        verify { mockActionObserver.onChanged(PlayerStatsUiAction.Finish) }
+    }
+
+    @Test
+    fun `onNativeBackClicked should track on analytics`() {
+        viewModel.onNativeBackClicked()
+
+        verify { mockAnalytics.trackNativeBackClicked() }
+    }
+
+    @Test
+    fun `onNativeBackClicked should send Finish action`() {
+        viewModel.onNativeBackClicked()
+
+        verify { mockActionObserver.onChanged(PlayerStatsUiAction.Finish) }
     }
 
 }

@@ -47,8 +47,12 @@ class PlayerStatsActivity : AppCompatActivity() {
         viewModel.getPlayerStats(args.player)
     }
 
+    override fun onBackPressed() {
+        viewModel.onNativeBackClicked()
+    }
+
     override fun onSupportNavigateUp(): Boolean {
-        onBackPressed()
+        viewModel.onBackClicked()
         return true
     }
 
