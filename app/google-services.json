@@ -36,6 +36,64 @@
     },
     {
       "client_info": {
+        "mobilesdk_app_id": "1:429989207945:android:ff1877eeaab47458808b58",
+        "android_client_info": {
+          "package_name": "com.alancamargo.snookerscore.br"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "429989207945-q3judb652ve7aor82bbdll4tnkilmo9v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCgDmUk7CEaM9waAi2csi5HJkADVSa6lqA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "429989207945-q3judb652ve7aor82bbdll4tnkilmo9v.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:429989207945:android:c295d8e5435c9eda808b58",
+        "android_client_info": {
+          "package_name": "com.alancamargo.snookerscore.br.debug"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "429989207945-q3judb652ve7aor82bbdll4tnkilmo9v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCgDmUk7CEaM9waAi2csi5HJkADVSa6lqA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "429989207945-q3judb652ve7aor82bbdll4tnkilmo9v.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:429989207945:android:3ba68b9558faca5f808b58",
         "android_client_info": {
           "package_name": "com.alancamargo.snookerscore.debug"
