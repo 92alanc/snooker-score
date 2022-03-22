@@ -7,6 +7,7 @@ import android.os.Parcelable
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
+import com.alancamargo.snookerscore.BuildConfig
 import com.alancamargo.snookerscore.R
 import com.alancamargo.snookerscore.core.arch.extensions.args
 import com.alancamargo.snookerscore.core.arch.extensions.createIntent
@@ -125,6 +126,7 @@ class FrameActivity : AppCompatActivity() {
         btEndTurn.setOnClickListener { viewModel.onEndTurnClicked() }
         btEndFrame.setOnClickListener { viewModel.onEndFrameClicked() }
         btWithObjectBall.setOnClickListener { viewModel.onObjectBallFoulClicked() }
+        btWithObjectBall.isVisible = BuildConfig.FLAVOR == "snooker"
         btOthers.setOnClickListener { viewModel.onFoul(Foul.Other) }
     }
 

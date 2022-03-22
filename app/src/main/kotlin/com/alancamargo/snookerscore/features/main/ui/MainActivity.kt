@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import com.alancamargo.snookerscore.BuildConfig
 import com.alancamargo.snookerscore.R
 import com.alancamargo.snookerscore.core.arch.extensions.createIntent
 import com.alancamargo.snookerscore.core.arch.extensions.observeAction
@@ -62,10 +63,11 @@ class MainActivity : AppCompatActivity() {
         binding.banner.destroy()
     }
 
-    private fun setUpUi() {
+    private fun setUpUi() = with(binding) {
         setUpToolbar()
         setUpButtons()
-        get<AdLoader>().loadBannerAds(binding.banner, R.string.ads_main)
+        get<AdLoader>().loadBannerAds(banner, R.string.ads_main)
+        txtVersion.text = getString(R.string.app_version_format, BuildConfig.VERSION_NAME)
     }
 
     private fun setUpToolbar() {

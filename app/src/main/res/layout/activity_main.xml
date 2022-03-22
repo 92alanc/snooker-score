@@ -63,13 +63,27 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/spacing_01"
-        android:layout_marginBottom="@dimen/spacing_02"
+        android:layout_marginBottom="@dimen/spacing_01"
         android:layout_marginHorizontal="@dimen/spacing_02"
         android:text="@string/rules"
         app:layout_constraintTop_toBottomOf="@id/btPlayers"
-        app:layout_constraintBottom_toTopOf="@+id/banner"
+        app:layout_constraintBottom_toTopOf="@+id/txtVersion"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/txtVersion"
+        style="@style/SnookerScore.MediumBody"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/spacing_02"
+        android:layout_marginHorizontal="@dimen/spacing_02"
+        android:gravity="center_horizontal"
+        app:layout_constraintTop_toBottomOf="@id/btRules"
+        app:layout_constraintBottom_toTopOf="@+id/banner"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:text="Version 2022.1.5"/>
 
     <com.smaato.sdk.banner.widget.BannerView
         android:id="@+id/banner"

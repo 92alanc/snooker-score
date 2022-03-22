@@ -53,8 +53,8 @@
     <string name="pink">Rosa</string>
     <string name="black">Preta</string>
     <string name="foul">Falta</string>
-    <string name="with_object_ball">Com bola-objetivo</string>
-    <string name="others">Outras</string>
+    <string name="with_object_ball">With object ball</string>
+    <string name="others">Marcar falta</string>
     <string name="end_turn">Passar vez</string>
     <string name="end_frame">Terminar rodada</string>
     <string name="break_format">Sequência: %d</string>
@@ -73,4 +73,5 @@
     <string name="dont_show_again">Não mostrar de novo</string>
     <string name="tip">Dica</string>
     <string name="tip_player_list_message">Clique em um cartão de jogador para ver seus detalhes. Para editar um jogador, clique e segure em um cartão</string>
+    <string name="app_version_format">Versão %s</string>
 </resources>
