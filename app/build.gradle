@@ -11,13 +11,10 @@ android {
     compileSdk 32
 
     defaultConfig {
-        applicationId "com.alancamargo.snookerscore"
+        applicationId "com.alancamargo"
 
         minSdk 21
         targetSdk 32
-
-        versionCode 5
-        versionName "2022.1.4"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField "String", "SMAATO_PUBLISHER_ID", "\"$smaato_publisher_id\""
@@ -42,6 +39,24 @@ android {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
+        }
+    }
+
+    flavorDimensions "version"
+
+    productFlavors {
+        snooker {
+            dimension "version"
+            applicationIdSuffix ".snookerscore"
+            versionCode 5
+            versionName "2022.1.4"
+        }
+
+        sinucaBrasileira {
+            dimension "version"
+            applicationIdSuffix ".placardesinuca"
+            versionCode 1
+            versionName "2022.1.0"
         }
     }
 
