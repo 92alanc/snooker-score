@@ -31,7 +31,7 @@
         app:layout_constraintBottom_toTopOf="@+id/txtMessage"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        tools:src="@drawable/illu_table"/>
+        tools:src="@drawable/app_icon"/>
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/txtMessage"
