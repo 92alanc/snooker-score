@@ -167,41 +167,16 @@ class FrameViewModel(
         }
     }
 
-    fun onEndTurnClicked(isEndingFrame: Boolean = false) {
+    fun onEndTurnClicked() {
         takeFrameAndPlayerIfNotNull { frame, player ->
-            val breakPoints = breakCalculator.getPoints()
-
-            if (player == frame.match.player1) {
-                if (breakPoints > frame.player1HighestBreak) {
-                    frame.player1HighestBreak = breakPoints
-                }
-
-                if (!isEndingFrame) {
-                    currentPlayer = frame.match.player2
-                    setState { state -> state.setCurrentPlayer(frame.match.player2) }
-                }
-            } else {
-                if (breakPoints > frame.player2HighestBreak) {
-                    frame.player2HighestBreak = breakPoints
-                }
-
-                if (!isEndingFrame) {
-                    currentPlayer = frame.match.player1
-                    setState { state -> state.setCurrentPlayer(frame.match.player1) }
-                }
-            }
+            updateBreakAndCurrentPlayer(frame, player, isEndingFrame = false)
 
             viewModelScope.launch {
-                addOrUpdatePlayerStats(frame, player)
-                addOrUpdateFrame(isEndingFrame)
+                updateDatabaseOnTurnEnd(frame, player, isEndingFrame = false)
             }
 
-            breakCalculator.clear()
-            pottedBalls.clear()
-            fouls.clear()
-            setState { state -> state.onDisableUndoLastPottedBallButton() }
-            setState { state -> state.onDisableUndoLastFoulButton() }
-            setState { state -> state.onBreakUpdated(breakCalculator.getPoints()) }
+            clearValuesFromPreviousPlayer()
+            clearUiFromPreviousPlayer()
         }
     }
 
@@ -215,11 +190,19 @@ class FrameViewModel(
     }
 
     fun onEndFrameConfirmed() {
-        takeFrameAndPlayerIfNotNull { frame, _ ->
-            onEndTurnClicked(isEndingFrame = true)
+        takeFrameAndPlayerIfNotNull { frame, player ->
+            updateBreakAndCurrentPlayer(frame, player, isEndingFrame = true)
 
             if (frameIndex <= frames.lastIndex - 1) {
                 analytics.trackEndFrameConfirmed(isEndingMatch = false)
+
+                viewModelScope.launch {
+                    updateDatabaseOnTurnEnd(frame, player, isEndingFrame = true)
+                }
+
+                clearValuesFromPreviousPlayer()
+                clearUiFromPreviousPlayer()
+
                 frameIndex++
                 setState { state -> state.setCurrentFrame(frames[frameIndex]) }
                 sendAction {
@@ -230,7 +213,11 @@ class FrameViewModel(
                 }
             } else {
                 analytics.trackEndFrameConfirmed(isEndingMatch = true)
-                endMatch()
+
+                viewModelScope.launch {
+                    updateDatabaseOnTurnEnd(frame, player, isEndingFrame = true)
+                    endMatch()
+                }
             }
         }
     }
@@ -262,6 +249,57 @@ class FrameViewModel(
         }
     }
 
+    private fun updateBreakAndCurrentPlayer(
+        frame: UiFrame,
+        player: UiPlayer,
+        isEndingFrame: Boolean
+    ) {
+        val breakPoints = breakCalculator.getPoints()
+
+        if (player == frame.match.player1) {
+            if (breakPoints > frame.player1HighestBreak) {
+                frame.player1HighestBreak = breakPoints
+            }
+
+            if (!isEndingFrame) {
+                currentPlayer = frame.match.player2
+                setState { state -> state.setCurrentPlayer(frame.match.player2) }
+            }
+        } else {
+            if (breakPoints > frame.player2HighestBreak) {
+                frame.player2HighestBreak = breakPoints
+            }
+
+            if (!isEndingFrame) {
+                currentPlayer = frame.match.player1
+                setState { state -> state.setCurrentPlayer(frame.match.player1) }
+            }
+        }
+    }
+
+    private suspend fun updateDatabaseOnTurnEnd(
+        frame: UiFrame,
+        player: UiPlayer,
+        isEndingFrame: Boolean
+    ) {
+        viewModelScope.launch {
+            addOrUpdatePlayerStats(frame, player)
+            addOrUpdateFrame(isEndingFrame)
+        }
+    }
+
+    private fun clearValuesFromPreviousPlayer() {
+        breakCalculator.clear()
+        pottedBalls.clear()
+        fouls.clear()
+    }
+
+    private fun clearUiFromPreviousPlayer() {
+        setState { state -> state.onDisableUndoLastPottedBallButton() }
+        setState { state -> state.onDisableUndoLastFoulButton() }
+        setState { state -> state.onBreakUpdated(breakCalculator.getPoints()) }
+    }
+
     private suspend fun addOrUpdatePlayerStats(frame: UiFrame, player: UiPlayer) {
         useCases.playerStatsUseCases.getPlayerStatsUseCase(player.toDomain()).handleDefaultActions()
             .collect { currentPlayerStats ->
@@ -284,24 +322,22 @@ class FrameViewModel(
         }
     }
 
-    private fun endMatch() {
+    private suspend fun endMatch() {
         val domainFrames = frames.map { it.toDomain() }
 
         val matchSummary = useCases.getMatchSummaryUseCase(domainFrames)
 
-        viewModelScope.launch {
-            useCases.playerStatsUseCases.getPlayerStatsUseCase(
-                matchSummary.winner
-            ).handleDefaultActions()
-                .collect { currentWinnerStats ->
-                    useCases.playerStatsUseCases.updatePlayerStatsWithMatchResultUseCase(
-                        currentWinnerStats
-                    ).handleDefaultActions()
-                        .collect {
-                            sendAction { FrameUiAction.OpenMatchSummary(frames) }
-                        }
-                }
-        }
+        useCases.playerStatsUseCases.getPlayerStatsUseCase(
+            matchSummary.winner
+        ).handleDefaultActions()
+            .collect { currentWinnerStats ->
+                useCases.playerStatsUseCases.updatePlayerStatsWithMatchResultUseCase(
+                    currentWinnerStats
+                ).handleDefaultActions()
+                    .collect {
+                        sendAction { FrameUiAction.OpenMatchSummary(frames) }
+                    }
+            }
     }
 
     private fun takeFrameAndPlayerIfNotNull(block: (UiFrame, UiPlayer) -> Unit) {
