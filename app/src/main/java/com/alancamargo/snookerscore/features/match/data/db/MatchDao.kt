@@ -16,7 +16,7 @@ interface MatchDao {
     @Delete(entity = DbMatch::class)
     suspend fun deleteMatch(match: DbMatch)
 
-    @Query("SELECT * FROM Matches")
+    @Query("SELECT * FROM Matches ORDER BY dateTime DESC")
     suspend fun getMatches(): List<DbMatch>
 
     @Update(entity = DbMatch::class)
