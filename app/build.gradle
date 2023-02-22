@@ -17,8 +17,8 @@ android {
         minSdk 21
         targetSdk 33
 
-        versionCode 6
-        versionName "2023.1.0"
+        versionCode 7
+        versionName "2023.1.1"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField "String", "SMAATO_PUBLISHER_ID", "\"$smaato_publisher_id\""
