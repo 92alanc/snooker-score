@@ -65,7 +65,7 @@ class MainActivity : AppCompatActivity() {
     private fun setUpUi() {
         setUpToolbar()
         setUpButtons()
-        get<AdLoader>().loadBannerAds(binding.banner, R.string.ads_main)
+        get<AdLoader>().loadBannerAds(binding.banner)
     }
 
     private fun setUpToolbar() {

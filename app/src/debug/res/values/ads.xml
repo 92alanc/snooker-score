@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="ads_full_screen">130626426</string>
-    <string name="ads_main">130626424</string>
-    <string name="ads_player_list">130626424</string>
-    <string name="ads_player_stats">130626424</string>
-    <string name="ads_web_view">130626424</string>
-    <string name="ads_new_match">130626424</string>
-    <string name="ads_match_list">130626424</string>
-    <string name="ads_match_details">130626424</string>
-    <string name="ads_match_summary">130626424</string>
-    <string name="ads_frame">130626424</string>
+    <string name="ads_full_screen">ca-app-pub-3940256099942544/1033173712</string>
+    <string name="ads_main">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="ads_player_list">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="ads_player_stats">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="ads_web_view">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="ads_new_match">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="ads_match_list">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="ads_match_details">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="ads_match_summary">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="ads_frame">ca-app-pub-3940256099942544/6300978111</string>
 </resources>

@@ -64,7 +64,7 @@ class MatchListActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         recyclerView.adapter = adapter
         btNewMatch.setOnClickListener { viewModel.onNewMatchClicked() }
-        get<AdLoader>().loadBannerAds(banner, R.string.ads_match_list)
+        get<AdLoader>().loadBannerAds(banner)
     }
 
     private fun onStateChanged(state: MatchListUiState) {

@@ -7,11 +7,7 @@ import android.os.Parcelable
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import com.alancamargo.snookerscore.R
-import com.alancamargo.snookerscore.core.arch.extensions.args
-import com.alancamargo.snookerscore.core.arch.extensions.createIntent
-import com.alancamargo.snookerscore.core.arch.extensions.observeAction
-import com.alancamargo.snookerscore.core.arch.extensions.observeState
-import com.alancamargo.snookerscore.core.arch.extensions.putArguments
+import com.alancamargo.snookerscore.core.arch.extensions.*
 import com.alancamargo.snookerscore.core.ui.ads.AdLoader
 import com.alancamargo.snookerscore.databinding.ActivityMatchSummaryBinding
 import com.alancamargo.snookerscore.features.frame.ui.model.UiFrame
@@ -61,7 +57,7 @@ class MatchSummaryActivity : AppCompatActivity() {
     private fun setUpUi() = with(binding) {
         setUpToolbar()
         btNewMatch.setOnClickListener { viewModel.onNewMatchButtonClicked() }
-        get<AdLoader>().loadBannerAds(banner, R.string.ads_match_summary)
+        get<AdLoader>().loadBannerAds(banner)
     }
 
     private fun onStateChanged(state: MatchSummaryUiState) {

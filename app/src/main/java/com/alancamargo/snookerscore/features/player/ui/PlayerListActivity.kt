@@ -7,18 +7,9 @@ import android.os.Bundle
 import android.os.Parcelable
 import androidx.appcompat.app.AppCompatActivity
 import com.alancamargo.snookerscore.R
-import com.alancamargo.snookerscore.core.arch.extensions.args
-import com.alancamargo.snookerscore.core.arch.extensions.createIntent
-import com.alancamargo.snookerscore.core.arch.extensions.observeAction
-import com.alancamargo.snookerscore.core.arch.extensions.observeState
-import com.alancamargo.snookerscore.core.arch.extensions.putArguments
-import com.alancamargo.snookerscore.core.arch.extensions.putResponse
+import com.alancamargo.snookerscore.core.arch.extensions.*
 import com.alancamargo.snookerscore.core.ui.ads.AdLoader
-import com.alancamargo.snookerscore.core.ui.dialogue.button
-import com.alancamargo.snookerscore.core.ui.dialogue.editText
-import com.alancamargo.snookerscore.core.ui.dialogue.makeDialogue
-import com.alancamargo.snookerscore.core.ui.dialogue.radioButton
-import com.alancamargo.snookerscore.core.ui.dialogue.radioButtons
+import com.alancamargo.snookerscore.core.ui.dialogue.*
 import com.alancamargo.snookerscore.databinding.ActivityPlayerListBinding
 import com.alancamargo.snookerscore.features.player.domain.model.Gender
 import com.alancamargo.snookerscore.features.player.ui.adapter.PlayerAdapter
@@ -80,7 +71,7 @@ class PlayerListActivity : AppCompatActivity() {
         setUpToolbar()
         recyclerView.adapter = adapter
         btAddPlayer.setOnClickListener { viewModel.onNewPlayerClicked() }
-        get<AdLoader>().loadBannerAds(banner, R.string.ads_player_list)
+        get<AdLoader>().loadBannerAds(banner)
     }
 
     private fun handleState(state: PlayerListUiState) {

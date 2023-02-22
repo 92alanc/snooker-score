@@ -11,11 +11,9 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-        maven {
-            url "https://s3.amazonaws.com/smaato-sdk-releases/"
-        }
     }
 }
 
 rootProject.name = "Snooker Score"
+
 include ':app'

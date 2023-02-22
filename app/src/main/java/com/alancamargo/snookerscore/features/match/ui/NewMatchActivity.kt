@@ -68,7 +68,7 @@ class NewMatchActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         setUpButtons()
-        get<AdLoader>().loadBannerAds(banner, R.string.ads_new_match)
+        get<AdLoader>().loadBannerAds(banner)
     }
 
     private fun setUpActivityResultLauncher() {

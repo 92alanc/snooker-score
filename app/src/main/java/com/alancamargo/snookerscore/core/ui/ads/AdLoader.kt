@@ -6,7 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 
 interface AdLoader {
 
-    fun loadBannerAds(target: View, @StringRes adIdRes: Int)
+    fun loadBannerAds(target: View)
 
     fun loadInterstitialAds(activity: AppCompatActivity, @StringRes adIdRes: Int)
 

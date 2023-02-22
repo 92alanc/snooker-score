@@ -6,11 +6,7 @@ import android.os.Bundle
 import android.os.Parcelable
 import androidx.appcompat.app.AppCompatActivity
 import com.alancamargo.snookerscore.R
-import com.alancamargo.snookerscore.core.arch.extensions.args
-import com.alancamargo.snookerscore.core.arch.extensions.createIntent
-import com.alancamargo.snookerscore.core.arch.extensions.observeAction
-import com.alancamargo.snookerscore.core.arch.extensions.observeState
-import com.alancamargo.snookerscore.core.arch.extensions.putArguments
+import com.alancamargo.snookerscore.core.arch.extensions.*
 import com.alancamargo.snookerscore.core.ui.ads.AdLoader
 import com.alancamargo.snookerscore.core.ui.dialogue.button
 import com.alancamargo.snookerscore.core.ui.dialogue.makeDialogue
@@ -73,7 +69,7 @@ class MatchDetailsActivity : AppCompatActivity() {
         setUpToolbar()
         setUpButtons()
         recyclerView.adapter = adapter
-        get<AdLoader>().loadBannerAds(banner, R.string.ads_match_details)
+        get<AdLoader>().loadBannerAds(banner)
     }
 
     private fun setUpToolbar() {

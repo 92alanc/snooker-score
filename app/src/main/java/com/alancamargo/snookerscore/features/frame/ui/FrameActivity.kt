@@ -8,12 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import com.alancamargo.snookerscore.R
-import com.alancamargo.snookerscore.core.arch.extensions.args
-import com.alancamargo.snookerscore.core.arch.extensions.createIntent
-import com.alancamargo.snookerscore.core.arch.extensions.observeAction
-import com.alancamargo.snookerscore.core.arch.extensions.observeState
-import com.alancamargo.snookerscore.core.arch.extensions.putArguments
-import com.alancamargo.snookerscore.core.arch.extensions.vibrate
+import com.alancamargo.snookerscore.core.arch.extensions.*
 import com.alancamargo.snookerscore.core.ui.ads.AdLoader
 import com.alancamargo.snookerscore.core.ui.dialogue.button
 import com.alancamargo.snookerscore.core.ui.dialogue.makeDialogue
@@ -74,7 +69,7 @@ class FrameActivity : AppCompatActivity() {
     private fun setUpUi() {
         setUpToolbar()
         setUpButtons()
-        get<AdLoader>().loadBannerAds(binding.banner, R.string.ads_frame)
+        get<AdLoader>().loadBannerAds(binding.banner)
     }
 
     private fun onStateChanged(state: FrameUiState) = with(state) {

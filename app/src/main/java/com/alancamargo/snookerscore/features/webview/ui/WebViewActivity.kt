@@ -73,7 +73,7 @@ class WebViewActivity : AppCompatActivity() {
     private fun setUpUi() {
         setUpToolbar()
         setUpWebView()
-        get<AdLoader>().loadBannerAds(binding.banner, R.string.ads_web_view)
+        get<AdLoader>().loadBannerAds(binding.banner)
     }
 
     private fun onActionChanged(action: WebViewUiAction) {
