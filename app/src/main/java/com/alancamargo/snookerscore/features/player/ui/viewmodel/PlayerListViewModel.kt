@@ -81,7 +81,7 @@ class PlayerListViewModel(
             return
         }
 
-        val gender = Gender.values()[playerGenderOrdinal]
+        val gender = Gender.entries[playerGenderOrdinal]
         val player = Player(id = playerId, name = playerName, gender = gender)
 
         viewModelScope.launch {

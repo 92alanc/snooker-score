@@ -243,7 +243,7 @@ class FrameActivity : AppCompatActivity() {
                 }
 
                 onSubmitSelection = { ballOrdinal ->
-                    val ball = Ball.values()[ballOrdinal]
+                    val ball = Ball.entries[ballOrdinal]
                     viewModel.onFoul(Foul.WithObjectBall(ball))
                 }
 
