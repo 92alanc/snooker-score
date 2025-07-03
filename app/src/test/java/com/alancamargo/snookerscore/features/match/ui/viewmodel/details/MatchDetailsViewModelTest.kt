@@ -18,7 +18,7 @@ import io.mockk.verify
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.test.TestCoroutineDispatcher
+import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.setMain
 import org.junit.Before
 import org.junit.Rule
@@ -43,7 +43,7 @@ class MatchDetailsViewModelTest {
 
     @Before
     fun setUp() {
-        val testCoroutineDispatcher = TestCoroutineDispatcher()
+        val testCoroutineDispatcher = StandardTestDispatcher()
         Dispatchers.setMain(testCoroutineDispatcher)
 
         viewModel = MatchDetailsViewModel(
